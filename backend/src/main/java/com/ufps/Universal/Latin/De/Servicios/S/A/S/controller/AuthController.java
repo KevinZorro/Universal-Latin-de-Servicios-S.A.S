@@ -4,10 +4,11 @@ import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.LoginDto;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.RegistroDto;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Usuario;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.AuthService;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
-
 
 @RestController
 @RequestMapping("/api/auth")
@@ -18,7 +19,6 @@ public class AuthController {
         this.authService = authService;
     }
 
-
     @PostMapping("/registro")
     public ResponseEntity<?> register(@RequestBody @Valid RegistroDto dto) {
         Usuario u = authService.registrar(dto);
@@ -27,7 +27,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginDto dto) {
-        // Lógica: validar usuario y password, devolver token/estado
-        return ResponseEntity.ok().body("Login exitoso para el usuario: " + dto.cedula);
+        Usuario usuario = authService.login(dto.cedula, dto.password);
+        if (usuario != null) {
+            // Puedes retornar un DTO, info básica o un token
+            return ResponseEntity.ok().body("Login exitoso para el usuario: " + usuario.getCedula());
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña inválidos");
+        }
     }
+
 }

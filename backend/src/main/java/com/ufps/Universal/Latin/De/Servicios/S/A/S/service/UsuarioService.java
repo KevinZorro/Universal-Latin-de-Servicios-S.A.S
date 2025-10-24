@@ -18,9 +18,9 @@ public class UsuarioService {
 
     public List<Usuario> findAll() { return usuarioRepository.findAll(); }
 
-    public Optional<Usuario> findById(Integer cedula) { return usuarioRepository.findById(cedula); }
+    public Optional<Usuario> findById(String cedula) { return usuarioRepository.findById(cedula); }
 
     public Usuario save(Usuario usuario) { return usuarioRepository.save(usuario); }
 
-    public void deleteById(Integer cedula) { usuarioRepository.deleteById(cedula); }
+    public void deleteById(String cedula) { usuarioRepository.deleteById(cedula); }
 }

@@ -28,7 +28,7 @@ public class EmpleadoController {
     }
 
     @GetMapping("/{id}")
-    public EmpleadoDto getEmpleadoById(@PathVariable Integer id) {
+    public EmpleadoDto getEmpleadoById(@PathVariable String id) {
         Optional<Empleado> empleado = empleadoService.findById(id);
         return empleado.map(this::toDto).orElse(null);
     }
@@ -41,7 +41,7 @@ public class EmpleadoController {
     }
 
     @PutMapping("/{id}")
-    public EmpleadoDto updateEmpleado(@PathVariable Integer id, @Valid @RequestBody EmpleadoDto empleadoDto) {
+    public EmpleadoDto updateEmpleado(@PathVariable String id, @Valid @RequestBody EmpleadoDto empleadoDto) {
         Empleado empleado = toEntity(empleadoDto);
         empleado.setCedula(id);
         Empleado updated = empleadoService.save(empleado);
@@ -49,7 +49,7 @@ public class EmpleadoController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEmpleado(@PathVariable Integer id) {
+    public void deleteEmpleado(@PathVariable String id) {
         empleadoService.deleteById(id);
     }
 

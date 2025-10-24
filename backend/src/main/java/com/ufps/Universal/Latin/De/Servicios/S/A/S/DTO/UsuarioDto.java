@@ -6,7 +6,7 @@ import jakarta.validation.constraints.*;
 @Data
 public class UsuarioDto {
 
-    private Integer cedula;
+    private String cedula;
 
     @NotBlank
     private String telefono;
