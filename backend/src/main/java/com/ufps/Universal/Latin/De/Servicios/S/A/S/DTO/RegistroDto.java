@@ -1,7 +1,7 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO;
 
 public class RegistroDto {
-    public Integer cedula;
+    public String cedula;
     public String nombre;
     public String apellido;
     public String telefono;

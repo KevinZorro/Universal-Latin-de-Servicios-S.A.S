@@ -18,9 +18,9 @@ public class GerenteService {
 
     public List<Gerente> findAll() { return gerenteRepository.findAll(); }
 
-    public Optional<Gerente> findById(Integer id) { return gerenteRepository.findById(id); }
+    public Optional<Gerente> findById(String id) { return gerenteRepository.findById(id); }
 
     public Gerente save(Gerente gerente) { return gerenteRepository.save(gerente); }
 
-    public void deleteById(Integer id) { gerenteRepository.deleteById(id); }
+    public void deleteById(String id) { gerenteRepository.deleteById(id); }
 }

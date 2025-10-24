@@ -28,7 +28,7 @@ public class GerenteController {
     }
 
     @GetMapping("/{id}")
-    public GerenteDto getGerenteById(@PathVariable Integer id) {
+    public GerenteDto getGerenteById(@PathVariable String id) {
         Optional<Gerente> gerente = gerenteService.findById(id);
         return gerente.map(this::toDto).orElse(null);
     }
@@ -41,7 +41,7 @@ public class GerenteController {
     }
 
     @PutMapping("/{id}")
-    public GerenteDto updateGerente(@PathVariable Integer id, @Valid @RequestBody GerenteDto gerenteDto) {
+    public GerenteDto updateGerente(@PathVariable String id, @Valid @RequestBody GerenteDto gerenteDto) {
         Gerente gerente = toEntity(gerenteDto);
         gerente.setCedula(id);
         Gerente updated = gerenteService.save(gerente);
@@ -49,7 +49,7 @@ public class GerenteController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteGerente(@PathVariable Integer id) {
+    public void deleteGerente(@PathVariable String id) {
         gerenteService.deleteById(id);
     }
 

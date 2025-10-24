@@ -20,7 +20,7 @@ public class EmpleadoService {
         return empleadoRepository.findAll();
     }
 
-    public Optional<Empleado> findById(Integer id) {
+    public Optional<Empleado> findById(String id) {
         return empleadoRepository.findById(id);
     }
 
@@ -28,7 +28,7 @@ public class EmpleadoService {
         return empleadoRepository.save(empleado);
     }
 
-    public void deleteById(Integer id) {
+    public void deleteById(String id) {
         empleadoRepository.deleteById(id);
     }
 }    

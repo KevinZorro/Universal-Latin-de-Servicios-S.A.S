@@ -17,7 +17,7 @@ public class Usuario {
 
     @Id
     @Column(name = "cedula")
-    private Integer cedula;
+    private String cedula;
 
     @NotBlank
     private String telefono;

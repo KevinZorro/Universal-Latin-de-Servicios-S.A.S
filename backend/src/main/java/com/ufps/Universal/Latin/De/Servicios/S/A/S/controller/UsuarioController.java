@@ -29,7 +29,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{cedula}")
-    public UsuarioDto getUsuarioById(@PathVariable Integer cedula) {
+    public UsuarioDto getUsuarioById(@PathVariable String cedula) {
         Optional<Usuario> usuario = usuarioService.findById(cedula);
         return usuario.map(this::toDto).orElse(null);
     }
@@ -42,7 +42,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{cedula}")
-    public UsuarioDto updateUsuario(@PathVariable Integer cedula, @Valid @RequestBody UsuarioDto usuarioDto) {
+    public UsuarioDto updateUsuario(@PathVariable String cedula, @Valid @RequestBody UsuarioDto usuarioDto) {
         Usuario usuario = toEntity(usuarioDto);
         usuario.setCedula(cedula);
         Usuario updated = usuarioService.save(usuario);
@@ -50,7 +50,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{cedula}")
-    public void deleteUsuario(@PathVariable Integer cedula) {
+    public void deleteUsuario(@PathVariable String cedula) {
         usuarioService.deleteById(cedula);
     }
 
