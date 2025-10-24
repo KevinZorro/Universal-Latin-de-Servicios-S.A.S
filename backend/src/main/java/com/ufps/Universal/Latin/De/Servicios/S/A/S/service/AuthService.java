@@ -4,10 +4,13 @@ import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Empleado;
 import org.springframework.stereotype.Service;
 
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Gerente;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Rol;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Usuario;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.UsuarioRepository;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.RegistroDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -34,30 +37,39 @@ public class AuthService {
         return null;
     }
 
-    public Usuario registrar(RegistroDto dto) {
-        String passwordHash = passwordEncoder.encode(dto.password);
-        Usuario u;
-        if (dto.tipoUsuario.equals("EMPLEADO")) {
-            u = Empleado.builder()
-                    .cedula(dto.cedula)
-                    .nombre(dto.nombre)
-                    .apellido(dto.apellido)
-                    .telefono(dto.telefono)
-                    .email(dto.email)
-                    .passwordHash(passwordHash)
-                    .build();
-        } else if (dto.tipoUsuario.equals("GERENTE")) {
-            u = Gerente.builder()
-                    .cedula(dto.cedula)
-                    .nombre(dto.nombre)
-                    .apellido(dto.apellido)
-                    .telefono(dto.telefono)
-                    .email(dto.email)
-                    .passwordHash(passwordHash)
-                    .build();
-        } else {
-            throw new IllegalArgumentException("Tipo usuario no soportado");
-        }
-        return usuarioRepository.save(u);
+public Usuario registrar(RegistroDto dto) {
+    String passwordHash = passwordEncoder.encode(dto.getPassword());
+    Usuario u = null;
+
+    if ("EMPLEADO".equalsIgnoreCase(dto.getRol())) {
+        u = Empleado.builder()
+            .cedula(dto.getCedula())
+            .nombre(dto.getNombre())
+            .apellido(dto.getApellido())
+            .telefono(dto.getTelefono())
+            .email(dto.getEmail())
+            .passwordHash(passwordHash)
+            .rol(Rol.EMPLEADO)  // Asegúrate de asignar el rol correcto
+            // Para campos adicionales de Empleado, agrega valores aquí o setters después
+            .activo(true)       // ejemplo
+            .fechaIngreso(LocalDate.now()) // ejemplo
+            .cargo("Default Cargo")         // ejemplo, o recibe desde dto
+            .build();
+    } else if ("GERENTE".equalsIgnoreCase(dto.getRol())) {
+        u = Gerente.builder()
+            .cedula(dto.getCedula())
+            .nombre(dto.getNombre())
+            .apellido(dto.getApellido())
+            .telefono(dto.getTelefono())
+            .email(dto.getEmail())
+            .passwordHash(passwordHash)
+            .rol(Rol.GERENTE)
+            .build();
+    } else {
+        throw new IllegalArgumentException("Tipo de usuario inválido.");
     }
+
+    return usuarioRepository.save(u);
+}
+
 }
