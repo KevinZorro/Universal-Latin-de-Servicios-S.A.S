@@ -1,12 +1,9 @@
-import React from "react";
-import Login from "./Login";
-import Registro from "./Registro";
+import Login from "../src/pages/Login";
 
 function App() {
   return (
     <div>
       <Login />
-      <Registro />
     </div>
   );
 }

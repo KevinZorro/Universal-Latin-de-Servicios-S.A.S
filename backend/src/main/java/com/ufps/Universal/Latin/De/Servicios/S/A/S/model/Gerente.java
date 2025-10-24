@@ -8,11 +8,11 @@ import jakarta.persistence.*;
 @Table(name = "gerentes")
 @Data
 @EqualsAndHashCode(callSuper = true)
-//@NoArgsConstructor
-//@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder
 @PrimaryKeyJoinColumn(name = "cedula")
 public class Gerente extends Usuario {
 
-
+    private String ejemplo;
 }

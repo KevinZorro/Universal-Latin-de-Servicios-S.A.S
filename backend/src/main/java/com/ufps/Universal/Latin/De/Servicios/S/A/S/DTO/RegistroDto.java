@@ -1,5 +1,13 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO;
 
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
+
 public class RegistroDto {
     public String cedula;
     public String nombre;
@@ -7,6 +15,6 @@ public class RegistroDto {
     public String telefono;
     public String email;
     public String password;
-    public String tipoUsuario; // "EMPLEADO"/"GERENTE"
+    public String rol; // "EMPLEADO"/"GERENTE"
     // otros campos específicos según el tipo
 }
