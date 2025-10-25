@@ -1,0 +1,134 @@
+.footer {
+  background-color: #1E3A8A;
+  color: #ffffff;
+  padding: 3rem 2rem 1rem;
+  font-size: 0.95rem;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 3rem; /* más espacio entre columnas */
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 280px;
+}
+
+/* ---- Logo y descripción ---- */
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.footer-logo img {
+  height: 55px;
+  border-radius: 6px;
+}
+
+.footer-logo h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+
+.footer-logo p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #d1d5db;
+}
+
+.footer-description {
+  margin-top: 1rem;
+  color: #e2e8f0;
+  line-height: 1.5;
+}
+
+.pqrs-link {
+  display: inline-block;
+  margin-top: 0.8rem;
+  color: #93c5fd;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.pqrs-link:hover {
+  text-decoration: underline;
+}
+
+/* ---- Servicios ---- */
+.footer-section h4 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  row-gap: 0.5rem;
+}
+
+.footer-section li {
+  color: #e5e7eb;
+  font-size: 0.95rem;
+}
+
+/* ---- Contacto ---- */
+.footer-section.contact p {
+  margin: 0.4rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #f1f5f9;
+}
+
+.footer-section.contact svg {
+  width: 18px;
+  height: 18px;
+  fill: #ffffff; /* color blanco puro */
+  flex-shrink: 0;
+  transition: fill 0.3s ease;
+}
+
+.footer-section.contact p:hover svg {
+  fill: #60a5fa; /* efecto azul suave al pasar el mouse */
+}
+
+
+.footer-section.contact p:hover .icon-mail,
+.footer-section.contact p:hover svg:not(.icon-mail) {
+  color: #60a5fa;
+  transition: color 0.25s ease;
+}
+
+/* ---- Parte inferior ---- */
+.footer-bottom {
+  border-top: 1px solid #334155;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #d1d5db;
+}
+
+.footer-section.about {
+  margin-left: -40px; 
+}
+
+.footer-section.services {
+  margin-left: 60px;  
+}
+
+.footer-section.contact {
+  margin-right: -60px; 
+}

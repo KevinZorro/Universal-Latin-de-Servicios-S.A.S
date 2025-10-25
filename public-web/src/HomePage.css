@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Arimo', sans-serif;
+}
+
+.home-container {
+  background: linear-gradient(to bottom, #1E3A8A, #2c3e50);
+  color: white;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: white;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo img {
+  height: 70px;
+}
+
+.logo span {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #1E3A8A;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  color: #1E3A8A;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.contratar-btn {
+  background-color: #1E3A8A;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.hero {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.ver-servicios,
+.contactar {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.ver-servicios {
+  background-color: white;
+  color: #1E3A8A;
+}
+
+.contactar {
+  background-color: #64748B;
+  color: white;
+}
+
+.quienes-somos {
+  background-color: #ffffff;
+  color: #1E3A8A;
+  text-align: center;
+  padding: 2rem 2rem;
+  margin-top: 0;
+}
+
+.quienes-somos h2 {
+  font-size: 1.5rem;
+  color: #1E3A8A;
+  margin-bottom: 0.5rem;
+}
+
+.quienes-somos h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.quienes-somos p {
+  color: #374151;
+  font-size: 1.05rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.mision-vision {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 2rem;
+  padding: 3rem 2rem;
+  flex-wrap: wrap; /* para adaptarse en pantallas pequeñas */
+  background-color: #ffffff;
+}
+
+.tarjeta {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tarjeta h3 {
+  color: #1E3A8A;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.tarjeta p {
+  color: #374151;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+
+
