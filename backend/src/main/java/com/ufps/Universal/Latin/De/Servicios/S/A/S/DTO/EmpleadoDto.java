@@ -4,12 +4,19 @@ import org.hibernate.validator.constraints.URL;
 import lombok.Data;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class EmpleadoDto {
 
-    @NotBlank
-    private String cargo;
+    private String cedula;
+
+    private String nombre;
+
+    private String email;
+
+    private Set<CargoDto> cargos = new HashSet<>();
 
     @NotNull
     private LocalDate fechaIngreso;

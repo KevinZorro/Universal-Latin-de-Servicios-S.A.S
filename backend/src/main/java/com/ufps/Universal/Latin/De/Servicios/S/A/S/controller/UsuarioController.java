@@ -2,11 +2,8 @@ package com.ufps.Universal.Latin.De.Servicios.S.A.S.controller;
 
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.UsuarioDto;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Usuario;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Rol;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.UsuarioService;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,20 +31,6 @@ public class UsuarioController {
         return usuario.map(this::toDto).orElse(null);
     }
 
-    @PostMapping
-    public UsuarioDto createUsuario(@Valid @RequestBody UsuarioDto usuarioDto) {
-        Usuario usuario = toEntity(usuarioDto);
-        Usuario saved = usuarioService.save(usuario);
-        return toDto(saved);
-    }
-
-    @PutMapping("/{cedula}")
-    public UsuarioDto updateUsuario(@PathVariable String cedula, @Valid @RequestBody UsuarioDto usuarioDto) {
-        Usuario usuario = toEntity(usuarioDto);
-        usuario.setCedula(cedula);
-        Usuario updated = usuarioService.save(usuario);
-        return toDto(updated);
-    }
 
     @DeleteMapping("/{cedula}")
     public void deleteUsuario(@PathVariable String cedula) {
@@ -65,17 +48,5 @@ public class UsuarioController {
         dto.setNombre(usuario.getNombre());
         dto.setRol(usuario.getRol().name());
         return dto;
-    }
-
-    private Usuario toEntity(UsuarioDto dto) {
-        return Usuario.builder()
-                .cedula(dto.getCedula())
-                .telefono(dto.getTelefono())
-                .passwordHash(dto.getPassword())
-                .email(dto.getEmail())
-                .apellido(dto.getApellido())
-                .nombre(dto.getNombre())
-                .rol(Rol.valueOf(dto.getRol()))
-                .build();
     }
 }

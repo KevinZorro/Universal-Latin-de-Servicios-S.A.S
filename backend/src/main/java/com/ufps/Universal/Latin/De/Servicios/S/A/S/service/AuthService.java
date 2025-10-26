@@ -53,7 +53,6 @@ public Usuario registrar(RegistroDto dto) {
             // Para campos adicionales de Empleado, agrega valores aquí o setters después
             .activo(true)       // ejemplo
             .fechaIngreso(LocalDate.now()) // ejemplo
-            .cargo("Default Cargo")         // ejemplo, o recibe desde dto
             .build();
     } else if ("GERENTE".equalsIgnoreCase(dto.getRol())) {
         u = Gerente.builder()
