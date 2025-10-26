@@ -5,7 +5,10 @@ import lombok.experimental.SuperBuilder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.URL;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "empleados")
@@ -16,8 +19,16 @@ import java.time.LocalDate;
 @SuperBuilder
 @PrimaryKeyJoinColumn(name = "cedula")
 public class Empleado extends Usuario {
-    @NotBlank
-    private String cargo;
+
+    // Relación Many-to-Many con Cargo (lado propietario)
+    @ManyToMany
+    @JoinTable(name = "empleado_cargo", // Nombre de la tabla intermedia
+            joinColumns = @JoinColumn(name = "cedula"), // FK de Empleado
+            inverseJoinColumns = @JoinColumn(name = "cargo_id") // FK de Cargo
+    )
+    @Builder.Default
+    @JsonIgnore
+    private Set<Cargo> cargos = new HashSet<>();
 
     @NotNull
     @Column(name = "fecha_ingreso")
@@ -33,4 +44,13 @@ public class Empleado extends Usuario {
     @URL
     @Column(name = "hoja_de_vida_url")
     private String hojaDeVidaURL;
+
+    public void agregarCargo(Cargo cargo) {
+        this.cargos.add(cargo);
+    }
+
+    public void removerCargo(Cargo cargo) {
+        this.cargos.remove(cargo);
+    }
+
 }

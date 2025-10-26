@@ -13,7 +13,7 @@ import jakarta.validation.constraints.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class Usuario {
+public abstract class Usuario {
 
     @Id
     @Column(name = "cedula")

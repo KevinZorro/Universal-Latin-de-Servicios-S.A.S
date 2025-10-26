@@ -1,39 +1,53 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.controller;
 
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.LoginDto;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.RegistroDto;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Usuario;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.AuthService;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.UsuarioRepository;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.security.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
+
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
-    private final AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    @PostMapping("/registro")
-    public ResponseEntity<?> register(@RequestBody @Valid RegistroDto dto) {
-        Usuario u = authService.registrar(dto);
-        return ResponseEntity.ok().body("Usuario registrado: " + u.getCedula());
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid LoginDto dto) {
-        Usuario usuario = authService.login(dto.cedula, dto.password);
-        if (usuario != null) {
-            // Puedes retornar un DTO, info básica o un token
-            return ResponseEntity.ok().body("Login exitoso para el usuario: " + usuario.getCedula());
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña inválidos");
-        }
-    }
+    public ResponseEntity<?> login(@RequestBody LoginDto dto) {
 
+        Optional<Usuario> optUsuario = usuarioRepository.findById(dto.cedula);
+        if (optUsuario.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Credenciales inválidas"));
+        }
+
+        Usuario usuario = optUsuario.get();
+
+        if (!passwordEncoder.matches(dto.password, usuario.getPasswordHash())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Credenciales inválidas"));
+        }
+
+        String token = jwtUtil.generarToken(usuario.getCedula(), usuario.getRol().name());
+
+        return ResponseEntity.ok(Map.of(
+                "token", token,
+                "rol", usuario.getRol().name(),
+                "nombre", usuario.getNombre()
+        ));
+    }
 }
