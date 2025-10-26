@@ -56,4 +56,13 @@ public class Empleado extends Usuario {
         this.cargos.remove(cargo);
     }
 
+    // Getters y setters para hojaDeVidaURL (con mayúsculas)
+    public String getHojaDeVidaUrl() {
+        return hojaDeVidaURL;
+    }
+
+    public void setHojaDeVidaUrl(String hojaDeVidaUrl) {
+        this.hojaDeVidaURL = hojaDeVidaUrl;
+    }
+
 }
