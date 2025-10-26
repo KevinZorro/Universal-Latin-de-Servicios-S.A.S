@@ -30,11 +30,10 @@ public class Empleado extends Usuario {
     @JsonIgnore
     private Set<Cargo> cargos = new HashSet<>();
 
-    @NotNull
     @Column(name = "fecha_ingreso")
     private LocalDate fechaIngreso;
 
-    @NotNull
+    
     private Boolean activo;
 
     @URL

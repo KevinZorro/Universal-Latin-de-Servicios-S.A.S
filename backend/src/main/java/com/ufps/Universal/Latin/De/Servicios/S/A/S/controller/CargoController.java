@@ -18,6 +18,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RestController
 @RequestMapping("/api/tipos-empleado")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class CargoController {
     
     private final CargoService cargoService;
