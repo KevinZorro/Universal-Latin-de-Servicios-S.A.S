@@ -3,7 +3,6 @@ package com.ufps.Universal.Latin.De.Servicios.S.A.S.model;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.URL;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
@@ -33,7 +32,7 @@ public class Empleado extends Usuario {
     @Column(name = "fecha_ingreso")
     private LocalDate fechaIngreso;
 
-    
+
     private Boolean activo;
 
     @URL
