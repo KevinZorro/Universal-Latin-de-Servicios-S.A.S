@@ -5,7 +5,7 @@ import lombok.experimental.SuperBuilder;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "gerentes")
+@Table(name = "gerente")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor

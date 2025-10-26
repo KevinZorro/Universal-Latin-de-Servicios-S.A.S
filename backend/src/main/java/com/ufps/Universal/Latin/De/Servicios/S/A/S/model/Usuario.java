@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -38,4 +38,13 @@ public abstract class Usuario {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Rol rol;
+
+    @Column(name = "idrol")
+    private Integer idrol;
+
+    @Column(name = "password") // ← Agrega este campo
+    private String password;
+
+    @Column(name = "idusuario", insertable = false, updatable = false)
+    private Integer idusuario;
 }

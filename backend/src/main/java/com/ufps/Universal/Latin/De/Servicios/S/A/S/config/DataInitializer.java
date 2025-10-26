@@ -19,8 +19,7 @@ public class DataInitializer {
     CommandLineRunner initDatabase(
             EmpleadoRepository empleadoRepository,
             GerenteRepository gerenteRepository,
-            PasswordEncoder passwordEncoder
-    ) {
+            PasswordEncoder passwordEncoder) {
         return args -> {
             boolean sinGerentes = gerenteRepository.count() == 0;
             boolean sinEmpleados = empleadoRepository.count() == 0;
@@ -29,19 +28,22 @@ public class DataInitializer {
                 System.out.println("🚀 Inicializando datos por defecto...");
 
                 // ==== Crear Gerente ====
-                if (sinGerentes) {
-                    Gerente gerente = new Gerente();
-                    gerente.setCedula("1001");
-                    gerente.setNombre("Gerente Zorro");
-                    gerente.setApellido("Zorro");
-                    gerente.setTelefono("3011234567");
-                    gerente.setEmail("gerente@empresa.com");
-                    gerente.setPasswordHash(passwordEncoder.encode("admin123"));
-                    gerente.setRol(Rol.GERENTE);
-                    gerenteRepository.save(gerente);
-                    System.out.println("✅ Gerente inicial creado.");
-                }
-
+                /*
+                 * if (sinGerentes) {
+                 * Gerente gerente = new Gerente();
+                 * gerente.setCedula("1001");
+                 * gerente.setNombre("Gerente Zorro");
+                 * gerente.setApellido("Zorro");
+                 * gerente.setTelefono("3011234567");
+                 * gerente.setEmail("gerente@empresa.com");
+                 * gerente.setPassword("admin123");
+                 * gerente.setPasswordHash(passwordEncoder.encode("admin123"));
+                 * gerente.setRol(Rol.GERENTE);
+                 * gerente.setIdrol(2);
+                 * gerenteRepository.save(gerente);
+                 * System.out.println("✅ Gerente inicial creado.");
+                 * }
+                 */
                 // ==== Crear Empleado ====
                 if (sinEmpleados) {
                     Empleado empleado = new Empleado();
@@ -50,8 +52,10 @@ public class DataInitializer {
                     empleado.setApellido("Prueba");
                     empleado.setTelefono("3001234567");
                     empleado.setEmail("empleado@empresa.com");
+                    empleado.setPassword("empleado123");
                     empleado.setPasswordHash(passwordEncoder.encode("empleado123"));
                     empleado.setRol(Rol.EMPLEADO);
+                    empleado.setIdrol(1);
                     empleado.setActivo(true);
                     empleado.setFechaIngreso(LocalDate.now());
                     empleadoRepository.save(empleado);

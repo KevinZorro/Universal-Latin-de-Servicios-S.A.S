@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "empleados")
+@Table(name = "empleado")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -19,6 +19,9 @@ import java.util.Set;
 @SuperBuilder
 @PrimaryKeyJoinColumn(name = "cedula")
 public class Empleado extends Usuario {
+
+    @Column(name = "idusuario", insertable = false, updatable = false)
+    private Integer idusuario;
 
     // Relación Many-to-Many con Cargo (lado propietario)
     @ManyToMany

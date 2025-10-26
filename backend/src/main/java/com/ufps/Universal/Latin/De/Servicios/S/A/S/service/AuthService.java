@@ -30,45 +30,45 @@ public class AuthService {
             if (passwordEncoder.matches(password, u.getPasswordHash())) { // Usa el nombre real del campo en tu entidad
                 return u;
             }
-        }else {
+        } else {
             throw new IllegalArgumentException("Credenciales inválidas");
-            
+
         }
         return null;
     }
 
-public Usuario registrar(RegistroDto dto) {
-    String passwordHash = passwordEncoder.encode(dto.getPassword());
-    Usuario u = null;
+    public Usuario registrar(RegistroDto dto) {
+        String passwordHash = passwordEncoder.encode(dto.getPassword());
+        Usuario u = null;
 
-    if ("EMPLEADO".equalsIgnoreCase(dto.getRol())) {
-        u = Empleado.builder()
-            .cedula(dto.getCedula())
-            .nombre(dto.getNombre())
-            .apellido(dto.getApellido())
-            .telefono(dto.getTelefono())
-            .email(dto.getEmail())
-            .passwordHash(passwordHash)
-            .rol(Rol.EMPLEADO)  // Asegúrate de asignar el rol correcto
-            // Para campos adicionales de Empleado, agrega valores aquí o setters después
-            .activo(true)       // ejemplo
-            .fechaIngreso(LocalDate.now()) // ejemplo
-            .build();
-    } else if ("GERENTE".equalsIgnoreCase(dto.getRol())) {
-        u = Gerente.builder()
-            .cedula(dto.getCedula())
-            .nombre(dto.getNombre())
-            .apellido(dto.getApellido())
-            .telefono(dto.getTelefono())
-            .email(dto.getEmail())
-            .passwordHash(passwordHash)
-            .rol(Rol.GERENTE)
-            .build();
-    } else {
-        throw new IllegalArgumentException("Tipo de usuario inválido.");
+        if ("EMPLEADO".equalsIgnoreCase(dto.getRol())) {
+            u = Empleado.builder()
+                    .cedula(dto.getCedula())
+                    .nombre(dto.getNombre())
+                    .apellido(dto.getApellido())
+                    .telefono(dto.getTelefono())
+                    .email(dto.getEmail())
+                    .passwordHash(passwordHash)
+                    .rol(Rol.EMPLEADO) // Asegúrate de asignar el rol correcto
+                    // Para campos adicionales de Empleado, agrega valores aquí o setters después
+                    .activo(true) // ejemplo
+                    .fechaIngreso(LocalDate.now()) // ejemplo
+                    .build();
+        } else if ("GERENTE".equalsIgnoreCase(dto.getRol())) {
+            u = Gerente.builder()
+                    .cedula(dto.getCedula())
+                    .nombre(dto.getNombre())
+                    .apellido(dto.getApellido())
+                    .telefono(dto.getTelefono())
+                    .email(dto.getEmail())
+                    .passwordHash(passwordHash)
+                    .rol(Rol.GERENTE)
+                    .build();
+        } else {
+            throw new IllegalArgumentException("Tipo de usuario inválido.");
+        }
+
+        return usuarioRepository.save(u);
     }
-
-    return usuarioRepository.save(u);
-}
 
 }
