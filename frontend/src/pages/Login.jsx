@@ -1,4 +1,12 @@
+// src/pages/Login.jsx  (o donde tengas tu componente)
 import React, { useState } from 'react';
+
+// Si usas CRA, puedes configurar REACT_APP_API_BASE en .env
+const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8080';
+const TOKEN_KEY = 'token';
+const ROL_KEY = 'rol';
+const NOMBRE_KEY = 'nombre';
+const CEDULA_KEY = 'cedula';
 
 export default function Login() {
   const [cedula, setCedula] = useState('');
@@ -10,26 +18,47 @@ export default function Login() {
     e.preventDefault();
     setError('');
     setLoading(true);
-    console.log(fetch('/api/auth/login'));
+
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cedula, password }),
       });
 
-      const data = await res.text();
-      console.log(data);
-      if (!res.ok) throw new Error(data.error || 'Error en login');
+      // Intentamos parsear JSON (el backend devuelve { token, rol, nombre })
+      const bodyText = await res.text();
+      let body = null;
+      try {
+        body = bodyText ? JSON.parse(bodyText) : null;
+      } catch (parseErr) {
+        // si no es JSON, lo guardamos como texto
+        body = { message: bodyText };
+      }
 
-      // Guardar token en localStorage o cookie segura en producción
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('cedula', data.cedula);
+      if (!res.ok) {
+        // Mensaje de error más claro (si el backend devolvió un mensaje en body)
+        const msg = body?.error || body?.message || `Error ${res.status}`;
+        throw new Error(msg);
+      }
 
-      // Redirigir o actualizar estado global
+      // body debe contener el token y opcionalmente rol/nombre
+      const token = body?.token || (typeof body === 'string' ? body : null);
+      if (!token) {
+        throw new Error('Respuesta inválida del servidor: no se recibió token');
+      }
+
+      // Guardar token y datos útiles en localStorage
+      localStorage.setItem(TOKEN_KEY, token);
+      if (body?.rol) localStorage.setItem(ROL_KEY, body.rol);
+      if (body?.nombre) localStorage.setItem(NOMBRE_KEY, body.nombre);
+      localStorage.setItem(CEDULA_KEY, cedula); // útil para mostrar usuario u otras acciones
+
+      // Redirigir al dashboard (o donde manejes rutas)
       window.location.href = '/dashboard';
     } catch (err) {
-      setError(err.message || 'Error inesperado');
+      console.error('Login error:', err);
+      setError(err.message || 'Error inesperado al iniciar sesión');
     } finally {
       setLoading(false);
     }
@@ -74,7 +103,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md font-semibold"
+            className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md font-semibold disabled:opacity-60"
           >
             {loading ? 'Cargando...' : 'Iniciar sesión'}
           </button>
