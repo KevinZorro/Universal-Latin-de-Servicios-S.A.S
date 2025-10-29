@@ -29,15 +29,16 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto dto) {
 
-        Optional<Usuario> optUsuario = usuarioRepository.findById(dto.cedula);
+        Optional<Usuario> optUsuario = usuarioRepository.findByCedula(dto.cedula);
+
         if (optUsuario.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Credenciales inválidas"));
+                    .body(Map.of("error", "Credenciales inválidas cedula no encontrada"));
         }
 
         Usuario usuario = optUsuario.get();
 
-        if (!passwordEncoder.matches(dto.password, usuario.getPasswordHash())) {
+        if (!(dto.password == usuario.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Credenciales inválidas"));
         }
@@ -47,7 +48,6 @@ public class AuthController {
         return ResponseEntity.ok(Map.of(
                 "token", token,
                 "rol", usuario.getRol().name(),
-                "nombre", usuario.getNombre()
-        ));
+                "nombre", usuario.getNombre()));
     }
 }

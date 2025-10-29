@@ -16,11 +16,19 @@ public class GerenteService {
         this.gerenteRepository = gerenteRepository;
     }
 
-    public List<Gerente> findAll() { return gerenteRepository.findAll(); }
+    public List<Gerente> findAll() {
+        return gerenteRepository.findAll();
+    }
 
-    public Optional<Gerente> findById(String id) { return gerenteRepository.findById(id); }
+    public Optional<Gerente> findById(String id) {
+        return gerenteRepository.findById(id);
+    }
 
-    public Gerente save(Gerente gerente) { return gerenteRepository.save(gerente); }
+    public Gerente save(Gerente gerente) {
+        return gerenteRepository.save(gerente);
+    }
 
-    public void deleteById(String id) { gerenteRepository.deleteById(id); }
+    public void deleteById(String id) {
+        gerenteRepository.deleteById(id);
+    }
 }

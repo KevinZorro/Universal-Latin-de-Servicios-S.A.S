@@ -11,7 +11,7 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@PrimaryKeyJoinColumn(name = "cedula")
+@PrimaryKeyJoinColumn(name = "idusuario")
 public class Gerente extends Usuario {
 
     private String ejemplo;

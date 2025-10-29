@@ -17,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@PrimaryKeyJoinColumn(name = "cedula")
+@PrimaryKeyJoinColumn(name = "idusuario")
 public class Empleado extends Usuario {
 
     @Column(name = "idusuario", insertable = false, updatable = false)
@@ -26,7 +26,7 @@ public class Empleado extends Usuario {
     // Relación Many-to-Many con Cargo (lado propietario)
     @ManyToMany
     @JoinTable(name = "empleado_cargo", // Nombre de la tabla intermedia
-            joinColumns = @JoinColumn(name = "cedula"), // FK de Empleado
+            joinColumns = @JoinColumn(name = "idusuario"), // FK de Empleado
             inverseJoinColumns = @JoinColumn(name = "cargo_id") // FK de Cargo
     )
     @Builder.Default

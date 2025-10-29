@@ -8,22 +8,24 @@ public class UsuarioDto {
 
     private String cedula;
 
-    @NotBlank
-    private String telefono;
-
-    @NotBlank
-    private String password;
-
-    @Email
-    @NotBlank
-    private String email;
-
-    @NotBlank
-    private String apellido;
-
-    @NotBlank
+    @NotBlank(message = "El nombre no debe estar vacío")
     private String nombre;
 
-    @NotNull
-    private String rol;    
+    @NotBlank(message = "El apellido no debe estar vacío")
+    private String apellido;
+
+    @Email(message = "Email inválido")
+    @NotBlank(message = "El email no debe estar vacío")
+    private String email;
+
+    @NotBlank(message = "La contraseña no debe estar vacía")
+    private String password;
+
+    @NotBlank(message = "El teléfono no debe estar vacío")
+    private String telefono;
+
+    @NotBlank(message = "El rol no debe estar vacío")
+    private String rol;
+
+    private Integer idrol;
 }

@@ -16,35 +16,43 @@ import jakarta.validation.constraints.*;
 public abstract class Usuario {
 
     @Id
-    @Column(name = "cedula")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idusuario")
+    private Integer idusuario;
+
+    @NotBlank(message = "La cédula no debe estar vacía")
+    @Column(name = "cedula", unique = true, nullable = false)
     private String cedula;
 
-    @NotBlank
-    private String telefono;
-
-    @NotBlank
-    private String passwordHash;
-
-    @Email
-    @NotBlank
-    private String email;
-
-    @NotBlank
-    private String apellido;
-
-    @NotBlank
+    @NotBlank(message = "El nombre no debe estar vacío")
+    @Column(nullable = false)
     private String nombre;
 
-    @NotNull
+    @NotBlank(message = "El apellido no debe estar vacío")
+    @Column(nullable = false)
+    private String apellido;
+
+    @Email(message = "Email inválido")
+    @NotBlank(message = "El email no debe estar vacío")
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @NotBlank(message = "El teléfono no debe estar vacío")
+    @Column(nullable = false)
+    private String telefono;
+
+    @NotBlank(message = "La contraseña hash no debe estar vacía")
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "rol", nullable = false)
     private Rol rol;
 
     @Column(name = "idrol")
     private Integer idrol;
 
-    @Column(name = "password") // ← Agrega este campo
+    @NotBlank(message = "La contraseña no debe estar vacía")
+    @Column(name = "password")
     private String password;
-
-    @Column(name = "idusuario", insertable = false, updatable = false)
-    private Integer idusuario;
 }

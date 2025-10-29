@@ -1,0 +1,19 @@
+[33mebcace4[m[33m ([m[1;36mHEAD[m[33m, [m[1;32mviviana[m[33m)[m Edicion de campos empleado
+[33m8c48cc2[m Asociacion a la BD :)
+[33mde54264[m Merge pull request #5 from KevinZorro/Zorro
+[33mc086e8e[m Merge remote-tracking branch 'origin/main' into Zorro
+[33maa064e5[m crear empelado, login, JWT auth
+[33m6efcd3f[m Integracion a la BD
+[33mb6116a2[m Merge pull request #4 from KevinZorro/Jesus
+[33m57c6125[m[33m ([m[1;31morigin/Jesus[m[33m)[m modificacion del footer de la pagina
+[33mfd4fc0f[m  ajustes en carrusel y formulario
+[33mbf5c265[m agregacion de componentes para la homePage
+[33m6c11137[m Merge pull request #3 from KevinZorro/Zorro
+[33me8ea2ed[m login hecho front y backend
+[33mc8f129a[m Merge pull request #2 from KevinZorro/Zorro
+[33m305305b[m funciona el login y registro
+[33ma6b4f95[m Merge pull request #1 from KevinZorro/Zorro
+[33ma33f4a4[m entidad gerente usuario y empleado creado mas login y registro, falta comprobar q funciona
+[33m867e2de[m[33m ([m[1;31morigin/producción[m[33m, [m[1;31morigin/Royner[m[33m, [m[1;31morigin/Lin[m[33m, [m[1;31morigin/Farid[m[33m)[m integrar la pagina web
+[33m43eef72[m estructura
+[33md7ffdf7[m Initial commit
