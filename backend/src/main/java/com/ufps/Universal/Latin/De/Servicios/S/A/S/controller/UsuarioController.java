@@ -65,10 +65,9 @@ public class UsuarioController {
                 gerente.setPasswordHash(dto.getPassword());
                 gerente.setRol(Rol.GERENTE);
                 gerente.setIdrol(dto.getIdrol());
-                usuario = gerente;
 
-                // Guarda el gerente (JPA guardará usuario + gerente por herencia)
-                gerenteService.save(gerente);
+                // ⬇️ USA SOLO gerenteService.save()
+                usuario = gerenteService.save(gerente);
 
             } else if (rolEnum == Rol.EMPLEADO) {
                 Empleado empleado = new Empleado();
@@ -81,9 +80,10 @@ public class UsuarioController {
                 empleado.setPasswordHash(dto.getPassword());
                 empleado.setRol(Rol.EMPLEADO);
                 empleado.setIdrol(dto.getIdrol());
-                usuario = empleado;
 
-                usuarioService.save(empleado);
+                // ⬇️ USA empleadoService.save() (necesitas inyectarlo)
+                usuario = usuarioService.save(empleado);
+
             } else {
                 return ResponseEntity.badRequest().body("Rol no soportado: " + dto.getRol());
             }

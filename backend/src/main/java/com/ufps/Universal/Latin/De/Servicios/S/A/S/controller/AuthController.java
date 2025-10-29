@@ -37,12 +37,10 @@ public class AuthController {
         }
 
         Usuario usuario = optUsuario.get();
-
-        if (!(dto.password == usuario.getPassword())) {
+        if (!dto.password.equals(usuario.getPassword())) { // ✅ CORRECTO
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Credenciales inválidas"));
         }
-
         String token = jwtUtil.generarToken(usuario.getCedula(), usuario.getRol().name());
 
         return ResponseEntity.ok(Map.of(
