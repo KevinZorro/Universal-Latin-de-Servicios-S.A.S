@@ -11,52 +11,6 @@ body {
   min-height: 100vh;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: white;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.logo img {
-  height: 70px;
-}
-
-.logo span {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #1E3A8A;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.nav-links a {
-  color: #1E3A8A;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.contratar-btn {
-  background-color: #1E3A8A;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
 .hero {
   text-align: center;
   padding: 4rem 2rem;
@@ -86,11 +40,18 @@ body {
   border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
+  display: inline-block; /* Asegura que el padding se aplique bien en el Link */
+  text-decoration: none;
 }
 
 .ver-servicios {
   background-color: white;
   color: #1E3A8A;
+}
+
+/* Efecto hover para el Link */
+.ver-servicios:hover {
+  background-color: #f0f5ff; /* Opcional: un leve efecto hover */
 }
 
 .contactar {
@@ -107,7 +68,7 @@ body {
 }
 
 .quienes-somos h2 {
-  font-size: 1.5rem;
+  font-size: 2rem;
   color: #1E3A8A;
   margin-bottom: 0.5rem;
 }
@@ -125,6 +86,27 @@ body {
   margin: 0 auto;
   line-height: 1.6;
 }
+
+/* Estilo del botón "Ver más" añadido en la sección "Quiénes Somos" */
+.ver-mas-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.7rem 1.5rem;
+  border: 2px solid #1E3A8A;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #1E3A8A;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.ver-mas-btn:hover {
+  background-color: #f0f5ff;
+  transform: translateY(-2px);
+}
+
 
 .mision-vision {
   display: flex;
@@ -166,5 +148,221 @@ body {
   font-size: 1rem;
 }
 
+/* 🟦 NUEVOS ESTILOS: "Trabaja con Nosotros" (Añadidos) */
 
+.trabaja-con-nosotros {
+  padding: 1rem 1rem;
+  text-align: center;
+  background-color: #ffffff; /* Fondo blanco para seguir el patrón */
+  color: #374151; /* Color de texto base */
+}
+
+/* El bloque .seccion-divisor fue eliminado */
+
+.trabaja-con-nosotros h2 {
+  color: #1E3A8A; /* Color primario */
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.trabaja-con-nosotros .subtitulo-trabaja {
+  color: #64748B; /* Color texto pálido */
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
+}
+
+.columnas-trabaja {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  text-align: left;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.columna-izquierda,
+.columna-derecha {
+  flex: 1;
+  min-width: 300px; /* Para que se apilen en pantallas pequeñas */
+}
+
+.columnas-trabaja h4 {
+  color: #1E3A8A; /* Color texto pálido */
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.lista-beneficios,
+.columna-derecha ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.lista-beneficios li,
+.columna-derecha li {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #374151; /* Color texto oscuro */
+  line-height: 1.5;
+}
+
+.lista-beneficios li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.check-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #1E3A8A; /* Color primario */
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.columna-derecha ul {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.aplicar-btn {
+  background-color: #1E3A8A; /* Color primario */
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: background-color 0.3s;
+}
+
+.aplicar-btn:hover {
+  background-color: #1a2c6c; /* Tono más oscuro */
+}
+
+/* 🟩 NUEVOS ESTILOS: "Listo para comenzar" (CTA - Añadido) */
+
+.cta-final {
+  background-color: #f9fafb; /* Fondo claro como el de las tarjetas */
+  padding: 2rem 2rem;
+  text-align: center;
+  /* La línea 'border-top' fue eliminada */
+}
+
+.cta-final h3 {
+  color: #1E3A8A; /* Color primario */
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.cta-final p {
+  color: #64748B; /* Color texto pálido */
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
+  line-height: 1.6;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap; /* Para pantallas pequeñas */
+}
+
+.contratar-btn-cta,
+.trabaja-btn-cta {
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Arimo', sans-serif; /* Asegurar la fuente */
+  text-decoration: none;
+}
+
+.contratar-btn-cta {
+  background-color: #1E3A8A; /* Color primario */
+  color: #ffffff;
+  border: none;
+}
+
+.contratar-btn-cta:hover {
+  background-color: #1a2c6c;
+}
+
+.trabaja-btn-cta {
+  background-color: #ffffff;
+  color: #1E3A8A; /* Color primario */
+  border: 2px solid #1E3A8A;
+}
+
+.trabaja-btn-cta:hover {
+  background-color: #f0f5ff; /* Tinte azul claro */
+}
+
+
+/* --- Media Queries para Responsividad (Añadidas) --- */
+
+@media (max-width: 768px) {
+  
+  /* Ajustes del Hero en móvil */
+  .hero {
+    padding: 3rem 1.5rem;
+  }
+  .hero h1 {
+    font-size: 2rem;
+  }
+  .hero p {
+    font-size: 1rem;
+  }
+
+  /* Apilar botones del hero en móvil */
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .ver-servicios,
+  .contactar {
+    width: 80%;
+    max-width: 300px;
+  }
+
+  /* Apilar Misión y Visión (ya estaba) */
+  .mision-vision {
+    padding: 2rem 1.5rem;
+  }
+
+  /* Apilar "Trabaja con Nosotros" */
+  .trabaja-con-nosotros {
+    padding: 3rem 1.5rem;
+  }
+  
+  .columnas-trabaja {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .columna-izquierda,
+  .columna-derecha {
+    min-width: 100%;
+  }
+
+  /* Ajustar CTA final */
+  .cta-final {
+    padding: 3rem 1.5rem;
+  }
+}
 

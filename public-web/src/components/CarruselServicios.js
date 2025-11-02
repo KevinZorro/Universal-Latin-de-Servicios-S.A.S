@@ -5,6 +5,11 @@ import './CarruselServicios.css';
 
 const servicios = [
   {
+    nombre: 'Universal Latin de Servicios S.A.S',
+    descripcion: 'Personal calificado y supervisión constante para el bienestar y seguridad de su copropiedad o empresa.',
+    imagen: '/imagenes/personal.jpeg'
+  },
+  {
     nombre: 'Servicio de Aseo',
     descripcion: 'Ofrecemos soluciones de limpieza profesional para todo tipo de espacios residenciales, empresariales y comerciales.',
     imagen: '/imagenes/aseo.jpeg'
@@ -20,7 +25,7 @@ const servicios = [
     imagen: '/imagenes/jardineria.jpeg'
   },
   {
-    nombre: 'Servicio de Piscineros',
+    nombre: 'Servicio de Mantenimiento de Piscinas',
     descripcion: 'Mantenimiento y limpieza de piscinas, control del pH y productos químicos.',
     imagen: '/imagenes/piscineros.jpeg'
   }
