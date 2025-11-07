@@ -10,7 +10,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "http://localhost:3000")
+/*
+ * @CrossOrigin(origins = {
+ * "http://localhost:3000",
+ * "http://localhost:8080"
+ * })
+ */
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -31,7 +36,6 @@ public class UsuarioController {
         Optional<Usuario> usuario = usuarioService.findById(cedula);
         return usuario.map(this::toDto).orElse(null);
     }
-
 
     @DeleteMapping("/{cedula}")
     public void deleteUsuario(@PathVariable String cedula) {

@@ -18,73 +18,80 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RestController
 @RequestMapping("/api/tipos-empleado")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 public class CargoController {
-    
-    private final CargoService cargoService;
 
-    @PostMapping
-    public ResponseEntity<EntityModel<Cargo>> crearCargo(@Valid @RequestBody Cargo cargo) {
-        Cargo created = cargoService.crearCargo(cargo);
-        EntityModel<Cargo> entityModel = EntityModel.of(created,
-                linkTo(methodOn(CargoController.class).obtenerCargoPorId(created.getId())).withSelfRel(),
-                linkTo(methodOn(CargoController.class).obtenerTodosTiposEmpleado()).withRel("tipos-empleado"));
+        private final CargoService cargoService;
 
-        return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
-    }
+        @PostMapping
+        public ResponseEntity<EntityModel<Cargo>> crearCargo(@Valid @RequestBody Cargo cargo) {
+                Cargo created = cargoService.crearCargo(cargo);
+                EntityModel<Cargo> entityModel = EntityModel.of(created,
+                                linkTo(methodOn(CargoController.class).obtenerCargoPorId(created.getId()))
+                                                .withSelfRel(),
+                                linkTo(methodOn(CargoController.class).obtenerTodosTiposEmpleado())
+                                                .withRel("tipos-empleado"));
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<Cargo>> obtenerCargoPorId(@PathVariable int id) {
-        Cargo cargo = cargoService.obtenerCargoPorId(id);
-        EntityModel<Cargo> entityModel = EntityModel.of(cargo,
-                linkTo(methodOn(CargoController.class).obtenerCargoPorId(id)).withSelfRel(),
-                linkTo(methodOn(CargoController.class).obtenerTodosTiposEmpleado()).withRel("tipos-empleado"));
+                return ResponseEntity
+                                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                                .body(entityModel);
+        }
 
-        return ResponseEntity.ok(entityModel);
-    }
+        @GetMapping("/{id}")
+        public ResponseEntity<EntityModel<Cargo>> obtenerCargoPorId(@PathVariable int id) {
+                Cargo cargo = cargoService.obtenerCargoPorId(id);
+                EntityModel<Cargo> entityModel = EntityModel.of(cargo,
+                                linkTo(methodOn(CargoController.class).obtenerCargoPorId(id)).withSelfRel(),
+                                linkTo(methodOn(CargoController.class).obtenerTodosTiposEmpleado())
+                                                .withRel("tipos-empleado"));
 
-    @GetMapping
-    public ResponseEntity<CollectionModel<EntityModel<Cargo>>> obtenerTodosTiposEmpleado() {
-        List<EntityModel<Cargo>> tiposEmpleado = cargoService.obtenerTodosCargos()
-                .stream()
-                .map(tipo -> EntityModel.of(tipo,
-                        linkTo(methodOn(CargoController.class).obtenerCargoPorId(tipo.getId())).withSelfRel(),
-                        linkTo(methodOn(CargoController.class).obtenerTodosTiposEmpleado()).withRel("tipos-empleado")))
-                .collect(Collectors.toList());
+                return ResponseEntity.ok(entityModel);
+        }
 
-        CollectionModel<EntityModel<Cargo>> collectionModel = CollectionModel.of(tiposEmpleado,
-                linkTo(methodOn(CargoController.class).obtenerTodosTiposEmpleado()).withSelfRel());
+        @GetMapping
+        public ResponseEntity<CollectionModel<EntityModel<Cargo>>> obtenerTodosTiposEmpleado() {
+                List<EntityModel<Cargo>> tiposEmpleado = cargoService.obtenerTodosCargos()
+                                .stream()
+                                .map(tipo -> EntityModel.of(tipo,
+                                                linkTo(methodOn(CargoController.class).obtenerCargoPorId(tipo.getId()))
+                                                                .withSelfRel(),
+                                                linkTo(methodOn(CargoController.class).obtenerTodosTiposEmpleado())
+                                                                .withRel("tipos-empleado")))
+                                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(collectionModel);
-    }
+                CollectionModel<EntityModel<Cargo>> collectionModel = CollectionModel.of(tiposEmpleado,
+                                linkTo(methodOn(CargoController.class).obtenerTodosTiposEmpleado()).withSelfRel());
 
-    @PutMapping("/{id}")
-    public ResponseEntity<EntityModel<Cargo>> actualizarCargo(
-            @PathVariable int id,
-            @Valid @RequestBody Cargo cargoData) {
-        Cargo updated = cargoService.actualizarCargo(id, cargoData);
-        EntityModel<Cargo> entityModel = EntityModel.of(updated,
-                linkTo(methodOn(CargoController.class).obtenerCargoPorId(id)).withSelfRel(),
-                linkTo(methodOn(CargoController.class).obtenerTodosTiposEmpleado()).withRel("tipos-empleado"));
+                return ResponseEntity.ok(collectionModel);
+        }
 
-        return ResponseEntity.ok(entityModel);
-    }
+        @PutMapping("/{id}")
+        public ResponseEntity<EntityModel<Cargo>> actualizarCargo(
+                        @PathVariable int id,
+                        @Valid @RequestBody Cargo cargoData) {
+                Cargo updated = cargoService.actualizarCargo(id, cargoData);
+                EntityModel<Cargo> entityModel = EntityModel.of(updated,
+                                linkTo(methodOn(CargoController.class).obtenerCargoPorId(id)).withSelfRel(),
+                                linkTo(methodOn(CargoController.class).obtenerTodosTiposEmpleado())
+                                                .withRel("tipos-empleado"));
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarCargo(@PathVariable int id) {
-        cargoService.eliminarCargo(id);
-        return ResponseEntity.noContent().build();
-    }
+                return ResponseEntity.ok(entityModel);
+        }
 
-    @GetMapping("/buscar")
-    public ResponseEntity<EntityModel<Cargo>> buscarPorNombre(@RequestParam String nombre) {
-        Cargo cargo = cargoService.obtenerCargoPorNombre(nombre);
-        EntityModel<Cargo> entityModel = EntityModel.of(cargo,
-                linkTo(methodOn(CargoController.class).obtenerCargoPorId(cargo.getId())).withSelfRel(),
-                linkTo(methodOn(CargoController.class).obtenerTodosTiposEmpleado()).withRel("tipos-empleado"));
+        @DeleteMapping("/{id}")
+        public ResponseEntity<?> eliminarCargo(@PathVariable int id) {
+                cargoService.eliminarCargo(id);
+                return ResponseEntity.noContent().build();
+        }
 
-        return ResponseEntity.ok(entityModel);
-    }
+        @GetMapping("/buscar")
+        public ResponseEntity<EntityModel<Cargo>> buscarPorNombre(@RequestParam String nombre) {
+                Cargo cargo = cargoService.obtenerCargoPorNombre(nombre);
+                EntityModel<Cargo> entityModel = EntityModel.of(cargo,
+                                linkTo(methodOn(CargoController.class).obtenerCargoPorId(cargo.getId())).withSelfRel(),
+                                linkTo(methodOn(CargoController.class).obtenerTodosTiposEmpleado())
+                                                .withRel("tipos-empleado"));
+
+                return ResponseEntity.ok(entityModel);
+        }
 }

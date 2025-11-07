@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/gerentes")
-@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 public class GerenteController {
 
     private final GerenteService gerenteService;
@@ -64,5 +64,5 @@ public class GerenteController {
         return Gerente.builder()
                 .build();
     }
-  
+
 }
