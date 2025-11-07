@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/servicios")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 public class ServicioController {
 
     private final ServicioService servicioService;
@@ -31,7 +31,7 @@ public class ServicioController {
     public ResponseEntity<Servicio> getServicioById(@PathVariable int id) {
         try {
             Servicio servicio = servicioService.obtenerPorId(id)
-                .orElseThrow(() -> new IllegalArgumentException("No existe el servicio"));
+                    .orElseThrow(() -> new IllegalArgumentException("No existe el servicio"));
             return ResponseEntity.ok(servicio);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -47,8 +47,7 @@ public class ServicioController {
                     dto.getNombreServicio(),
                     dto.getDescripcion(),
                     dto.isEstado(),
-                    dto.getTipoHorario()
-            );
+                    dto.getTipoHorario());
             return ResponseEntity.ok(nuevo);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
@@ -65,8 +64,7 @@ public class ServicioController {
                     dto.getNombreServicio(),
                     dto.getDescripcion(),
                     dto.isEstado(),
-                    dto.getTipoHorario()
-            ).orElseThrow(() -> new IllegalArgumentException("No existe el servicio"));
+                    dto.getTipoHorario()).orElseThrow(() -> new IllegalArgumentException("No existe el servicio"));
             return ResponseEntity.ok(actualizado);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

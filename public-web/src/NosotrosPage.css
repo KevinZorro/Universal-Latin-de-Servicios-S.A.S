@@ -1,0 +1,149 @@
+/* Estilos para la página "Quiénes Somos" */
+.nosotros-container {
+  background-color: #ffffff;
+  color: #333;
+  font-family: 'Arimo', sans-serif;
+  padding-bottom: 3rem; /* Espacio antes del footer */
+}
+
+.info-empresa {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Estilo para cada bloque de sección */
+.info-seccion {
+  /* Reducido el padding vertical para menos espacio */
+  padding: 1rem 0; 
+}
+
+/* Estilo para la primera sección (Quiénes Somos) */
+.info-principal h2 {
+  font-size: 2rem;
+  color: #1E3A8A;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.info-principal h3 {
+  font-size: 1.5rem;
+  color: #1E3A8A;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.info-principal p {
+  font-size: 1.1rem;
+  color: #374151;
+  line-height: 1.7;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+/* Estilos para las demás secciones */
+.info-seccion h3 {
+  color: #1E3A8A;
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-seccion p {
+  color: #374151;
+  line-height: 1.7;
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+}
+
+/* Contenedor de Misión y Visión */
+.mision-vision-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 2rem;
+  /* Reducido el padding vertical */
+  padding: 1.5rem 0; 
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Tarjeta individual para Misión/Visión */
+.tarjeta-nosotros {
+  flex: 1; /* Permite que ambas tarjetas crezcan y se encojan por igual */
+  min-width: 300px; /* Un ancho mínimo antes de que se desborde */
+  max-width: 500px;
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tarjeta-nosotros h3 {
+  color: #1E3A8A;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.tarjeta-nosotros p {
+  color: #374151;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* Lista de requisitos de personal */
+.lista-requisitos {
+  list-style-type: disc;
+  padding-left: 2rem;
+  color: #374151;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+/* Lista de clientes */
+.clientes-seccion {
+  border-bottom: none; /* Sin borde al final */
+}
+
+.clientes-lista {
+  list-style-type: none;
+  padding-left: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas */
+  gap: 1rem;
+  color: #374151;
+  font-size: 1.05rem;
+}
+
+.clientes-lista li {
+  background-color: #f9fafb;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Media query para pantallas pequeñas */
+@media (max-width: 768px) {
+  /* Hacemos que Mision/Vision y Clientes se apilen en móviles */
+  .mision-vision-container {
+    flex-wrap: wrap;
+  }
+  
+  .clientes-lista {
+    grid-template-columns: 1fr; /* Una columna en móviles */
+  }
+  
+  .info-empresa {
+    padding: 1rem;
+  }
+
+  .info-seccion {
+    padding: 1rem 0; /* Menos espacio también en móvil */
+  }
+
+  .mision-vision-container {
+    padding: 1rem 0;
+  }
+}
+

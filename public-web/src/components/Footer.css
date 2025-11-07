@@ -121,14 +121,33 @@
   color: #d1d5db;
 }
 
-.footer-section.about {
-  margin-left: -40px; 
-}
+/* --- SOLUCIÓN RESPONSIVA --- */
 
-.footer-section.services {
-  margin-left: 60px;  
-}
+/* 1. Se eliminaron las reglas de 'margin-left' y 'margin-right' 
+   para .about, .services, y .contact, ya que rompían el 
+   comportamiento de 'flex-wrap'. */
 
-.footer-section.contact {
-  margin-right: -60px; 
+/* 2. Se añade una media query para pantallas pequeñas (móviles) */
+@media (max-width: 640px) {
+
+  .footer-content {
+    /* Centra las columnas cuando se apilan */
+    justify-content: center;
+    text-align: center;
+  }
+
+  .footer-logo {
+    /* Centra el logo en móvil */
+    justify-content: center;
+  }
+
+  .footer-section.contact p {
+    /* Centra los items de contacto en móvil */
+    justify-content: center;
+  }
+
+  /* 3. La lista de servicios pasa a una sola columna */
+  .footer-section ul {
+    grid-template-columns: 1fr;
+  }
 }

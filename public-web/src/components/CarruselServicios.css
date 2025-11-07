@@ -2,6 +2,7 @@
   margin: 0rem auto;
   max-width: 100%;
   position: relative;
+  z-index: 1; 
 }
 
 .slide {
@@ -10,8 +11,14 @@
 
 .slide img {
   width: 100%;
-  height: 550px;
-  object-fit: cover;
+  
+  /* --- CAMBIOS PRINCIPALES AQUÍ --- */
+  /* Ya no usamos 550px fijos. Usamos 75% de la altura de la ventana */
+  height: 80vh; 
+  /* Pero le ponemos un máximo para que no sea gigante en monitores 4K */
+  max-height: 550px; 
+  
+  object-fit: cover; /* Mantenemos 'cover' porque se ve mejor */
   border-radius: 8px;
 }
 
@@ -50,3 +57,34 @@
 .react-multi-carousel-dot--active button {
   background: #1E3A8A; 
 }
+
+.react-multiple-carousel__arrow {
+  z-index: 998 !important; 
+}
+
+
+/* --- CAMBIOS RESPONSIVOS AQUÍ --- */
+@media (max-width: 768px) {
+  .slide img {
+    height: 60vh; /* 60% de la altura en tablets/móviles */
+  }
+
+  .overlay {
+    padding: 1rem;
+  }
+
+  .overlay h2 {
+    font-size: 1.2rem;
+  }
+
+  .overlay p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .slide img {
+    height: 50vh; /* 50% de la altura en teléfonos */
+  }
+}
+

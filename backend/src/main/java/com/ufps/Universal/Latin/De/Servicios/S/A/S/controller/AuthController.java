@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     @Autowired
@@ -47,7 +47,6 @@ public class AuthController {
         return ResponseEntity.ok(Map.of(
                 "token", token,
                 "rol", usuario.getRol().name(),
-                "nombre", usuario.getNombre()
-        ));
+                "nombre", usuario.getNombre()));
     }
 }

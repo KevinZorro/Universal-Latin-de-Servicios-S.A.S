@@ -1,40 +1,53 @@
-import React, { useState } from 'react';
-import Login from "../src/pages/Login";
-import CreateEmployee from "../src/pages/CreateEmployee";
-import ServiciosPage from "./pages/ServiciosPage";
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Dashboard from './pages/Gerente/Dashboard';
+import AgregarEmpleado from './pages/Gerente/CreateEmployee';
+const TOKEN_KEY = 'token';
+const ROL_KEY = 'rol';
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+// Componente para proteger rutas privadas (solo si hay token)
+const PrivateRoute = ({ children, requiredRole }) => {
+  const token = localStorage.getItem(TOKEN_KEY);
+  const rol = localStorage.getItem(ROL_KEY);
 
-  const handleLoginSuccess = () => setIsLoggedIn(true);
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-  };
-
-  if (!isLoggedIn) {
-    return <Login onLoginSuccess={handleLoginSuccess} />;
+  // Si no hay token, enviar al login
+  if (!token) {
+    console.log('🚫 Acceso denegado: no hay token');
+    return <Navigate to="/login" replace />;
   }
 
-  // Cuando está logueado, mostramos rutas con nav básico
+  // Si se requiere un rol específico, validar
+  if (requiredRole && rol !== requiredRole) {
+    console.log(`🚫 Rol no autorizado: se requiere ${requiredRole}, pero tienes ${rol}`);
+    return <Navigate to="/login" replace />;
+  }
+
+  // Si todo bien, mostrar el componente hijo
+  return children;
+};
+
+function App() {
   return (
     <Router>
-      <div className="p-4 bg-gray-100 min-h-screen">
-        <nav className="mb-6 flex space-x-4 text-blue-700">
-          <Link to="/crear-empleado" className="hover:underline">Crear Empleado</Link>
-          <Link to="/servicios" className="hover:underline">Gestión de Servicios</Link>
-          <button onClick={handleLogout} className="ml-auto text-red-600 hover:underline">
-            Cerrar sesión
-          </button>
-        </nav>
+      <Routes>
+        {/* Página de login */}
+        <Route path="/login" element={<Login />} />
 
-        <Routes>
-          <Route path="/crear-empleado" element={<CreateEmployee />} />
-          <Route path="/servicios" element={<ServiciosPage />} />
-          <Route path="*" element={<Navigate to="/crear-empleado" replace />} />
-        </Routes>
-      </div>
+        {/* Ruta protegida del gerente */}
+        <Route path="/dashboard"
+          element={<PrivateRoute requiredRole="GERENTE">
+            <Dashboard />
+          </PrivateRoute>
+          }
+        />
+
+        <Route path="/agregar-empleado" element={<AgregarEmpleado />} />
+
+
+        {/* Redirigir cualquier ruta no reconocida al login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
     </Router>
   );
 }

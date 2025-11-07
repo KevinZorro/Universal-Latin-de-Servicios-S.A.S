@@ -1,0 +1,117 @@
+/* Estilos para la página de Servicios */
+.servicios-container {
+  background-color: #ffffff;
+  color: #333;
+  font-family: 'Arimo', sans-serif;
+  padding: 2rem 1rem 4rem 1rem; /* Espacio superior e inferior */
+}
+
+.servicios-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem auto;
+}
+
+.servicios-header h1 {
+  font-size: 2.5rem;
+  color: #1E3A8A;
+  margin-bottom: 1rem;
+}
+
+.servicios-header p {
+  font-size: 1.1rem;
+  color: #64748B;
+  line-height: 1.6;
+}
+
+/* Contenedor de las tarjetas */
+.servicios-grid {
+  display: grid;
+  /* Usamos minmax para responsividad: columnas de al menos 300px */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Estilo de cada tarjeta */
+.servicio-tarjeta {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden; /* Para que la imagen no se salga */
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.servicio-tarjeta:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.tarjeta-imagen-container {
+  width: 100%;
+  height: 220px; /* Altura fija para la imagen */
+  overflow: hidden;
+}
+
+.tarjeta-imagen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen cubra el espacio */
+}
+
+.tarjeta-contenido {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Hace que la tarjeta crezca para llenar el espacio */
+}
+
+.tarjeta-contenido h3 {
+  color: #1E3A8A;
+  font-size: 1.4rem;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.tarjeta-contenido p {
+  color: #374151;
+  font-size: 1rem;
+  line-height: 1.6;
+  flex-grow: 1; /* Empuja el botón al fondo */
+  margin-bottom: 1.5rem;
+}
+
+.tarjeta-boton {
+  background-color: #1E3A8A;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+  font-family: 'Arimo', sans-serif;
+  font-size: 0.95rem;
+}
+
+.tarjeta-boton:hover {
+  background-color: #1a2c6c; /* Tono más oscuro */
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 640px) {
+  .servicios-header h1 {
+    font-size: 2rem;
+  }
+  
+  .servicios-grid {
+    /* Asegura que sea 1 columna en móviles */
+    grid-template-columns: 1fr;
+  }
+}
+

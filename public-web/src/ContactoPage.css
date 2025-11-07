@@ -1,0 +1,139 @@
+/* Estilos para la página de Contacto */
+.contacto-container {
+  background-color: #ffffff;
+  padding: 2rem 1.5rem 4rem;
+  font-family: 'Arimo', sans-serif;
+  min-height: 60vh; /* Asegura que tenga algo de altura */
+}
+
+.info-empresa-contacto {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.titulo-contacto {
+  font-size: 2.5rem;
+  color: #1E3A8A;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.subtitulo-contacto {
+  font-size: 1.2rem;
+  color: #64748B;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.contacto-info-box {
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.info-item svg {
+  width: 28px;
+  height: 28px;
+  color: #1E3A8A;
+  flex-shrink: 0;
+}
+
+.info-texto {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-texto strong {
+  font-size: 1.2rem;
+  color: #1E3A8A;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.info-texto span {
+  font-size: 1.1rem;
+  color: #374151;
+  line-height: 1.6;
+}
+
+/* Sección PQRS */
+.pqrs-seccion {
+  margin-top: 4rem;
+  text-align: center;
+  padding: 2.5rem;
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+}
+
+.pqrs-seccion h3 {
+  color: #1E3A8A;
+  font-size: 1.75rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.pqrs-seccion p {
+  color: #374151;
+  font-size: 1.1rem;
+  max-width: 500px;
+  margin: 0 auto 1.5rem;
+}
+
+.pqrs-btn {
+  background-color: #1E3A8A;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Arimo', sans-serif;
+}
+
+.pqrs-btn:hover {
+  background-color: #1a2c6c; /* Tono más oscuro */
+}
+
+/* --- Responsividad --- */
+@media (max-width: 600px) {
+  .contacto-container {
+    padding: 1.5rem 1rem 3rem;
+  }
+  
+  .contacto-info-box {
+    padding: 1.5rem;
+  }
+
+  .info-item {
+    /* Apila el icono y el texto en móviles para mejor lectura */
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .pqrs-seccion {
+    padding: 2rem 1.5rem;
+  }
+
+  .titulo-contacto {
+    font-size: 2rem;
+  }
+
+  .pqrs-seccion h3 {
+    font-size: 1.5rem;
+  }
+}

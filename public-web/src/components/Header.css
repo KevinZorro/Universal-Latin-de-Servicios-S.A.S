@@ -1,0 +1,133 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+.logo {
+  display: flex;
+  align-items: center; /* <-- ¡AÑADIDO! Esta es la corrección */
+  gap: 0.8rem;
+}
+
+.logo img {
+  height: 70px;
+}
+
+.logo span {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #1E3A8A;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* --- MODIFICADO --- 
+  Añadido ':not(.contratar-btn)' para que no afecte al botón "Contratar"
+*/
+.nav-links a:not(.contratar-btn) {
+  color: #1E3A8A;
+  text-decoration: none;
+  font-weight: 600; /* Un poco más de grosor */
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* --- MODIFICADO --- 
+  Añadido ':not(.contratar-btn)' para que no afecte al botón "Contratar"
+*/
+.nav-links a:not(.contratar-btn):hover {
+  background-color: #f0f5ff; /* Tinte azul claro al pasar el mouse */
+  color: #1a2c6c;
+}
+
+/* --- MODIFICADO --- 
+  Selector ahora es más específico para ganar la "guerra" de CSS
+*/
+.nav-links .contratar-btn {
+  background-color: #1E3A8A;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem; /* Ajuste de padding */
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Arimo', sans-serif;
+  font-size: 0.95rem;
+  transition: background-color 0.3s;
+  text-decoration: none; /* Para quitar cualquier subrayado de Link */
+}
+
+/* --- MODIFICADO --- 
+  Selector ahora es más específico
+*/
+.nav-links .contratar-btn:hover {
+  background-color: #1a2c6c; /* Tono más oscuro */
+  color: white; /* Asegura que el texto siga blanco */
+}
+
+/* --- Media Queries para Responsividad del Header --- */
+
+@media (max-width: 850px) {
+  .nav-links {
+    gap: 0.5rem; /* Menos espacio entre enlaces */
+  }
+  .nav-links a {
+    padding: 0.3rem;
+    font-size: 0.9rem;
+  }
+  .contratar-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  .logo span {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column; /* Apila el logo y los enlaces */
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .nav-links {
+    justify-content: center; /* Centra los enlaces */
+    flex-wrap: wrap; /* Permite que los enlaces bajen si no caben */
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    flex-direction: column; /* Apila logo y nombre de la empresa */
+    text-align: center;
+    gap: 0.5rem;
+  }
+  .logo img {
+    height: 60px;
+  }
+  .nav-links {
+    gap: 0.25rem;
+    font-size: 0.85rem;
+  }
+  .nav-links a {
+    padding: 0.25rem;
+  }
+}
+

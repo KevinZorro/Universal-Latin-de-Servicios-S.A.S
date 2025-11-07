@@ -1,111 +1,103 @@
-// src/pages/Login.jsx  (o donde tengas tu componente)
-import React, { useState } from 'react';
-
-// Si usas CRA, puedes configurar REACT_APP_API_BASE en .env
-const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8080';
-const TOKEN_KEY = 'token';
-const ROL_KEY = 'rol';
-const NOMBRE_KEY = 'nombre';
-const CEDULA_KEY = 'cedula';
+// src/pages/Login.jsx
+import React from 'react';
+import { useLogin } from './LoginLogic';
+import './Login.css';
 
 export default function Login() {
-  const [cedula, setCedula] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    try {
-      const res = await fetch(`${API_BASE}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cedula, password }),
-      });
-
-      // Intentamos parsear JSON (el backend devuelve { token, rol, nombre })
-      const bodyText = await res.text();
-      let body = null;
-      try {
-        body = bodyText ? JSON.parse(bodyText) : null;
-      } catch (parseErr) {
-        // si no es JSON, lo guardamos como texto
-        body = { message: bodyText };
-      }
-
-      if (!res.ok) {
-        // Mensaje de error más claro (si el backend devolvió un mensaje en body)
-        const msg = body?.error || body?.message || `Error ${res.status}`;
-        throw new Error(msg);
-      }
-
-      // body debe contener el token y opcionalmente rol/nombre
-      const token = body?.token || (typeof body === 'string' ? body : null);
-      if (!token) {
-        throw new Error('Respuesta inválida del servidor: no se recibió token');
-      }
-
-      // Guardar token y datos útiles en localStorage
-      localStorage.setItem(TOKEN_KEY, token);
-      if (body?.rol) localStorage.setItem(ROL_KEY, body.rol);
-      if (body?.nombre) localStorage.setItem(NOMBRE_KEY, body.nombre);
-      localStorage.setItem(CEDULA_KEY, cedula); // útil para mostrar usuario u otras acciones
-
-      // Redirigir al dashboard (o donde manejes rutas)
-      window.location.href = '/dashboard';
-    } catch (err) {
-      console.error('Login error:', err);
-      setError(err.message || 'Error inesperado al iniciar sesión');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    cedula,
+    setCedula,
+    password,
+    setPassword,
+    loading,
+    error,
+    selectedRole,
+    setSelectedRole,
+    handleSubmit,
+  } = useLogin();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white p-6">
-      <div className="max-w-md w-full bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-8">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-indigo-500 text-white text-xl font-bold">U</div>
-          <div>
-            <h1 className="text-2xl font-semibold">Bienvenido</h1>
-            <p className="text-sm text-gray-500">Inicia sesión con tu cédula</p>
-          </div>
+    <div className="login-container">
+      <div className="login-card">
+        <div className="login-header">
+          <h1 className="login-title">Universal Latin de Servicios S.A.S</h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Cédula</label>
+        <div className="role-selector">
+          <button
+            type="button"
+            className={`role-button ${selectedRole === 'gerente' ? 'active' : ''}`}
+            onClick={() => setSelectedRole('gerente')}
+          >
+            <div className="role-icon gerente-icon">
+              <span className="icon">👑</span>
+            </div>
+            <span className="role-label">Gerente</span>
+            {selectedRole === 'gerente' && <div className="checkmark">✓</div>}
+          </button>
+
+          <button
+            type="button"
+            className={`role-button ${selectedRole === 'cliente' ? 'active' : ''}`}
+            onClick={() => setSelectedRole('cliente')}
+          >
+            <div className="role-icon cliente-icon">
+              <span className="icon">👤</span>
+            </div>
+            <span className="role-label">Cliente</span>
+            {selectedRole === 'cliente' && <div className="checkmark">✓</div>}
+          </button>
+
+          <button
+            type="button"
+            className={`role-button ${selectedRole === 'empleado' ? 'active' : ''}`}
+            onClick={() => setSelectedRole('empleado')}
+          >
+            <div className="role-icon empleado-icon">
+              <span className="icon">👥</span>
+            </div>
+            <span className="role-label">Empleado</span>
+            {selectedRole === 'empleado' && <div className="checkmark">✓</div>}
+          </button>
+        </div>
+
+        <h2 className="form-title">
+          Iniciar sesión como {selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}
+        </h2>
+
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label className="form-label">Cédula</label>
             <input
               type="text"
               value={cedula}
               onChange={(e) => setCedula(e.target.value)}
+              placeholder="Ingresa tu cédula"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              className="form-input"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Contraseña</label>
+          <div className="form-group">
+            <label className="form-label">Contraseña</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Ingresa tu contraseña"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              className="form-input"
             />
           </div>
 
-          {error && <p className="text-red-600 text-sm">{error}</p>}
+          {error && <p className="error-message">{error}</p>}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md font-semibold disabled:opacity-60"
+            className="submit-button"
           >
-            {loading ? 'Cargando...' : 'Iniciar sesión'}
+            {loading ? 'Cargando...' : 'Entrar'}
           </button>
         </form>
       </div>
