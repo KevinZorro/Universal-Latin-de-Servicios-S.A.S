@@ -10,7 +10,7 @@ public class Servicio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idServicio;
+    private int id;
 
     private String nombreServicio;
 
