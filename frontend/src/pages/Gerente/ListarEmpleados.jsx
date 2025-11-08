@@ -1,5 +1,6 @@
 // src/pages/ListarEmpleados.jsx
 import React, { useState, useEffect } from 'react';
+import EditarEmpleado from './EditarEmpleado';
 import './Dashboard.css';
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8080';
@@ -11,6 +12,7 @@ export default function ListarEmpleados() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedEmpleado, setSelectedEmpleado] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
 
     // Cargar empleados al montar el componente
     useEffect(() => {
@@ -295,10 +297,14 @@ export default function ListarEmpleados() {
                                                 <button
                                                     style={actionButtonStyle}
                                                     title="Editar"
-                                                    onClick={() => alert(`Editar ${empleado.nombre}`)}
+                                                    onClick={() => {
+                                                        setSelectedEmpleado(empleado);
+                                                        setShowEditModal(true);
+                                                    }}
                                                 >
                                                     ✏️
                                                 </button>
+
                                                 <button
                                                     style={{ ...actionButtonStyle, color: '#dc3545' }}
                                                     title="Eliminar"
@@ -352,6 +358,17 @@ export default function ListarEmpleados() {
                     onClose={handleCloseModal}
                 />
             )}
+            {showEditModal && selectedEmpleado && (
+                <EditarEmpleado
+                    empleado={selectedEmpleado}
+                    onClose={() => setShowEditModal(false)}
+                    onSave={() => {
+                        setShowEditModal(false);
+                        fetchEmpleados(); // Recargar lista después de editar
+                    }}
+                />
+            )}
+
         </div>
     );
 }
@@ -423,6 +440,7 @@ function EmpleadoDetailModal({ empleado, onClose }) {
                             <DetailItem label="Nombre" value={empleado.nombre} />
                             <DetailItem label="Apellido" value={empleado.apellido} />
                             <DetailItem label="Cédula" value={empleado.cedula} />
+                            <DetailItem label="ID del Sistema" value={empleado.id || 'N/A'} />
                         </div>
                     </div>
 
@@ -490,6 +508,23 @@ function EmpleadoDetailModal({ empleado, onClose }) {
                         </div>
                     </div>
 
+                    {/* Información Adicional */}
+                    <div style={sectionStyle}>
+                        <h3 style={sectionTitleStyle}>
+                            <span style={{ marginRight: '8px' }}>ℹ️</span>
+                            Información Adicional
+                        </h3>
+                        <div style={detailsGridStyle}>
+                            <DetailItem
+                                label="Fecha de Registro"
+                                value={empleado.createdAt ? new Date(empleado.createdAt).toLocaleString('es-CO') : 'N/A'}
+                            />
+                            <DetailItem
+                                label="Última Actualización"
+                                value={empleado.updatedAt ? new Date(empleado.updatedAt).toLocaleString('es-CO') : 'N/A'}
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 {/* Footer del Modal */}

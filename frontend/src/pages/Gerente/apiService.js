@@ -96,10 +96,10 @@ export const empleadosService = {
     },
 
     /**
-     * Actualizar empleado
+     * Actualizar empleado por cédula
      */
-    update: async (id, empleadoData) => {
-        const response = await fetch(`${API_BASE}/api/empleados/${id}`, {
+    update: async (cedula, empleadoData) => {
+        const response = await fetch(`${API_BASE}/api/empleados/${cedula}`, {
             method: 'PUT',
             headers: getHeaders(),
             body: JSON.stringify(empleadoData),
