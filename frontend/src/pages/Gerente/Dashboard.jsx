@@ -4,6 +4,7 @@ import { useDashboard } from './DashboardLogic';
 import { useEmpleados } from '../Gerente/useEmpleados';
 import AgregarEmpleado from './CreateEmployee';
 import ListarEmpleados from './ListarEmpleados';
+import GestionCargos from './GestionCargos';
 import './Dashboard.css';
 
 export default function Dashboard() {
@@ -19,6 +20,7 @@ export default function Dashboard() {
         { id: 'dashboard', label: 'Dashboard', icon: '📊' },
         { id: 'empleados', label: 'Empleados', icon: '👥' },
         { id: 'agregar-empleado', label: 'Agregar Empleado', icon: '➕' },
+        { id: 'agregar-cargo', label: 'Agregar Cargo' },
         { id: 'solicitudes', label: 'Solicitudes', icon: '📝' },
         { id: 'horarios', label: 'Horarios', icon: '🕐' },
         { id: 'nomina', label: 'Nómina', icon: '💰' },
@@ -35,6 +37,8 @@ export default function Dashboard() {
                 return <ListarEmpleados />;
             case 'agregar-empleado':
                 return <AgregarEmpleado />;
+            case 'agregar-cargo':
+                return <GestionCargos />;
             case 'solicitudes':
                 return <ComingSoon section="Solicitudes" />;
             case 'horarios':

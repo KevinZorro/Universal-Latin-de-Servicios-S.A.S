@@ -1,6 +1,8 @@
 // src/pages/CreateEmployee.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
+import { cargosService } from "../Gerente/apiService"; // <-- importa el servicio
+
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8080';
 
@@ -170,6 +172,26 @@ export default function AgregarEmpleado() {
     setSuccess(false);
   };
 
+  const [cargos, setCargos] = useState([]); // aquí se guardan los tipos de empleado
+
+  useEffect(() => {
+    const fetchCargos = async () => {
+      try {
+        setLoading(true);
+        const data = await cargosService.getAll(); // obtiene los cargos desde el backend
+        console.log("Aqui")
+        console.log(data)
+        setCargos(data._embedded?.cargoList || []);
+      } catch (error) {
+        console.error("Error cargando los tipos de empleado:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCargos();
+  }, []);
+
   return (
     <div className="content-area">
       <div className="content-header">
@@ -241,16 +263,20 @@ export default function AgregarEmpleado() {
                 disabled={loading}
               >
                 <option value="">Seleccione</option>
-                <option value="conserje">Conserje</option>
-                <option value="portero">Portero</option>
-                <option value="aseo">Aseo y cafetería</option>
-                <option value="jardinero">Jardinero</option>
-                <option value="piscinero">Piscinero</option>
+
+                {cargos.length > 0 ? (
+                  cargos.map((cargo) => (
+                    <option key={cargo.id} value={cargo.nombre}>
+                      {cargo.nombre}
+                    </option>
+                  ))
+                ) : (
+                  <option disabled>Cargando cargos...</option>
+                )}
               </select>
             </div>
           </div>
         </section>
-
         {/* Información Personal */}
         <section className="form-section">
           <div className="section-header">

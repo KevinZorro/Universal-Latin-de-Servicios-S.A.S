@@ -9,6 +9,8 @@ export default function ListarEmpleados() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedEmpleado, setSelectedEmpleado] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
     // Cargar empleados al montar el componente
     useEffect(() => {
@@ -96,6 +98,18 @@ export default function ListarEmpleados() {
             'ADMIN': 'pending',
         };
         return <span className={`activity-badge ${colors[rol] || 'info'}`}>{rol}</span>;
+    };
+
+    // Función para abrir el modal con los detalles del empleado
+    const handleVerDetalles = (empleado) => {
+        setSelectedEmpleado(empleado);
+        setShowModal(true);
+    };
+
+    // Función para cerrar el modal
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedEmpleado(null);
     };
 
     return (
@@ -274,7 +288,7 @@ export default function ListarEmpleados() {
                                                 <button
                                                     style={actionButtonStyle}
                                                     title="Ver detalles"
-                                                    onClick={() => alert(`Ver detalles de ${empleado.nombre}`)}
+                                                    onClick={() => handleVerDetalles(empleado)}
                                                 >
                                                     👁️
                                                 </button>
@@ -330,11 +344,185 @@ export default function ListarEmpleados() {
                     </div>
                 </div>
             )}
+
+            {/* Modal de detalles del empleado */}
+            {showModal && selectedEmpleado && (
+                <EmpleadoDetailModal
+                    empleado={selectedEmpleado}
+                    onClose={handleCloseModal}
+                />
+            )}
         </div>
     );
 }
 
-// Estilos inline para la tabla
+// Componente del Modal de Detalles
+function EmpleadoDetailModal({ empleado, onClose }) {
+    return (
+        <div style={modalOverlayStyle} onClick={onClose}>
+            <div style={modalContentStyle} onClick={(e) => e.stopPropagation()}>
+                {/* Header del Modal */}
+                <div style={modalHeaderStyle}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{
+                            width: '60px',
+                            height: '60px',
+                            borderRadius: '50%',
+                            backgroundColor: '#4a90e2',
+                            color: 'white',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '24px',
+                            fontWeight: 'bold'
+                        }}>
+                            {empleado.nombre?.[0]}{empleado.apellido?.[0]}
+                        </div>
+                        <div>
+                            <h2 style={{ margin: 0, fontSize: '24px', color: '#333' }}>
+                                {empleado.nombre} {empleado.apellido}
+                            </h2>
+                            <p style={{ margin: '4px 0 0 0', color: '#666', fontSize: '14px' }}>
+                                Cédula: {empleado.cedula}
+                            </p>
+                        </div>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        style={closeButtonStyle}
+                        title="Cerrar"
+                    >
+                        ✕
+                    </button>
+                </div>
+
+                {/* Badges de Estado y Rol */}
+                <div style={{
+                    display: 'flex',
+                    gap: '12px',
+                    padding: '0 24px',
+                    marginBottom: '20px'
+                }}>
+                    <span className={`activity-badge ${empleado.activo ? 'success' : 'pending'}`}>
+                        {empleado.activo ? '✓ Activo' : '○ Inactivo'}
+                    </span>
+                    <span className={`activity-badge info`}>
+                        {empleado.rol}
+                    </span>
+                </div>
+
+                {/* Contenido del Modal */}
+                <div style={modalBodyStyle}>
+                    {/* Información Personal */}
+                    <div style={sectionStyle}>
+                        <h3 style={sectionTitleStyle}>
+                            <span style={{ marginRight: '8px' }}>👤</span>
+                            Información Personal
+                        </h3>
+                        <div style={detailsGridStyle}>
+                            <DetailItem label="Nombre" value={empleado.nombre} />
+                            <DetailItem label="Apellido" value={empleado.apellido} />
+                            <DetailItem label="Cédula" value={empleado.cedula} />
+                        </div>
+                    </div>
+
+                    {/* Información de Contacto */}
+                    <div style={sectionStyle}>
+                        <h3 style={sectionTitleStyle}>
+                            <span style={{ marginRight: '8px' }}>📞</span>
+                            Información de Contacto
+                        </h3>
+                        <div style={detailsGridStyle}>
+                            <DetailItem
+                                label="Email"
+                                value={
+                                    <a
+                                        href={`mailto:${empleado.email}`}
+                                        style={{ color: '#4a90e2', textDecoration: 'none' }}
+                                    >
+                                        {empleado.email}
+                                    </a>
+                                }
+                            />
+                            <DetailItem
+                                label="Teléfono"
+                                value={
+                                    empleado.telefono ? (
+                                        <a
+                                            href={`tel:${empleado.telefono}`}
+                                            style={{ color: '#4a90e2', textDecoration: 'none' }}
+                                        >
+                                            {empleado.telefono}
+                                        </a>
+                                    ) : 'N/A'
+                                }
+                            />
+                        </div>
+                    </div>
+
+                    {/* Información Laboral */}
+                    <div style={sectionStyle}>
+                        <h3 style={sectionTitleStyle}>
+                            <span style={{ marginRight: '8px' }}>💼</span>
+                            Información Laboral
+                        </h3>
+                        <div style={detailsGridStyle}>
+                            <DetailItem
+                                label="Fecha de Ingreso"
+                                value={empleado.fechaIngreso ? new Date(empleado.fechaIngreso).toLocaleDateString('es-CO', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                }) : 'N/A'}
+                            />
+                            <DetailItem label="Rol" value={empleado.rol} />
+                            <DetailItem
+                                label="Estado"
+                                value={empleado.activo ? 'Activo' : 'Inactivo'}
+                            />
+                            <DetailItem
+                                label="Días en la empresa"
+                                value={empleado.fechaIngreso ?
+                                    Math.floor((new Date() - new Date(empleado.fechaIngreso)) / (1000 * 60 * 60 * 24)) + ' días'
+                                    : 'N/A'
+                                }
+                            />
+                        </div>
+                    </div>
+
+                </div>
+
+                {/* Footer del Modal */}
+                <div style={modalFooterStyle}>
+                    <button
+                        style={secondaryButtonStyle}
+                        onClick={onClose}
+                    >
+                        Cerrar
+                    </button>
+                    <button
+                        style={primaryButtonStyle}
+                        onClick={() => alert('Función de editar en desarrollo')}
+                    >
+                        ✏️ Editar Empleado
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// Componente auxiliar para mostrar cada detalle
+function DetailItem({ label, value }) {
+    return (
+        <div style={detailItemStyle}>
+            <span style={detailLabelStyle}>{label}</span>
+            <span style={detailValueStyle}>{value}</span>
+        </div>
+    );
+}
+
+// Estilos para la tabla
 const tableHeaderStyle = {
     padding: '16px',
     textAlign: 'left',
@@ -359,4 +547,134 @@ const actionButtonStyle = {
     padding: '4px 8px',
     borderRadius: '4px',
     transition: 'background-color 0.2s',
+};
+
+// Estilos para el Modal
+const modalOverlayStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1000,
+    padding: '20px',
+};
+
+const modalContentStyle = {
+    backgroundColor: 'white',
+    borderRadius: '16px',
+    maxWidth: '800px',
+    width: '100%',
+    maxHeight: '90vh',
+    overflow: 'hidden',
+    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+    display: 'flex',
+    flexDirection: 'column',
+};
+
+const modalHeaderStyle = {
+    padding: '24px',
+    borderBottom: '1px solid #e9ecef',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#f8f9fa',
+};
+
+const modalBodyStyle = {
+    padding: '24px',
+    overflowY: 'auto',
+    flex: 1,
+};
+
+const modalFooterStyle = {
+    padding: '16px 24px',
+    borderTop: '1px solid #e9ecef',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    gap: '12px',
+    backgroundColor: '#f8f9fa',
+};
+
+const closeButtonStyle = {
+    background: 'none',
+    border: 'none',
+    fontSize: '28px',
+    cursor: 'pointer',
+    color: '#666',
+    padding: '0',
+    width: '36px',
+    height: '36px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '50%',
+    transition: 'background-color 0.2s',
+};
+
+const sectionStyle = {
+    marginBottom: '24px',
+};
+
+const sectionTitleStyle = {
+    fontSize: '18px',
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: '16px',
+    display: 'flex',
+    alignItems: 'center',
+};
+
+const detailsGridStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gap: '16px',
+};
+
+const detailItemStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+};
+
+const detailLabelStyle = {
+    fontSize: '12px',
+    fontWeight: '600',
+    color: '#666',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+};
+
+const detailValueStyle = {
+    fontSize: '15px',
+    color: '#333',
+    fontWeight: '500',
+};
+
+const primaryButtonStyle = {
+    padding: '10px 20px',
+    backgroundColor: '#4a90e2',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: '500',
+    transition: 'background-color 0.2s',
+};
+
+const secondaryButtonStyle = {
+    padding: '10px 20px',
+    backgroundColor: 'transparent',
+    color: '#666',
+    border: '1px solid #ddd',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: '500',
+    transition: 'all 0.2s',
 };
