@@ -1,0 +1,78 @@
+/* client/src/styles/PQRSForm.css */
+.pqrs-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.pqrs-form {
+  width: 420px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  font-family: Inter, Arial, sans-serif;
+}
+
+.pqrs-form h2 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  color: #0b2b4a;
+}
+
+.pqrs-form label {
+  display:block;
+  margin-top:10px;
+  font-size:13px;
+  color:#4b5563;
+}
+
+.pqrs-form input,
+.pqrs-form textarea,
+.pqrs-form select {
+  width:100%;
+  padding:10px 12px;
+  margin-top:6px;
+  border:1px solid #e5e7eb;
+  border-radius:8px;
+  font-size:14px;
+  box-sizing:border-box;
+}
+
+.pqrs-actions {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:16px;
+}
+
+.btn {
+  padding:10px 16px;
+  border-radius:8px;
+  border:1px solid #cbd5e1;
+  background:#fff;
+  cursor:pointer;
+}
+
+.btn.primary {
+  background:#1f4db2;
+  color:#fff;
+  border:none;
+}
+
+.btn.cancel {
+  background:#fff;
+  color:#0b2b4a;
+  border:1px solid #d1d5db;
+}
+
+.err {
+  color:#b91c1c;
+  font-size:12px;
+}
+
+.status {
+  margin-top:12px;
+  font-size:13px;
+}
