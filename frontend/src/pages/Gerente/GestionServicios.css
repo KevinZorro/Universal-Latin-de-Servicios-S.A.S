@@ -1,51 +1,455 @@
-/* GestionServicios.css */
+/* GestionServicios.css - Estilo basado en el mockup */
+
+* {
+    box-sizing: border-box;
+}
 
 .gestion-servicios-container {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
+    padding: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background-color: #f5f7fa;
+    min-height: 100vh;
 }
 
 /* ============================================
-   HEADER
+   BREADCRUMB
    ============================================ */
-.header {
+.breadcrumb {
+    font-size: 13px;
+    color: #6c757d;
+    margin-bottom: 16px;
+}
+
+.breadcrumb-link {
+    color: #4A90E2;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.breadcrumb-link:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb span {
+    margin: 0 4px;
+}
+
+/* ============================================
+   HEADERS
+   ============================================ */
+.catalog-header {
+    margin-bottom: 24px;
+}
+
+.catalog-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 8px 0;
+}
+
+.form-header {
+    margin-bottom: 24px;
+}
+
+.form-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 8px 0;
+}
+
+.form-subtitle {
+    color: #6c757d;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* ============================================
+   INFO BOX
+   ============================================ */
+.info-box {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.info-box-blue {
+    background-color: #e3f2fd;
+    border: 1px solid #90caf9;
+    color: #1565c0;
+}
+
+.info-box-error {
+    background-color: #ffebee;
+    border: 1px solid #ef9a9a;
+    color: #c62828;
+}
+
+.info-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.info-box strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.info-box p {
+    margin: 0;
+}
+
+/* ============================================
+   SEARCH BAR
+   ============================================ */
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: #4A90E2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+/* ============================================
+   SERVICES LIST (Catálogo)
+   ============================================ */
+.services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.service-card {
+    background: white;
+    border-radius: 8px;
+    padding: 16px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
 }
 
-.header h1 {
+.service-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.service-info {
+    flex: 1;
+}
+
+.service-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.service-header h3 {
     margin: 0;
-    color: #333;
-    font-size: 2rem;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.service-code {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.service-details {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+}
+
+.service-meta {
+    color: #6c757d;
+}
+
+.service-status {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+}
+
+.service-status::before {
+    content: '●';
+    font-size: 8px;
+}
+
+.service-status.active {
+    color: #28a745;
+}
+
+.service-status.inactive {
+    color: #dc3545;
+}
+
+.service-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-icon:hover {
+    background-color: #f5f7fa;
 }
 
 /* ============================================
-   BOTONES
+   TOGGLE SWITCH (Lista)
+   ============================================ */
+.toggle-switch-small {
+    position: relative;
+    width: 44px;
+    height: 24px;
+}
+
+.toggle-switch-small input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider-small {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 24px;
+}
+
+.toggle-slider-small:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-switch-small input:checked+.toggle-slider-small {
+    background-color: #10b981;
+}
+
+.toggle-switch-small input:checked+.toggle-slider-small:before {
+    transform: translateX(20px);
+}
+
+/* ============================================
+   FORM SECTIONS
+   ============================================ */
+.form-section {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.section-icon {
+    font-size: 24px;
+}
+
+.section-header h3 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.section-header p {
+    margin: 0;
+    font-size: 13px;
+    color: #6c757d;
+}
+
+/* ============================================
+   FORM FIELDS
+   ============================================ */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #495057;
+    transition: border-color 0.2s ease;
+    background-color: white;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #4A90E2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+}
+
+.form-group small {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 6px;
+}
+
+/* Toggle Switch en formulario */
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 26px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked+.toggle-slider {
+    background-color: #10b981;
+}
+
+.toggle-switch input:checked+.toggle-slider:before {
+    transform: translateX(24px);
+}
+
+.toggle-status {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.toggle-status.active {
+    color: #10b981;
+}
+
+.toggle-status.inactive {
+    color: #6c757d;
+}
+
+/* ============================================
+   BUTTONS
    ============================================ */
 .btn {
-    padding: 10px 20px;
+    padding: 10px 24px;
     border: none;
     border-radius: 6px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
 }
 
 .btn:disabled {
@@ -53,426 +457,124 @@
     cursor: not-allowed;
 }
 
-.btn-primary {
-    background-color: #007bff;
+.btn-save {
+    background-color: #10b981;
     color: white;
 }
 
-.btn-primary:hover:not(:disabled) {
-    background-color: #0056b3;
+.btn-save:hover:not(:disabled) {
+    background-color: #059669;
 }
 
-.btn-success {
-    background-color: #28a745;
+.btn-cancel {
+    background-color: white;
+    color: #6c757d;
+    border: 1px solid #ced4da;
+}
+
+.btn-cancel:hover:not(:disabled) {
+    background-color: #f8f9fa;
+}
+
+.btn-add-service {
+    background-color: #4A90E2;
     color: white;
-}
-
-.btn-success:hover:not(:disabled) {
-    background-color: #218838;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-    color: white;
-}
-
-.btn-secondary:hover:not(:disabled) {
-    background-color: #5a6268;
-}
-
-.btn-editar {
-    background-color: #ffc107;
-    color: #000;
-    padding: 6px 12px;
-    font-size: 12px;
-    margin-right: 5px;
-}
-
-.btn-editar:hover:not(:disabled) {
-    background-color: #e0a800;
-}
-
-.btn-eliminar {
-    background-color: #dc3545;
-    color: white;
-    padding: 6px 12px;
-    font-size: 12px;
-}
-
-.btn-eliminar:hover:not(:disabled) {
-    background-color: #c82333;
-}
-
-/* ============================================
-   ALERTAS
-   ============================================ */
-.alert {
-    padding: 15px 20px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    animation: slideIn 0.3s ease;
-}
-
-.alert-error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-.alert-error ul {
-    margin: 0;
-    padding-left: 20px;
-}
-
-.alert button {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: inherit;
-    padding: 0;
-    margin-left: 10px;
-}
-
-/* ============================================
-   FORMULARIO
-   ============================================ */
-.formulario-container {
-    background: white;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-    animation: fadeIn 0.3s ease;
-}
-
-.formulario-container h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #555;
-    font-weight: 600;
-}
-
-.form-group input[type="text"],
-.form-group textarea,
-.form-group select {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: border-color 0.3s ease;
-    box-sizing: border-box;
-}
-
-.form-group input[type="text"]:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-.checkbox-group {
-    display: flex;
-    align-items: center;
-}
-
-.checkbox-group label {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0;
-    cursor: pointer;
-}
-
-.checkbox-group input[type="checkbox"] {
-    width: auto;
-    margin-right: 10px;
-    cursor: pointer;
-    transform: scale(1.2);
-}
-
-.required {
-    color: #dc3545;
-    font-weight: bold;
-}
-
-.form-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 25px;
-}
-
-/* ============================================
-   FILTROS
-   ============================================ */
-.filtros-container {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    margin-bottom: 20px;
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.filtro-busqueda {
-    flex: 1;
-    min-width: 250px;
-}
-
-.filtro-busqueda input {
-    width: 100%;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    padding: 12px 24px;
     font-size: 14px;
 }
 
-.filtro-estado {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.filtro-estado label {
-    font-weight: 600;
-    color: #555;
-    white-space: nowrap;
-}
-
-.filtro-estado select {
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
+.btn-add-service:hover {
+    background-color: #357abd;
 }
 
 /* ============================================
-   LISTA DE SERVICIOS
+   FORM ACTIONS
    ============================================ */
-.servicios-lista {
-    background: white;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.form-actions-bottom {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #e9ecef;
 }
 
-.servicios-lista h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #333;
+/* ============================================
+   FLOATING ACTIONS
+   ============================================ */
+.floating-actions {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 100;
 }
 
+/* ============================================
+   LOADING & EMPTY STATE
+   ============================================ */
 .loading {
     text-align: center;
-    padding: 40px;
-    font-size: 18px;
-    color: #666;
+    padding: 60px 20px;
+    color: #6c757d;
+    font-size: 16px;
 }
 
 .empty-state {
     text-align: center;
     padding: 60px 20px;
     color: #999;
+    background: white;
+    border-radius: 8px;
 }
 
 .empty-state p {
-    font-size: 18px;
-    margin: 10px 0;
-}
-
-/* ============================================
-   TABLA
-   ============================================ */
-.tabla-container {
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-}
-
-thead {
-    background-color: #f8f9fa;
-}
-
-thead th {
-    padding: 12px 15px;
-    text-align: left;
-    font-weight: 600;
-    color: #333;
-    border-bottom: 2px solid #dee2e6;
-    white-space: nowrap;
-}
-
-tbody tr {
-    border-bottom: 1px solid #dee2e6;
-    transition: background-color 0.2s ease;
-}
-
-tbody tr:hover {
-    background-color: #f8f9fa;
-}
-
-tbody td {
-    padding: 12px 15px;
-    vertical-align: middle;
-}
-
-.nombre-servicio {
-    font-weight: 600;
-    color: #333;
-}
-
-.descripcion {
-    max-width: 300px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.acciones {
-    white-space: nowrap;
-}
-
-/* ============================================
-   BADGES
-   ============================================ */
-.badge {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    display: inline-block;
-    white-space: nowrap;
-}
-
-.badge-activo {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-.badge-inactivo {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-/* ============================================
-   ANIMACIONES
-   ============================================ */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    margin: 8px 0;
+    font-size: 16px;
 }
 
 /* ============================================
    RESPONSIVE
    ============================================ */
 @media (max-width: 768px) {
-    .header {
+    .gestion-servicios-container {
+        padding: 16px;
+    }
+
+    .catalog-header h1,
+    .form-header h1 {
+        font-size: 24px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .service-card {
         flex-direction: column;
-        gap: 15px;
         align-items: flex-start;
+        gap: 16px;
     }
 
-    .filtros-container {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .filtro-estado {
+    .service-actions {
+        width: 100%;
         justify-content: space-between;
     }
 
-    .form-actions {
+    .form-actions-bottom {
         flex-direction: column;
     }
 
-    .form-actions .btn {
+    .form-actions-bottom .btn {
         width: 100%;
     }
 
-    .tabla-container {
-        overflow-x: scroll;
+    .floating-actions {
+        bottom: 16px;
+        right: 16px;
     }
 
-    table {
-        min-width: 800px;
+    .btn-add-service {
+        padding: 12px 20px;
+        font-size: 13px;
     }
-
-    .acciones {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .btn-editar,
-    .btn-eliminar {
-        margin: 0;
-        width: 100%;
-    }
-}
-
-/* ============================================
-   SCROLL PERSONALIZADO
-   ============================================ */
-.tabla-container::-webkit-scrollbar {
-    height: 8px;
-}
-
-.tabla-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.tabla-container::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 10px;
-}
-
-.tabla-container::-webkit-scrollbar-thumb:hover {
-    background: #555;
 }

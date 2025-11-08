@@ -7,6 +7,9 @@ import ListarEmpleados from './ListarEmpleados';
 import GestionCargos from './GestionCargos';
 import GestionServicios from './GestionServicios';
 import './Dashboard.css';
+import GestionServiciosOrden from './GestionServiciosOrden';
+import GestionOrdenes from './GestionOrdenes';
+import ClienteManager from './ClienteManager';
 
 export default function Dashboard() {
     const {
@@ -22,9 +25,9 @@ export default function Dashboard() {
         { id: 'empleados', label: 'Empleados', icon: '👥' },
         { id: 'agregar-empleado', label: 'Agregar Empleado', icon: '➕' },
         { id: 'agregar-cargo', label: 'Agregar Cargo' },
-        { id: 'gestion-servicios', label: 'Gestionar Servicios' },
-        { id: 'solicitudes', label: 'Solicitudes', icon: '📝' },
-        { id: 'horarios', label: 'Horarios', icon: '🕐' },
+        { id: 'gestion-servicios', label: 'Gestionar Servicios', icon: '🏡' },
+        { id: 'gestion-ordenes', label: 'Gestionar Ordenes', icon: '📝' },
+        { id: 'gestion-clientes', label: 'Gestionar Clientes', icon: '🕐' },
         { id: 'nomina', label: 'Nómina', icon: '💰' },
         { id: 'reportes', label: 'Reportes', icon: '📈' },
         { id: 'configuracion', label: 'Configuración', icon: '⚙️' },
@@ -43,10 +46,10 @@ export default function Dashboard() {
                 return <GestionServicios />;
             case 'agregar-cargo':
                 return <GestionCargos />;
-            case 'solicitudes':
-                return <ComingSoon section="Solicitudes" />;
-            case 'horarios':
-                return <ComingSoon section="Horarios" />;
+            case 'gestion-ordenes':
+                return <GestionOrdenes />;
+            case 'gestion-clientes':
+                return <ClienteManager />;
             case 'nomina':
                 return <ComingSoon section="Nómina" />;
             case 'reportes':
