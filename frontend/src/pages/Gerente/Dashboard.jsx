@@ -1,6 +1,7 @@
 // src/pages/Dashboard.jsx
 import React from 'react';
 import { useDashboard } from './DashboardLogic';
+import { useEmpleados } from '../Gerente/useEmpleados';
 import AgregarEmpleado from './CreateEmployee';
 import ListarEmpleados from './ListarEmpleados';
 import './Dashboard.css';
@@ -129,49 +130,52 @@ export default function Dashboard() {
     );
 }
 
-// Componente del Dashboard Principal
+// Componente del Dashboard Principal - AHORA CON DATOS REALES
 function DashboardHome({ userName, userRole, setActiveSection }) {
+    // Usar el hook para obtener estadísticas reales
+    const { getEstadisticas, loading } = useEmpleados(true);
+    const estadisticas = getEstadisticas();
+
     return (
         <div className="content-area">
             {/* Dashboard Principal */}
             <div className="welcome-section">
                 <h1 className="welcome-title">¡Bienvenido, {userName}!</h1>
-                <p className="welcome-subtitle">
-                    Este es tu panel de control como {userRole}. Aquí podrás gestionar empleados, solicitudes y más.
-                </p>
             </div>
 
-            {/* Cards de estadísticas */}
+            {/* Cards de estadísticas CON DATOS REALES */}
             <div className="stats-grid">
-                <div className="stat-card" style={{ cursor: 'pointer' }} onClick={() => setActiveSection('empleados')}>
+                <div
+                    className="stat-card"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setActiveSection('empleados')}
+                >
                     <div className="stat-icon empleados">👥</div>
                     <div className="stat-info">
-                        <h3 className="stat-number">24</h3>
+                        <h3 className="stat-number">
+                            {loading ? '...' : estadisticas.activos}
+                        </h3>
                         <p className="stat-label">Empleados Activos</p>
-                    </div>
-                </div>
-
-                <div className="stat-card">
-                    <div className="stat-icon solicitudes">📝</div>
-                    <div className="stat-info">
-                        <h3 className="stat-number">8</h3>
-                        <p className="stat-label">Solicitudes Pendientes</p>
-                    </div>
-                </div>
-
-                <div className="stat-card">
-                    <div className="stat-icon horarios">🕐</div>
-                    <div className="stat-info">
-                        <h3 className="stat-number">12</h3>
-                        <p className="stat-label">Turnos Programados</p>
                     </div>
                 </div>
 
                 <div className="stat-card">
                     <div className="stat-icon reportes">📈</div>
                     <div className="stat-info">
-                        <h3 className="stat-number">95%</h3>
-                        <p className="stat-label">Asistencia del Mes</p>
+                        <h3 className="stat-number">
+                            {loading ? '...' : estadisticas.inactivos}
+                        </h3>
+                        <p className="stat-label">Empleados Inactivos</p>
+                    </div>
+                </div>
+
+                <div className="stat-card">
+                    <div className="stat-icon solicitudes">📝</div>
+                    <div className="stat-info">
+                        <h3 className="stat-number">
+                            {loading ? '...' : estadisticas.total}
+                        </h3>
+                        <p className="stat-label">Total de Empleados</p>
                     </div>
                 </div>
             </div>
@@ -199,48 +203,6 @@ function DashboardHome({ userName, userRole, setActiveSection }) {
                         <span className="action-icon">📅</span>
                         <span className="action-label">Gestionar Horarios</span>
                     </button>
-                </div>
-            </div>
-
-            {/* Actividad reciente */}
-            <div className="recent-activity">
-                <h2 className="section-title">Actividad Reciente</h2>
-                <div className="activity-list">
-                    <div className="activity-item">
-                        <div className="activity-icon new">📄</div>
-                        <div className="activity-content">
-                            <p className="activity-title">Nueva solicitud de vacaciones</p>
-                            <p className="activity-subtitle">Juan Pérez - Hace 2 horas</p>
-                        </div>
-                        <span className="activity-badge pending">Pendiente</span>
-                    </div>
-
-                    <div className="activity-item">
-                        <div className="activity-icon success">✓</div>
-                        <div className="activity-content">
-                            <p className="activity-title">Empleado registrado exitosamente</p>
-                            <p className="activity-subtitle">María González - Hace 5 horas</p>
-                        </div>
-                        <span className="activity-badge success">Completado</span>
-                    </div>
-
-                    <div className="activity-item">
-                        <div className="activity-icon info">🕐</div>
-                        <div className="activity-content">
-                            <p className="activity-title">Turno modificado</p>
-                            <p className="activity-subtitle">Carlos Ramírez - Hace 1 día</p>
-                        </div>
-                        <span className="activity-badge info">Informativo</span>
-                    </div>
-
-                    <div className="activity-item">
-                        <div className="activity-icon success">✓</div>
-                        <div className="activity-content">
-                            <p className="activity-title">Nómina procesada</p>
-                            <p className="activity-subtitle">Sistema - Hace 2 días</p>
-                        </div>
-                        <span className="activity-badge success">Completado</span>
-                    </div>
                 </div>
             </div>
         </div>

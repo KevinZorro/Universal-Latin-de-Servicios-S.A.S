@@ -38,18 +38,6 @@ export default function Login() {
 
           <button
             type="button"
-            className={`role-button ${selectedRole === 'cliente' ? 'active' : ''}`}
-            onClick={() => setSelectedRole('cliente')}
-          >
-            <div className="role-icon cliente-icon">
-              <span className="icon">👤</span>
-            </div>
-            <span className="role-label">Cliente</span>
-            {selectedRole === 'cliente' && <div className="checkmark">✓</div>}
-          </button>
-
-          <button
-            type="button"
             className={`role-button ${selectedRole === 'empleado' ? 'active' : ''}`}
             onClick={() => setSelectedRole('empleado')}
           >
