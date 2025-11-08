@@ -15,9 +15,9 @@ public class CandidatoService {
         this.candidatoRepository = candidatoRepository;
     }
 
-    public List<Candidato> findAll() { return candidatoRepository.findAll(); }
+    public Optional<Candidato> findByCedula(String cedula){ return candidatoRepository.findById(cedula);}
 
-    public Optional<Candidato> findById(String id) { return candidatoRepository.findBy(id); }
+    public List<Candidato> findAll() { return candidatoRepository.findAll(); }
 
     public Candidato save(Candidato candidato) { return candidatoRepository.save(candidato); }
 

@@ -26,8 +26,8 @@ public class CandidatoController {
     }
 
     @GetMapping("/{id}")
-    public CandidatoDto getCandidatoById(@PathVariable int id) {
-        Optional<Candidato> candidato = candidatoService.findById(id);
+    public CandidatoDto getCandidatoById(@PathVariable String id) {
+        Optional<Candidato> candidato = candidatoService.findByCedula(id);
         return candidato.map(this::toDto).orElse(null);
     }
 
@@ -39,7 +39,7 @@ public class CandidatoController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCandidato(@PathVariable int id) {
+    public void deleteCandidato(@PathVariable String id) {
         candidatoService.deleteById(id);
     }
 
