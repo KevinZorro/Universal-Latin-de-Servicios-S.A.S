@@ -3,20 +3,18 @@ package com.ufps.Universal.Latin.De.Servicios.S.A.S.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-
 @Entity
 @Data
-public class Servicio {
+public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String nombreServicio;
-
-    private String descripcion;
-
-    private boolean estado;
-
-    private String tipoHorario;
+    private String nombre;
+    private int telefono;
+    private String direccion;
+    private int nit;
+    private String email;
+    private String ciudad;
 }

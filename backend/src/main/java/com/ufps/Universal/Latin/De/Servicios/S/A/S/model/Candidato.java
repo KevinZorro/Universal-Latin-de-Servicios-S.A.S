@@ -2,21 +2,18 @@ package com.ufps.Universal.Latin.De.Servicios.S.A.S.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
-public class Servicio {
+@EqualsAndHashCode(callSuper = true)
+public class Candidato extends Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String nombreServicio;
+    private String hojaDeVidaURL;
 
-    private String descripcion;
-
-    private boolean estado;
-
-    private String tipoHorario;
+    private boolean estadoProceso;
 }
