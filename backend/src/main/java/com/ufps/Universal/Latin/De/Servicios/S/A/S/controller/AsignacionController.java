@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/asignaciones")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AsignacionController {
 
     private final AsignacionService asignacionService;

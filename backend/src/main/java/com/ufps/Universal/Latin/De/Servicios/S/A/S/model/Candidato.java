@@ -11,7 +11,7 @@ public class Candidato extends Usuario {
 
     // @Id
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    // private int id;
 
     private String hojaDeVidaURL;
 

@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/observaciones")
-@CrossOrigin(origins = "http://localhost:3000")
 public class ObservacionController {
 
     private final ObservacionService observacionService;
