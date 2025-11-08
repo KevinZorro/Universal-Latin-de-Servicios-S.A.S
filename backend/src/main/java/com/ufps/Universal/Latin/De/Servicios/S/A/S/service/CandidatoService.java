@@ -17,11 +17,11 @@ public class CandidatoService {
 
     public List<Candidato> findAll() { return candidatoRepository.findAll(); }
 
-    public Optional<Candidato> findById(int id) { return candidatoRepository.findById(id); }
+    public Optional<Candidato> findById(String id) { return candidatoRepository.findBy(id); }
 
     public Candidato save(Candidato candidato) { return candidatoRepository.save(candidato); }
 
-    public void deleteById(int id) { candidatoRepository.deleteById(id); }
+    public void deleteById(String id) { candidatoRepository.deleteById(id); }
 
     public void registrarCandidato(Candidato candidato) {
         // Aquí podrías incluir lógica adicional de registro

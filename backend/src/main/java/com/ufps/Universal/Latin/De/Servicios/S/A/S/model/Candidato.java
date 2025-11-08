@@ -9,10 +9,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class Candidato extends Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
     private String hojaDeVidaURL;
 
     private boolean estadoProceso;

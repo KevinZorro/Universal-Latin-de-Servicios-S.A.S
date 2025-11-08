@@ -14,12 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/empleados")
 @RequiredArgsConstructor
-/*
- * @CrossOrigin(origins = {
- * "http://localhost:3000",
- * "http://localhost:8080"
- * })
- */
 public class EmpleadoController {
 
     private final EmpleadoService empleadoService;
@@ -48,6 +42,18 @@ public class EmpleadoController {
         Empleado nuevoEmpleado = empleadoService.crearEmpleado(empleado);
         return ResponseEntity.ok(nuevoEmpleado);
     }
+
+    @PutMapping("/{cedula}")
+@PreAuthorize("hasAuthority('GERENTE')")
+public ResponseEntity<Empleado> updateEmpleado(@PathVariable String cedula, @Valid @RequestBody Empleado empleadoActualizado) {
+    try {
+        Empleado actualizado = empleadoService.actualizarEmpleado(cedula, empleadoActualizado);
+        return ResponseEntity.ok(actualizado);
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.notFound().build();
+    }
+}
+
 
     // ================== RELACIÓN EMPLEADO - CARGO ==================
 

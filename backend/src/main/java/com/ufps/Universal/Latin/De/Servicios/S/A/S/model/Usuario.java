@@ -19,23 +19,17 @@ public abstract class Usuario {
     @Column(name = "cedula")
     private String cedula;
 
-    @NotBlank
     private String telefono;
 
-    @NotBlank
     private String passwordHash;
 
     @Email
-    @NotBlank
     private String email;
 
-    @NotBlank
     private String apellido;
 
-    @NotBlank
     private String nombre;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private Rol rol;
 }
