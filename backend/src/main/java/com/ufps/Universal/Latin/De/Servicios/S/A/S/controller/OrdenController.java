@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/ordenes")
-@CrossOrigin(origins = "http://localhost:3000")
 public class OrdenController {
 
     private final OrdenService ordenService;

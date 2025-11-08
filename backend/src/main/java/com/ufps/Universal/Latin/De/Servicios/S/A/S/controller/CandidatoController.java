@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/candidatos")
-@CrossOrigin(origins = "http://localhost:3000")
 public class CandidatoController {
 
     private final CandidatoService candidatoService;
@@ -47,7 +46,6 @@ public class CandidatoController {
     // Auxiliares de conversión
     private CandidatoDto toDto(Candidato candidato) {
         CandidatoDto dto = new CandidatoDto();
-        dto.setId(candidato.getId());
         dto.setHojaDeVidaURL(candidato.getHojaDeVidaURL());
         dto.setEstadoProceso(candidato.isEstadoProceso());
         // hereda campos de Usuario: cédula, nombre, etc.
@@ -62,7 +60,6 @@ public class CandidatoController {
 
     private Candidato toEntity(CandidatoDto dto) {
         Candidato entity = new Candidato();
-        entity.setId(dto.getId());
         entity.setHojaDeVidaURL(dto.getHojaDeVidaURL());
         entity.setEstadoProceso(dto.isEstadoProceso());
         // hereda campos de Usuario: cédula, nombre, etc.

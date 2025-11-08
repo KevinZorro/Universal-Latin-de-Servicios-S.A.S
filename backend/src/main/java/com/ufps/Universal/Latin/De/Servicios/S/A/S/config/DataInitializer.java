@@ -1,5 +1,7 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.config;
 
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Cliente;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.ClienteRepository;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Empleado;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Gerente;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Rol;
@@ -19,13 +21,34 @@ public class DataInitializer {
     CommandLineRunner initDatabase(
             EmpleadoRepository empleadoRepository,
             GerenteRepository gerenteRepository,
-            PasswordEncoder passwordEncoder
-    ) {
+            ClienteRepository clienteRepository,
+            PasswordEncoder passwordEncoder) {
         return args -> {
             boolean sinGerentes = gerenteRepository.count() == 0;
             boolean sinEmpleados = empleadoRepository.count() == 0;
+            boolean sinClientes = clienteRepository.count() == 0;
 
-            if (sinGerentes || sinEmpleados) {
+                                Cliente cliente1 = new Cliente();
+                    cliente1.setNombre("Pedro Gómez");
+                    cliente1.setTelefono("3104567890");
+                    cliente1.setDireccion("Cra 12 #34-56");
+                    cliente1.setNit(900111222);
+                    cliente1.setEmail("pedro.gomez@mail.com");
+                    cliente1.setCiudad("Cúcuta");
+                    clienteRepository.save(cliente1);
+
+                    Cliente cliente2 = new Cliente();
+                    cliente2.setNombre("Laura Rodríguez");
+                    cliente2.setTelefono("3139876543");
+                    cliente2.setDireccion("Av. El Llano #89-10");
+                    cliente2.setNit(900333444);
+                    cliente2.setEmail("laura.rodriguez@mail.com");
+                    cliente2.setCiudad("Bucaramanga");
+                    clienteRepository.save(cliente2);
+
+                    System.out.println("✅ Clientes iniciales creados.");
+
+            if (sinGerentes || sinEmpleados || sinClientes) {
                 System.out.println("🚀 Inicializando datos por defecto...");
 
                 // ==== Crear Gerente ====
@@ -56,6 +79,28 @@ public class DataInitializer {
                     empleado.setFechaIngreso(LocalDate.now());
                     empleadoRepository.save(empleado);
                     System.out.println("✅ Empleado inicial creado.");
+                }
+
+                if (sinClientes) {
+                    Cliente cliente3 = new Cliente();
+                    cliente1.setNombre("Pedro Gómez");
+                    cliente1.setTelefono("3104567890");
+                    cliente1.setDireccion("Cra 12 #34-56");
+                    cliente1.setNit(900111222);
+                    cliente1.setEmail("pedro.gomez@mail.com");
+                    cliente1.setCiudad("Cúcuta");
+                    clienteRepository.save(cliente1);
+
+                    Cliente cliente4 = new Cliente();
+                    cliente2.setNombre("Laura Rodríguez");
+                    cliente2.setTelefono("3139876543");
+                    cliente2.setDireccion("Av. El Llano #89-10");
+                    cliente2.setNit(900333444);
+                    cliente2.setEmail("laura.rodriguez@mail.com");
+                    cliente2.setCiudad("Bucaramanga");
+                    clienteRepository.save(cliente2);
+
+                    System.out.println("✅ Clientes iniciales creados.");
                 }
             } else {
                 System.out.println("ℹ️ Los datos iniciales ya existen. No se insertaron nuevos registros.");

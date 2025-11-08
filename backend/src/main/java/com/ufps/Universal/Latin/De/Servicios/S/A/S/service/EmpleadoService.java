@@ -81,6 +81,41 @@ public class EmpleadoService {
         return empleadoRepository.findEmpleadosByCargoId(cargoId);
     }
 
+public Empleado actualizarEmpleado(String cedula, Empleado datosActualizados) {
+    Empleado empleado = empleadoRepository.findById(cedula)
+            .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado con cédula: " + cedula));
+
+    if (datosActualizados.getNombre() != null) {
+        empleado.setNombre(datosActualizados.getNombre());
+    }
+    if (datosActualizados.getApellido() != null) {
+        empleado.setApellido(datosActualizados.getApellido());
+    }
+    if (datosActualizados.getTelefono() != null) {
+        empleado.setTelefono(datosActualizados.getTelefono());
+    }
+    if (datosActualizados.getEmail() != null) {
+        empleado.setEmail(datosActualizados.getEmail());
+    }
+    if (datosActualizados.getActivo() != null) {
+        empleado.setActivo(datosActualizados.getActivo());
+    }
+    if (datosActualizados.getFechaIngreso() != null) {
+        empleado.setFechaIngreso(datosActualizados.getFechaIngreso());
+    }
+    if (datosActualizados.getDesprendiblePagoURL() != null) {
+        empleado.setDesprendiblePagoURL(datosActualizados.getDesprendiblePagoURL());
+    }
+    if (datosActualizados.getHojaDeVidaURL() != null) {
+        empleado.setHojaDeVidaURL(datosActualizados.getHojaDeVidaURL());
+    }
+    // Repite para otros campos que puedan ser actualizados.
+
+    return empleadoRepository.save(empleado);
+}
+
+
+
     // ================== CRUD DE CARGOS ==================
     public Cargo crearCargo(Cargo cargo) {
         if (cargo.getNombre() == null || cargo.getNombre().trim().isEmpty()) {

@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/evidencias")
-@CrossOrigin(origins = "http://localhost:3000")
 public class EvidenciaController {
 
     private final EvidenciaService evidenciaService;
