@@ -1,9 +1,14 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.controller;
 
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.CandidatoDto;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.CandidatoDto; 
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.CandidatoRegistroDto;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Candidato;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.CandidatoService;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,11 +36,19 @@ public class CandidatoController {
         return candidato.map(this::toDto).orElse(null);
     }
 
-    @PostMapping
-    public CandidatoDto createCandidato(@RequestBody CandidatoDto dto) {
-        Candidato entity = toEntity(dto);
-        Candidato saved = candidatoService.save(entity);
-        return toDto(saved);
+    @PostMapping(value = "/registrar", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<?> registrarCandidato(
+            @RequestPart("candidato") CandidatoRegistroDto dto,
+            @RequestPart("hojaDeVida") MultipartFile hojaDeVida) {
+        
+        try {
+            // El servicio (corregido en la respuesta anterior) maneja la lógica
+            candidatoService.registrarCandidato(dto, hojaDeVida);
+            return ResponseEntity.ok().body("{\"message\": \"Candidato registrado exitosamente\"}");
+        } catch (Exception e) {
+            e.printStackTrace(); // Imprime el error en la consola del backend
+            return ResponseEntity.badRequest().body("{\"error\": \"Error al registrar: " + e.getMessage() + "\"}");
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -46,15 +59,19 @@ public class CandidatoController {
     // Auxiliares de conversión
     private CandidatoDto toDto(Candidato candidato) {
         CandidatoDto dto = new CandidatoDto();
+        
         dto.setHojaDeVidaURL(candidato.getHojaDeVidaURL());
         dto.setEstadoProceso(candidato.isEstadoProceso());
-        // hereda campos de Usuario: cédula, nombre, etc.
+        dto.setPosicion(candidato.getPosicion());
+        dto.setExperiencia(candidato.getExperiencia());
+        dto.setMensaje(candidato.getMensaje());
         dto.setCedula(candidato.getCedula());
         dto.setTelefono(candidato.getTelefono());
         dto.setEmail(candidato.getEmail());
         dto.setApellido(candidato.getApellido());
         dto.setNombre(candidato.getNombre());
         dto.setRol(candidato.getRol().name());
+        
         return dto;
     }
 
