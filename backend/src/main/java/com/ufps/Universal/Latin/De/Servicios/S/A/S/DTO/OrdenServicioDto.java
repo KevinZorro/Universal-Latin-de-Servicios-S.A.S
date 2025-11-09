@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class OrdenServicioDto {
-    private int id;
-    private int servicioId;
-    private int ordenId;
+    private Integer id;
+    private Integer servicioId;
+    private Integer ordenId;
     private String estado;
 }

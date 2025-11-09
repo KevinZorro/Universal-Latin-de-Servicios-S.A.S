@@ -22,12 +22,7 @@ public class ServicioService {
     }
 
     // Crear servicio con datos sueltos
-    public Servicio crearServicio(String nombreServicio, String descripcion, boolean estado, String tipoHorario) {
-        Servicio s = new Servicio();
-        s.setNombreServicio(nombreServicio);
-        s.setDescripcion(descripcion);
-        s.setEstado(estado);
-        s.setTipoHorario(tipoHorario);
+    public Servicio crearServicio(Servicio s) {
         return servicioRepository.save(s);
     }
 

@@ -37,16 +37,22 @@ public class ServicioController {
         }
     }
 
+    // Conversor DTO a Entidad
+    private Servicio toEntity(ServicioDto dto) {
+        Servicio servicio = new Servicio();
+        servicio.setNombreServicio(dto.getNombreServicio());
+        servicio.setDescripcion(dto.getDescripcion());
+        servicio.setEstado(dto.isEstado());
+        servicio.setTipoHorario(dto.getTipoHorario());
+        return servicio;
+    }
+
     // Crear servicio
     @PostMapping("/crear")
     @PreAuthorize("hasAuthority('GERENTE')")
     public ResponseEntity<Servicio> createServicio(@Valid @RequestBody ServicioDto dto) {
         try {
-            Servicio nuevo = servicioService.crearServicio(
-                    dto.getNombreServicio(),
-                    dto.getDescripcion(),
-                    dto.isEstado(),
-                    dto.getTipoHorario());
+            Servicio nuevo = servicioService.crearServicio(toEntity(dto));
             return ResponseEntity.ok(nuevo);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
