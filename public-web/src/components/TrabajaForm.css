@@ -1,0 +1,188 @@
+.trabaja-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centrado vertical por defecto */
+  z-index: 2000; /* Mayor que el header */
+  padding: 1rem; /* Espacio para no pegar a los bordes en móviles */
+  overflow-y: auto; /* Permite scroll si el modal es muy alto */
+}
+
+.trabaja-modal-content {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px; /* Ancho máximo similar a la imagen */
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-height: 90vh; /* Altura máxima del 90% de la pantalla */
+  overflow-y: auto; /* Scroll interno si el contenido es muy largo */
+  margin: auto; /* Ayuda a centrar si se usa flexbox en el padre */
+}
+
+.trabaja-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.trabaja-close-btn:hover {
+  color: #1e293b;
+}
+
+.trabaja-modal-content h2 {
+  color: #1E3A8A;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.trabaja-descripcion {
+  color: #64748B;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.trabaja-form .form-group {
+  margin-bottom: 1.2rem;
+}
+
+.trabaja-form label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #334155;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.trabaja-form input[type="text"],
+.trabaja-form input[type="email"],
+.trabaja-form input[type="tel"],
+.trabaja-form select,
+.trabaja-form textarea {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #1e293b;
+  background-color: #f8fafc;
+  transition: border-color 0.2s;
+  font-family: 'Arimo', sans-serif;
+  box-sizing: border-box; /* Asegura que el padding no aumente el ancho */
+}
+
+.trabaja-form input:focus,
+.trabaja-form select:focus,
+.trabaja-form textarea:focus {
+  outline: none;
+  border-color: #1E3A8A;
+  background-color: #ffffff;
+}
+
+/* Estilos para el área de carga de archivos */
+.file-drop-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  padding: 1.5rem;
+  border: 2px dashed #e2e8f0;
+  border-radius: 6px;
+  transition: 0.2s;
+  background-color: #f8fafc;
+  text-align: center;
+}
+
+.file-drop-area:hover {
+  border-color: #1E3A8A;
+  background-color: #eff6ff;
+}
+
+.file-icon {
+  font-size: 2rem;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+}
+
+.file-msg {
+  font-size: 0.9rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+.file-info {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 0.2rem;
+}
+
+.file-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.file-selected {
+    font-size: 0.85rem;
+    color: #1E3A8A;
+    margin-top: 0.5rem;
+}
+
+.trabaja-botones {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.trabaja-botones button {
+  flex: 1;
+  padding: 0.8rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Arimo', sans-serif;
+}
+
+.btn-cancelar {
+  background-color: #ffffff;
+  color: #64748B;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-cancelar:hover {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+.btn-enviar {
+  background-color: #1E3A8A;
+  color: white;
+  border: none;
+}
+
+.btn-enviar:hover {
+  background-color: #1a2c6c;
+}
