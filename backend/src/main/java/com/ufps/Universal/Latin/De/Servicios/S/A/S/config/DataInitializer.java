@@ -28,26 +28,6 @@ public class DataInitializer {
             boolean sinEmpleados = empleadoRepository.count() == 0;
             boolean sinClientes = clienteRepository.count() == 0;
 
-                                Cliente cliente1 = new Cliente();
-                    cliente1.setNombre("Pedro Gómez");
-                    cliente1.setTelefono("3104567890");
-                    cliente1.setDireccion("Cra 12 #34-56");
-                    cliente1.setNit(900111222);
-                    cliente1.setEmail("pedro.gomez@mail.com");
-                    cliente1.setCiudad("Cúcuta");
-                    clienteRepository.save(cliente1);
-
-                    Cliente cliente2 = new Cliente();
-                    cliente2.setNombre("Laura Rodríguez");
-                    cliente2.setTelefono("3139876543");
-                    cliente2.setDireccion("Av. El Llano #89-10");
-                    cliente2.setNit(900333444);
-                    cliente2.setEmail("laura.rodriguez@mail.com");
-                    cliente2.setCiudad("Bucaramanga");
-                    clienteRepository.save(cliente2);
-
-                    System.out.println("✅ Clientes iniciales creados.");
-
             if (sinGerentes || sinEmpleados || sinClientes) {
                 System.out.println("🚀 Inicializando datos por defecto...");
 
@@ -82,7 +62,7 @@ public class DataInitializer {
                 }
 
                 if (sinClientes) {
-                    Cliente cliente3 = new Cliente();
+                    Cliente cliente1 = new Cliente();
                     cliente1.setNombre("Pedro Gómez");
                     cliente1.setTelefono("3104567890");
                     cliente1.setDireccion("Cra 12 #34-56");
@@ -91,7 +71,7 @@ public class DataInitializer {
                     cliente1.setCiudad("Cúcuta");
                     clienteRepository.save(cliente1);
 
-                    Cliente cliente4 = new Cliente();
+                    Cliente cliente2 = new Cliente();
                     cliente2.setNombre("Laura Rodríguez");
                     cliente2.setTelefono("3139876543");
                     cliente2.setDireccion("Av. El Llano #89-10");
