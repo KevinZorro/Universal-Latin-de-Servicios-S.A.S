@@ -53,7 +53,6 @@ export default function AsignarServicioOrden() {
 
     return (
         <div className="container">
-            <h2>🧩 Asignar Servicio a Orden</h2>
 
             <button className="btn btn-primary mb-3" onClick={() => setModalOpen(true)}>
                 ➕ Crear nueva asignación

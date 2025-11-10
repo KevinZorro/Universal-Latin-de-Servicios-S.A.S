@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as asignacionApi from "../Gerente/asignacionApi";
+import '../Gerente/AsignarEmpleados.css'
 
 export default function AsignarEmpleados() {
     const [ordenesServicio, setOrdenesServicio] = useState([]);
@@ -53,7 +54,6 @@ export default function AsignarEmpleados() {
 
     return (
         <div className="container mt-4">
-            <h2>🧑‍💼 Asignar Empleado a Orden-Servicio</h2>
             <button className="btn btn-primary mb-3" onClick={() => setModalOpen(true)}>
                 ➕ Crear nueva asignación
             </button>
