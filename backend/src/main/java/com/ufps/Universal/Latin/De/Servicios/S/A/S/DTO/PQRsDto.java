@@ -1,7 +1,8 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO;
 
-import lombok.Data;
 import java.time.LocalDateTime;
+
+import lombok.Data;
 
 @Data
 public class PQRsDto {
@@ -12,4 +13,7 @@ public class PQRsDto {
     private String estado;
     private String respuesta;
     private int clienteId;
+    private String nombreCompleto;
+    private String email;
+    private String telefono;
 }

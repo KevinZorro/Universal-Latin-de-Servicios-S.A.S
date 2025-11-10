@@ -2,6 +2,7 @@
   background-color: #1E3A8A;
   color: #ffffff;
   padding: 3rem 2rem 1rem;
+  font-family: 'Arimo', sans-serif;
   font-size: 0.95rem;
 }
 
@@ -9,7 +10,7 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 3rem; /* más espacio entre columnas */
+  gap: 3rem;
   max-width: 1200px;
   margin: 0 auto;
   align-items: flex-start;
@@ -39,28 +40,29 @@
   line-height: 1.2;
 }
 
-.footer-logo p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #d1d5db;
-}
-
 .footer-description {
   margin-top: 1rem;
   color: #e2e8f0;
   line-height: 1.5;
 }
 
-.pqrs-link {
-  display: inline-block;
-  margin-top: 0.8rem;
-  color: #93c5fd;
-  text-decoration: none;
-  font-weight: 500;
+/* ---- ESTILO NUEVO PARA EL BOTÓN PQRS EN FOOTER ---- */
+.pqrs-link-footer {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 1rem;
+  color: #93c5fd; /* Azul claro */
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s;
 }
 
-.pqrs-link:hover {
-  text-decoration: underline;
+.pqrs-link-footer:hover {
+  color: #ffffff;
 }
 
 /* ---- Servicios ---- */
@@ -68,86 +70,60 @@
   font-size: 1.1rem;
   margin-bottom: 1rem;
   color: #ffffff;
+  font-weight: 600;
 }
 
 .footer-section ul {
   list-style: none;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  row-gap: 0.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 1rem;
 }
 
 .footer-section li {
   color: #e5e7eb;
-  font-size: 0.95rem;
 }
 
 /* ---- Contacto ---- */
 .footer-section.contact p {
-  margin: 0.4rem 0;
+  margin: 0.6rem 0;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: flex-start;
+  gap: 0.8rem;
   color: #f1f5f9;
+  line-height: 1.4;
 }
 
 .footer-section.contact svg {
-  width: 18px;
-  height: 18px;
-  fill: #ffffff; /* color blanco puro */
+  width: 20px;
+  height: 20px;
+  fill: #ffffff;
   flex-shrink: 0;
-  transition: fill 0.3s ease;
+  margin-top: 2px;
 }
-
-.footer-section.contact p:hover svg {
-  fill: #60a5fa; /* efecto azul suave al pasar el mouse */
-}
-
-
-.footer-section.contact p:hover .icon-mail,
-.footer-section.contact p:hover svg:not(.icon-mail) {
-  color: #60a5fa;
-  transition: color 0.25s ease;
-}
-
 
 .footer-bottom {
   border-top: 1px solid #334155;
-  margin-top: 2rem;
-  padding-top: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
   text-align: center;
-  font-size: 0.85rem;
-  color: #d1d5db;
+  font-size: 0.9rem;
+  color: #cbd5e1;
 }
 
-/* --- SOLUCIÓN RESPONSIVA --- */
-
-/* 1. Se eliminaron las reglas de 'margin-left' y 'margin-right' 
-   para .about, .services, y .contact, ya que rompían el 
-   comportamiento de 'flex-wrap'. */
-
-/* 2. Se añade una media query para pantallas pequeñas (móviles) */
-@media (max-width: 640px) {
-
+/* --- Media Queries --- */
+@media (max-width: 768px) {
   .footer-content {
-    /* Centra las columnas cuando se apilan */
-    justify-content: center;
-    text-align: center;
+    flex-direction: column;
+    gap: 2.5rem;
   }
 
-  .footer-logo {
-    /* Centra el logo en móvil */
-    justify-content: center;
+  .footer-section {
+    width: 100%;
   }
 
-  .footer-section.contact p {
-    /* Centra los items de contacto en móvil */
-    justify-content: center;
-  }
-
-  /* 3. La lista de servicios pasa a una sola columna */
   .footer-section ul {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Una columna en móviles para servicios */
   }
 }

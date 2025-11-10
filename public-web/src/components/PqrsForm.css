@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo&display=swap');
+
+.pqrs-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centrado vertical */
+  z-index: 2000; /* Por encima del header */
+  padding: 1rem; /* Espacio en móviles */
+  overflow-y: auto; /* Permitir scroll si la pantalla es muy baja */
+}
+
+.pqrs-modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+  font-family: 'Arimo', sans-serif;
+  max-height: 90vh; /* Máxima altura del 90% de la ventana */
+  overflow-y: auto; /* Scroll interno si es necesario */
+}
+
+.pqrs-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #64748B;
+  cursor: pointer;
+}
+
+.pqrs-modal-content h2 {
+  color: #1E3A8A;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.pqrs-subtitle {
+  color: #64748B;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.pqrs-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.pqrs-form label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #374151;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.pqrs-form input,
+.pqrs-form select,
+.pqrs-form textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #1f2937;
+  transition: border-color 0.2s;
+  box-sizing: border-box; /* Asegura que el padding no aumente el ancho */
+}
+
+.pqrs-form input:focus,
+.pqrs-form select:focus,
+.pqrs-form textarea:focus {
+  outline: none;
+  border-color: #1E3A8A;
+}
+
+.pqrs-form textarea {
+  resize: vertical; /* Permitir redimensionar solo verticalmente */
+}
+
+.input-error {
+  border-color: #ef4444 !important;
+}
+
+.error-text {
+  color: #ef4444;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.pqrs-botones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.pqrs-botones button {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Arimo', sans-serif;
+}
+
+.btn-cancelar {
+  background-color: white;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+
+.btn-cancelar:hover {
+  background-color: #f3f4f6;
+}
+
+.btn-enviar {
+  background-color: #1E3A8A;
+  border: none;
+  color: white;
+}
+
+.btn-enviar:hover {
+  background-color: #1e40af;
+}

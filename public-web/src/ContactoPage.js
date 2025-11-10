@@ -2,7 +2,6 @@ import React from 'react';
 import './ContactoPage.css';
 
 // --- Iconos SVG para la información de contacto ---
-
 const PhoneIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
     <path d="M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.066a1.5 1.5 0 01-1.652 1.732L4.63 7.69a12.162 12.162 0 007.68 7.68l-.283-1.036a1.5 1.5 0 011.732-1.652l3.066.716A1.5 1.5 0 0118 15.352V16.5A1.5 1.5 0 0116.5 18H16a14 14 0 01-14-14v-.5z" />
@@ -22,24 +21,21 @@ const LocationIcon = () => (
   </svg>
 );
 
-// --- Componente de la Página de Contacto ---
-
-function ContactoPage() {
+//Recibimos la prop onOpenPqrs
+function ContactoPage({ onOpenPqrs }) {
   return (
     <div className="contacto-container">
       <div className="info-empresa-contacto">
         
-        {/* --- Título --- */}
         <h2 className="titulo-contacto">Contáctenos</h2>
         <p className="subtitulo-contacto">
           Estamos listos para atenderte. Elige tu canal de comunicación preferido.
         </p>
         
-        {/* --- Caja de Información --- */}
         <div className="contacto-info-box">
           
           <div className="info-item">
-            <PhoneIcon />
+            <div className="icon-wrapper"><PhoneIcon /></div>
             <div className="info-texto">
               <strong>Teléfonos</strong>
               <span>313 680 1502 - 310 212 6380</span>
@@ -47,7 +43,7 @@ function ContactoPage() {
           </div>
           
           <div className="info-item">
-            <EmailIcon />
+            <div className="icon-wrapper"><EmailIcon /></div>
             <div className="info-texto">
               <strong>Email</strong>
               <span>unilatinservisas@gmail.com</span>
@@ -55,21 +51,24 @@ function ContactoPage() {
           </div>
           
           <div className="info-item">
-            <LocationIcon />
+            <div className="icon-wrapper"><LocationIcon /></div>
             <div className="info-texto">
               <strong>Oficina Principal</strong>
               <span>Cúcuta, Norte de Santander</span>
               <span>Avenida 3 #16-81, Barrio La Playa, Oficina 101</span>
             </div>
           </div>
-        </div>
 
-        {/* --- Sección PQRS --- */}
-        <div className="pqrs-seccion">
-          <h3>Peticiones, Quejas, Reclamos y Sugerencias</h3>
-          <p>Tu opinión es importante para nosotros. Haz clic aquí para gestionar tu solicitud.</p>
-          {/* Este botón puede ser un Link a otra ruta (ej. /pqrs) si lo deseas */}
-          <button className="pqrs-btn">Formulario PQRS</button>
+          {/* --- Sección PQRS --- */}
+          <div className="pqrs-seccion">
+            <h3>Peticiones, Quejas, Reclamos y Sugerencias</h3>
+            <p>Tu opinión es importante para nosotros. Haz clic aquí para gestionar tu solicitud.</p>
+            {/* Botón conectado para abrir el modal */}
+            <button className="pqrs-btn" onClick={onOpenPqrs}>
+              Formulario PQRS
+            </button>
+          </div>
+
         </div>
 
       </div>

@@ -1,17 +1,26 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.controller;
 
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.PQRsDto;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.PQRs;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Cliente;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Empleado;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.PQRsService;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.ClienteService;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.EmpleadoService;
-import org.springframework.web.bind.annotation.*;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.PQRsDto;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Cliente;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.PQRs;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.ClienteService;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.EmpleadoService;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.PQRsService;
 
 @RestController
 @RequestMapping("/api/pqrs")
@@ -42,7 +51,32 @@ public class PQRsController {
 
     @PostMapping
     public PQRsDto createPqrs(@RequestBody PQRsDto dto) {
-        PQRs entity = toEntity(dto);
+        // 1. Lógica para manejar el Cliente
+        Cliente cliente = null;
+        if (dto.getEmail() != null && !dto.getEmail().isEmpty()) {
+            // Buscamos si el cliente ya existe por su email
+            Optional<Cliente> clienteExistente = clienteService.buscarPorEmail(dto.getEmail());
+            
+            if (clienteExistente.isPresent()) {
+                cliente = clienteExistente.get();
+            } else {
+                // Si no existe, creamos uno nuevo
+                Cliente nuevoCliente = new Cliente();
+                nuevoCliente.setNombre(dto.getNombreCompleto());
+                nuevoCliente.setEmail(dto.getEmail());
+                nuevoCliente.setTelefono(dto.getTelefono());
+                cliente = clienteService.save(nuevoCliente); // Guardamos el nuevo cliente
+            }
+        }
+
+        // 2. Crear la PQRS y asignarle el cliente
+        PQRs entity = new PQRs();
+        entity.setTipo(dto.getTipo());
+        entity.setDescripcion(dto.getDescripcion());
+        entity.setFechaCreacion(LocalDateTime.now());
+        entity.setEstado("Pendiente"); // Estado inicial por defecto
+        entity.setCliente(cliente); // Asignamos el cliente encontrado o creado
+
         PQRs saved = pqrsService.save(entity);
         return toDto(saved);
     }
@@ -73,6 +107,15 @@ public class PQRsController {
         dto.setEstado(pqrs.getEstado());
         dto.setRespuesta(pqrs.getRespuesta());
         dto.setClienteId(pqrs.getCliente() != null ? pqrs.getCliente().getId() : null);
+        if (pqrs.getCliente() != null) {
+            dto.setClienteId(pqrs.getCliente().getId());
+            // Llenamos los nuevos campos con la info del cliente
+            dto.setNombreCompleto(pqrs.getCliente().getNombre());
+            dto.setEmail(pqrs.getCliente().getEmail());
+            dto.setTelefono(pqrs.getCliente().getTelefono());
+        } else {
+            dto.setClienteId(0); 
+        }
         return dto;
     }
 

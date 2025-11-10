@@ -2,11 +2,10 @@ import './HomePage.css';
 import CarruselServicios from './components/CarruselServicios';
 import { Link } from 'react-router-dom';
 
-function HomePage() {
+// Recibimos la prop onOpenTrabaja
+function HomePage({ onOpenTrabaja }) {
   return (
     <div className="home-container">
-      {/* <header> fue movido a App.js </header> */}
-
       <main className="hero">
         <h1>Soluciones Profesionales en Servicios Generales</h1>
         <p>
@@ -16,18 +15,14 @@ function HomePage() {
         </p>
         <div className="hero-buttons">
           <Link to="/servicios" className="ver-servicios">Ver Servicios</Link>
-          {/* --- BOTÓN MODIFICADO --- */}
           <Link to="/contacto" className="contactar">Contactar</Link>
         </div>
       </main>
 
-      {/* 🟦 Carrusel de servicios */}
       <section id="servicios-carrusel">
         <CarruselServicios />
       </section>
 
-
-      {/* 🟩 Sección "Quiénes Somos" */}
       <section id="quienes-somos" className="quienes-somos">
         <h2>Quiénes Somos</h2>
         <h3>Universal Latin de Servicios S.A.S.</h3>
@@ -40,7 +35,6 @@ function HomePage() {
         <Link to="/nosotros" className="ver-mas-btn">Ver más información</Link>
       </section>
 
-      {/* 🟨 Sección Misión y Visión */}
       <section className="mision-vision">
         <div className="tarjeta">
           <h3>Nuestra Misión</h3>
@@ -62,7 +56,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* 🟦 Sección "Trabaja con Nosotros" */}
       <section className="trabaja-con-nosotros">
         <h2 className="titulo-seccion">Trabaja con Nosotros</h2>
         <p className="subtitulo-trabaja">Únete a nuestro equipo de profesionales</p>
@@ -91,12 +84,12 @@ function HomePage() {
               <li>Mantenimiento de Piscinas</li>
               <li>Oficios Varios</li>
             </ul>
-            <button className="aplicar-btn">Aplicar Ahora</button>
+            {/* BOTÓN 1 CONECTADO */}
+            <button className="aplicar-btn" onClick={onOpenTrabaja}>Aplicar Ahora</button>
           </div>
         </div>
       </section>
 
-      {/* 🟩 Sección "Listo para comenzar" (CTA) */}
       <section className="cta-final">
         <h3>¿Listo para comenzar?</h3>
         <p>
@@ -107,7 +100,8 @@ function HomePage() {
           <Link to="/servicios" className="contratar-btn-cta">
             Contratar un Servicio
           </Link>
-          <button className="trabaja-btn-cta">Trabaja con Nosotros</button>
+          {/* BOTÓN 2 CONECTADO */}
+          <button className="trabaja-btn-cta" onClick={onOpenTrabaja}>Trabaja con Nosotros</button>
         </div>
       </section>
 
@@ -116,4 +110,3 @@ function HomePage() {
 }
 
 export default HomePage;
-

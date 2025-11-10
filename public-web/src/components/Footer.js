@@ -1,70 +1,71 @@
+import React from 'react';
 import './Footer.css';
+import { Link } from 'react-router-dom';
 
-function Footer() {
+// Recibimos onOpenPqrs como prop
+function Footer({ onOpenPqrs }) {
   return (
     <footer className="footer">
       <div className="footer-content">
-        {/* Columna izquierda */}
+        
+        {/* Sección 1: Logo y Descripción */}
         <div className="footer-section about">
           <div className="footer-logo">
             <img src="/logo.png" alt="Logo Universal Latin" />
-            <div>
-              <h3>Universal Latin</h3>
-              <p>de Servicios S.A.S.</p>
-            </div>
+            <h3>Universal Latin de<br />Servicios S.A.S.</h3>
           </div>
           <p className="footer-description">
-            Brindamos servicios profesionales de alta calidad para hogares, empresas y conjuntos residenciales.
+            Su aliado estratégico en servicios generales, brindando calidad, confianza y seguridad 24/7.
           </p>
-          <a href="#pqrs" className="pqrs-link">
-            PQRS - Peticiones, Quejas, Reclamos y Sugerencias
-          </a>
         </div>
 
-        {/* Columna central */}
+        {/* Sección 2: Servicios Rápidos */}
         <div className="footer-section services">
           <h4>Nuestros Servicios</h4>
           <ul>
+            <li>Aseo</li>
+            <li>Portería</li>
             <li>Jardinería</li>
-            <li>Celaduría</li>
-            <li>Limpieza</li>
-            <li>Conserjería</li>
-            <li>Mantenimiento</li>
-            <li>Cafetería</li>
+            <li>Piscinas</li>
             <li>Recepción</li>
-            <li>Piscineros</li>
-            <li>Oficios Varios</li>
+            <li>Conserjería</li>
+            <li>Cafetería</li>
+            <li>Mantenimiento</li>
           </ul>
         </div>
 
-        {/* Columna derecha */}
+        {/* Sección 3: Contacto */}
         <div className="footer-section contact">
-          <h4>Contacto</h4>
+          <h4>Contáctenos</h4>
           <p>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.88 19.88 0 0 1-8.63-3.07A19.5 19.5 0 0 1 3.05 9.81 19.88 19.88 0 0 1 0 1.18 2 2 0 0 1 2 0h3a2 2 0 0 1 2 1.72c.12.83.3 1.65.54 2.44a2 2 0 0 1-.45 2.11L5.1 7.91a16 16 0 0 0 6 6l1.64-1a2 2 0 0 1 2.11-.45c.79.24 1.61.42 2.44.54A2 2 0 0 1 20 14.92z" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon-phone">
+              <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.27c1.12.44 2.33.68 3.58.68.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C9.39 21 3 14.61 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.24 2.46.68 3.58.13.33.07.73-.27 1.11l-2.2 2.2z" />
             </svg>
             313 680 1502 - 310 212 6380
           </p>
           <p>
-  <svg className="icon-mail" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true">
-    <path d="M4 8.5l7.5 5L19 8.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M4 7.2h16v9.6H4z" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-  unilatinservisas@gmail.com
-</p>
-          <p>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon-mail">
+              <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+              <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
             </svg>
-            Cúcuta, Norte de Santander<br />
-            Avenida 3 #16-81, Barrio La Playa, Oficina 101
+            unilatinservisas@gmail.com
           </p>
+          <p>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon-location">
+              <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+            </svg>
+            Cúcuta, Norte de Santander<br />Avenida 3 #16-81, Barrio La Playa, Oficina 101
+          </p>
+          
+          {/* Enlace PQRS actualizado para usar la función */}
+          <button onClick={onOpenPqrs} className="pqrs-link-footer">
+            Radicar PQRS
+          </button>
         </div>
-      </div>
 
+      </div>
       <div className="footer-bottom">
-        <p>© 2025 Universal Latin de Servicios S.A.S. Todos los derechos reservados.</p>
+        &copy; {new Date().getFullYear()} Universal Latin de Servicios S.A.S. Todos los derechos reservados.
       </div>
     </footer>
   );

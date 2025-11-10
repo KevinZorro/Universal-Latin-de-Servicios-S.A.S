@@ -6,4 +6,7 @@ import lombok.Data;
 public class CandidatoDto extends UsuarioDto {
     private String hojaDeVidaURL;
     private boolean estadoProceso;
+    private String posicion;
+    private String experiencia;
+    private String mensaje;
 }
