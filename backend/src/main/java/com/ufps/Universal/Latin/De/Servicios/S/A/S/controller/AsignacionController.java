@@ -64,17 +64,24 @@ public class AsignacionController {
     }
 
     private Asignacion toEntity(AsignacionDto dto) {
-        Asignacion asignacion = new Asignacion();
-        asignacion.setId(dto.getId());
-        if (dto.getOrdenServicioId() != 0) {
-            Optional<Orden_Servicio> ordenOpt = ordenServicioService.findById(dto.getOrdenServicioId());
-            ordenOpt.ifPresent(asignacion::setOrden);
-        }
-        if (dto.getEmpleadoId().isEmpty()) {
-            //Optional<Empleado> empOpt = empleadoService.obtenerEmpleadoPorId(dto.getEmpleadoId());
-            //empOpt.ifPresent(asignacion::setEmpleado);
-        }
-        asignacion.setFechaAsignacion(dto.getFechaAsignacion());
-        return asignacion;
+    Asignacion asignacion = new Asignacion();
+    asignacion.setId(dto.getId());
+
+    if (dto.getOrdenServicioId() != 0) {
+    Orden_Servicio orden = ordenServicioService.findById(dto.getOrdenServicioId())
+            .orElseThrow(() -> new IllegalArgumentException("Orden no encontrada"));
+    asignacion.setOrden(orden);
     }
+
+
+    if (dto.getEmpleadoId() != null && !dto.getEmpleadoId().isEmpty()) {
+        Empleado empleado = empleadoService.obtenerEmpleadoPorId(dto.getEmpleadoId());
+        asignacion.setEmpleado(empleado);
+    }
+
+    asignacion.setFechaAsignacion(dto.getFechaAsignacion());
+    return asignacion;
 }
+
+}
+
