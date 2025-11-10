@@ -42,12 +42,13 @@ public class OrdenServicioController {
 
     @PostMapping
     public OrdenServicioDto createOrdenServicio(@RequestBody OrdenServicioDto dto) {
-        System.out.println("Creating Orden_Servicio with DTO: ");
-        //Orden_Servicio os = toEntity(dto);
-        //Orden_Servicio savedOs = ordenServicioService.save(os);
-        //return toDto(savedOs);
-        return null; // Placeholder until implementation is complete
-    }
+    System.out.println("Creating Orden_Servicio with DTO: " + dto.getOrdenId() + " - " + dto.getServicioId());
+
+    Orden_Servicio os = toEntity(dto);
+    Orden_Servicio savedOs = ordenServicioService.save(os);
+
+    return toDto(savedOs);
+}
 
     @DeleteMapping("/{id}")
     public void deleteOrdenServicio(@PathVariable int id) {
@@ -66,21 +67,22 @@ public class OrdenServicioController {
 
 private Orden_Servicio toEntity(OrdenServicioDto dto) {
     Orden_Servicio entity = new Orden_Servicio();
-    entity.setId(dto.getId());
 
     if (dto.getServicioId() != null && dto.getServicioId() != 0) {
         Optional<Servicio> srv = servicioService.obtenerPorId(dto.getServicioId());
         srv.ifPresent(entity::setServicio);
     }
 
+    // 2. Manejo de Orden
     if (dto.getOrdenId() != null && dto.getOrdenId() != 0) {
         Optional<Orden> ord = ordenService.findById(dto.getOrdenId());
         ord.ifPresent(entity::setOrden);
     }
-
+    // 3. Manejo de Estado
     if (dto.getEstado() != null) {
         entity.setEstado(Estado.valueOf(dto.getEstado()));
     }
+    
     return entity;
 }
 
