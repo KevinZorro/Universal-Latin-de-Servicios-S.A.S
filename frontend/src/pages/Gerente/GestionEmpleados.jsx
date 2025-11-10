@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { obtenerTodosCandidatos } from './candidatoApi';
 import './GestionEmpleados.css';
 
 const GestionEmpleados = () => {
