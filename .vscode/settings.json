@@ -1,5 +1,8 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
     "java.dependency.packagePresentation": "hierarchical",
-    "java.project.sourcePaths": ["src/main/java"]
+    "java.project.sourcePaths": [
+        "src/main/java"
+    ],
+    "java.compile.nullAnalysis.mode": "automatic"
 }
