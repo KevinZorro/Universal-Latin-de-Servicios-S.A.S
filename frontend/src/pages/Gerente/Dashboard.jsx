@@ -8,6 +8,7 @@ import GestionCargos from './GestionCargos';
 import GestionServicios from './GestionServicios';
 import './Dashboard.css';
 import GestionServiciosOrden from './GestionServiciosOrden';
+import VistaCandidatos from './VistaCandidatos';
 import GestionOrdenes from './GestionOrdenes';
 import ClienteManager from './ClienteManager';
 
@@ -25,6 +26,7 @@ export default function Dashboard() {
         { id: 'empleados', label: 'Empleados', icon: '👥' },
         { id: 'agregar-empleado', label: 'Agregar Empleado', icon: '➕' },
         { id: 'agregar-cargo', label: 'Agregar Cargo' },
+        { id: 'candidatos', label: 'Ver Candidatos' },
         { id: 'gestion-servicios', label: 'Gestionar Servicios', icon: '🏡' },
         { id: 'gestion-ordenes', label: 'Gestionar Ordenes', icon: '📝' },
         { id: 'gestion-clientes', label: 'Gestionar Clientes', icon: '🕐' },
@@ -42,6 +44,8 @@ export default function Dashboard() {
                 return <ListarEmpleados />;
             case 'agregar-empleado':
                 return <AgregarEmpleado />;
+            case 'candidatos':
+                return <VistaCandidatos />;
             case 'gestion-servicios':
                 return <GestionServicios />;
             case 'agregar-cargo':
