@@ -4,7 +4,7 @@ import {
     crearOrden,
     eliminarOrden,
     validarDatosOrden,
-    formatearFechaParaInput
+    obtenerOrdenPorId
 } from './ordenApi';
 import './GestionOrdenes.css';
 import './GestionServicios.css'
@@ -12,13 +12,18 @@ import ClienteService from './ClienteService';
 
 const GestionOrdenes = ({ onOrdenSeleccionada }) => {
     const [ordenes, setOrdenes] = useState([]);
-    const [clientes, setClientes] = useState([]); // Debe cargarse desde clienteApi
+    const [clientes, setClientes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
     const [enviando, setEnviando] = useState(false);
     const [erroresValidacion, setErroresValidacion] = useState([]);
     const [busqueda, setBusqueda] = useState('');
+
+    // Estados para el modal
+    const [mostrarModal, setMostrarModal] = useState(false);
+    const [ordenSeleccionada, setOrdenSeleccionada] = useState(null);
+    const [loadingDetalle, setLoadingDetalle] = useState(false);
 
     const [formData, setFormData] = useState({
         clienteId: 0,
@@ -50,14 +55,13 @@ const GestionOrdenes = ({ onOrdenSeleccionada }) => {
         try {
             setError(null);
             const data = await ClienteService.getAllClientes();
-
-            // Si el backend devuelve el formato HAL (_embedded)
             const listaClientes = data._embedded ? data._embedded.clienteList || [] : data;
-
-            // Mapea a un formato más simple
             setClientes(listaClientes.map(c => ({
                 id: c.id,
-                nombre: `${c.nombres || ''} ${c.apellidos || ''}`.trim() || c.nombre || `Cliente #${c.id}`
+                nombre: `${c.nombres || ''} ${c.apellidos || ''}`.trim() || c.nombre || `Cliente #${c.id}`,
+                email: c.email || 'N/A',
+                telefono: c.telefono || 'N/A',
+                direccion: c.direccion || 'N/A'
             })));
         } catch (err) {
             setError('Error al cargar los clientes: ' + err.message);
@@ -65,6 +69,31 @@ const GestionOrdenes = ({ onOrdenSeleccionada }) => {
         }
     };
 
+    const handleVerDetalle = async (idOrden) => {
+        try {
+            setLoadingDetalle(true);
+            setMostrarModal(true);
+            const orden = await obtenerOrdenPorId(idOrden);
+
+            // Buscar información del cliente
+            const cliente = clientes.find(c => c.id === orden.clienteId);
+
+            setOrdenSeleccionada({
+                ...orden,
+                clienteInfo: cliente || { nombre: `Cliente #${orden.clienteId}`, email: 'N/A', telefono: 'N/A', direccion: 'N/A' }
+            });
+        } catch (err) {
+            alert('Error al cargar los detalles: ' + err.message);
+            setMostrarModal(false);
+        } finally {
+            setLoadingDetalle(false);
+        }
+    };
+
+    const cerrarModal = () => {
+        setMostrarModal(false);
+        setOrdenSeleccionada(null);
+    };
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -158,6 +187,88 @@ const GestionOrdenes = ({ onOrdenSeleccionada }) => {
             hour: '2-digit',
             minute: '2-digit'
         });
+    };
+
+    // Modal de Detalles
+    const ModalDetalleOrden = () => {
+        if (!mostrarModal) return null;
+
+        return (
+            <div className="modal-overlay" onClick={cerrarModal}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                    <div className="modal-header">
+                        <h2>📋 Detalle de la Orden</h2>
+                        <button className="btn-close" onClick={cerrarModal}>✕</button>
+                    </div>
+
+                    <div className="modal-body">
+                        {loadingDetalle ? (
+                            <div className="loading-modal">⏳ Cargando detalles...</div>
+                        ) : ordenSeleccionada ? (
+                            <>
+                                {/* Información de la Orden */}
+                                <div className="detalle-seccion">
+                                    <h3>Información de la Orden</h3>
+                                    <div className="info-grid">
+                                        <div className="info-item">
+                                            <span className="info-label">ID de Orden:</span>
+                                            <span className="info-value">#{ordenSeleccionada.idOrden}</span>
+                                        </div>
+                                        <div className="info-item">
+                                            <span className="info-label">Estado:</span>
+                                            <span className={`badge-estado ${ordenSeleccionada.estadoOrden ? 'activo' : 'inactivo'}`}>
+                                                {ordenSeleccionada.estadoOrden ? '✅ Activa' : '❌ Inactiva'}
+                                            </span>
+                                        </div>
+                                        <div className="info-item">
+                                            <span className="info-label">Fecha de Creación:</span>
+                                            <span className="info-value">{formatearFecha(ordenSeleccionada.fechaCreacion)}</span>
+                                        </div>
+                                        <div className="info-item">
+                                            <span className="info-label">Fecha de Finalización:</span>
+                                            <span className="info-value">{formatearFecha(ordenSeleccionada.fechaFin)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Información del Cliente */}
+                                <div className="detalle-seccion">
+                                    <h3>Información del Cliente</h3>
+                                    <div className="info-grid">
+                                        <div className="info-item">
+                                            <span className="info-label">ID Cliente:</span>
+                                            <span className="info-value">{ordenSeleccionada.clienteId}</span>
+                                        </div>
+                                        <div className="info-item">
+                                            <span className="info-label">Nombre:</span>
+                                            <span className="info-value">{ordenSeleccionada.clienteInfo.nombre}</span>
+                                        </div>
+                                        <div className="info-item">
+                                            <span className="info-label">Email:</span>
+                                            <span className="info-value">{ordenSeleccionada.clienteInfo.email}</span>
+                                        </div>
+                                        <div className="info-item">
+                                            <span className="info-label">Teléfono:</span>
+                                            <span className="info-value">{ordenSeleccionada.clienteInfo.telefono}</span>
+                                        </div>
+                                        <div className="info-item full-width">
+                                            <span className="info-label">Dirección:</span>
+                                            <span className="info-value">{ordenSeleccionada.clienteInfo.direccion}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
+                        ) : null}
+                    </div>
+
+                    <div className="modal-footer">
+                        <button className="btn btn-secondary" onClick={cerrarModal}>
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
     };
 
     if (mostrarFormulario) {
@@ -295,7 +406,6 @@ const GestionOrdenes = ({ onOrdenSeleccionada }) => {
         <div className="gestion-ordenes-container">
             <div className="catalog-header">
                 <div>
-                    <h1>Gestión de Órdenes</h1>
                     <div className="breadcrumb">
                         <span>Órdenes</span> › <span>Lista de Órdenes</span>
                     </div>
@@ -351,7 +461,7 @@ const GestionOrdenes = ({ onOrdenSeleccionada }) => {
                             <div className="service-actions">
                                 <button
                                     className="btn-icon btn-view"
-                                    onClick={() => onOrdenSeleccionada && onOrdenSeleccionada(orden.idOrden)}
+                                    onClick={() => handleVerDetalle(orden.idOrden)}
                                     title="Ver detalles y servicios"
                                 >
                                     👁️
@@ -380,6 +490,8 @@ const GestionOrdenes = ({ onOrdenSeleccionada }) => {
                     + Crear Nueva Orden
                 </button>
             </div>
+
+            <ModalDetalleOrden />
         </div>
     );
 };
