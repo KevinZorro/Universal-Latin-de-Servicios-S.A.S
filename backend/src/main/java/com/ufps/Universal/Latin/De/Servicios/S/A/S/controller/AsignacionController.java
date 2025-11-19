@@ -1,6 +1,7 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.controller;
 
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.AsignacionDto;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.OrdenesPorEstadoDto;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Asignacion;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Orden_Servicio;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Empleado;
@@ -83,5 +84,12 @@ public class AsignacionController {
     return asignacion;
 }
 
+    @GetMapping("/empleado/{empleadoId}")
+    public OrdenesPorEstadoDto obtenerTrabajosPorEmpleado(@PathVariable String empleadoId) {
+        Empleado empleado = empleadoService.obtenerEmpleadoPorId(empleadoId);
+        if (empleado == null) {
+            throw new RuntimeException("Empleado no encontrado");
+        }
+        return asignacionService.obtenerOrdenesPorEmpleadoAgrupadasPorEstado(empleado);
+    }
 }
-
