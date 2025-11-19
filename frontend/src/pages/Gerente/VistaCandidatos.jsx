@@ -160,15 +160,6 @@ const VistaCandidatos = () => {
 
     return (
         <div className="candidatos-container">
-            <div className="catalog-header">
-                <div>
-                    <h1>👥 Candidatos</h1>
-                    <div className="breadcrumb">
-                        <span>Recursos Humanos</span> › <span>Candidatos</span>
-                    </div>
-                </div>
-            </div>
-
             {error && (
                 <div className="info-box info-box-error">
                     <div className="info-icon">⚠️</div>
@@ -197,35 +188,6 @@ const VistaCandidatos = () => {
                         <option value="EN_PROCESO">En proceso</option>
                         <option value="FINALIZADO">Finalizados</option>
                     </select>
-                </div>
-            </div>
-
-            {/* Estadísticas rápidas */}
-            <div className="estadisticas">
-                <div className="stat-card">
-                    <span className="stat-icon">👥</span>
-                    <div>
-                        <div className="stat-numero">{candidatos.length}</div>
-                        <div className="stat-label">Total Candidatos</div>
-                    </div>
-                </div>
-                <div className="stat-card">
-                    <span className="stat-icon">⏳</span>
-                    <div>
-                        <div className="stat-numero">
-                            {candidatos.filter(c => c.estadoProceso).length}
-                        </div>
-                        <div className="stat-label">En Proceso</div>
-                    </div>
-                </div>
-                <div className="stat-card">
-                    <span className="stat-icon">✅</span>
-                    <div>
-                        <div className="stat-numero">
-                            {candidatos.filter(c => !c.estadoProceso).length}
-                        </div>
-                        <div className="stat-label">Finalizados</div>
-                    </div>
                 </div>
             </div>
 

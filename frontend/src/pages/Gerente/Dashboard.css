@@ -777,3 +777,106 @@
     margin: 0;
     line-height: 1.6;
 }
+
+/* Agregar estos estilos al Dashboard.css existente */
+
+/* Contenedor de items del menú */
+.menu-item-container {
+    margin-bottom: 4px;
+}
+
+/* Nav item expandible */
+.nav-item.expandable {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+}
+
+.nav-item-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.expand-icon {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+    transition: transform 0.3s ease;
+}
+
+.nav-item.expandable.expanded .expand-icon {
+    transform: rotate(0deg);
+}
+
+.nav-item.expandable:hover .expand-icon {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Submenú */
+.submenu {
+    background: rgba(0, 0, 0, 0.2);
+    border-left: 3px solid rgba(255, 255, 255, 0.1);
+    margin-left: 20px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    border-radius: 0 8px 8px 0;
+    overflow: hidden;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+    }
+
+    to {
+        opacity: 1;
+        max-height: 500px;
+    }
+}
+
+.submenu-item {
+    width: 100%;
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+    border-left: 3px solid transparent;
+}
+
+.submenu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+.submenu-item.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-weight: 600;
+    border-left-color: white;
+}
+
+.submenu-item .nav-icon {
+    font-size: 1rem;
+}
+
+.submenu-item .nav-label {
+    font-size: 0.9rem;
+}
+
+/* Ajuste para el nav-item normal cuando no es expandible */
+.nav-item:not(.expandable) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}

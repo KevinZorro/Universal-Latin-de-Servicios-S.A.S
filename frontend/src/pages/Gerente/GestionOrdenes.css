@@ -1,40 +1,538 @@
-/* GestionOrdenes.css - Estilos para gestión de órdenes */
+/* GestionOrdenes.css - Estilos organizados */
 
-/* Reutiliza los estilos base de GestionServicios.css */
-/* Aquí solo agregamos estilos específicos para órdenes */
+.gestion-ordenes-container {
+    padding: 2rem;
+    width: 100%;
+    background: #f8f9fa;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
 
 /* ============================================
-   DETALLE DE ORDEN
+   BREADCRUMB Y NAVEGACIÓN
+   ============================================ */
+.breadcrumb {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.breadcrumb span {
+    margin: 0 0.5rem;
+}
+
+/* ============================================
+   HEADERS
+   ============================================ */
+.catalog-header {
+    margin-bottom: 2rem;
+}
+
+.catalog-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 0.5rem 0;
+}
+
+.form-header {
+    margin-bottom: 2rem;
+}
+
+.form-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 0.5rem 0;
+}
+
+.form-subtitle {
+    color: #6c757d;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* ============================================
+   INFO BOXES
+   ============================================ */
+.info-box {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    align-items: flex-start;
+}
+
+.info-box-blue {
+    background-color: #e3f2fd;
+    border: 1px solid #90caf9;
+    color: #1565c0;
+}
+
+.info-box-error {
+    background-color: #fff5f5;
+    border: 1px solid #feb2b2;
+    color: #c53030;
+}
+
+.info-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.info-box strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.info-box p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ============================================
+   SEARCH BAR
+   ============================================ */
+.search-bar {
+    margin-bottom: 1.5rem;
+}
+
+.search-bar input {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* ============================================
+   LISTA DE ÓRDENES (CARDS)
+   ============================================ */
+.services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.service-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.service-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.service-info {
+    flex: 1;
+}
+
+.service-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.service-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.service-code {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.service-details {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.service-meta {
+    font-size: 0.9rem;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.service-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+}
+
+.service-status.active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.service-status.inactive {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.service-status::before {
+    content: '●';
+    font-size: 0.6rem;
+}
+
+.service-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* ============================================
+   BOTONES DE ICONOS
+   ============================================ */
+.btn-icon {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.1);
+}
+
+.btn-view {
+    color: #007bff;
+}
+
+.btn-view:hover {
+    background-color: #e3f2fd;
+}
+
+.btn-delete {
+    color: #dc3545;
+}
+
+.btn-delete:hover {
+    background-color: #fff5f5;
+}
+
+/* ============================================
+   FORMULARIO
+   ============================================ */
+.form-section {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.section-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f1f3f5;
+}
+
+.section-icon {
+    font-size: 2rem;
+}
+
+.section-header h3 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.section-header p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Grid del formulario */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #495057;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-group select {
+    cursor: pointer;
+}
+
+/* Datetime input específico */
+input[type="datetime-local"] {
+    cursor: pointer;
+}
+
+/* Toggle Switch */
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 26px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked+.toggle-slider {
+    background-color: #28a745;
+}
+
+.toggle-switch input:checked+.toggle-slider:before {
+    transform: translateX(24px);
+}
+
+.toggle-status {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.toggle-status.active {
+    color: #28a745;
+}
+
+.toggle-status.inactive {
+    color: #6c757d;
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-save {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-save:hover:not(:disabled) {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-cancel:hover:not(:disabled) {
+    background-color: #5a6268;
+}
+
+.btn-add-service {
+    background-color: #007bff;
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.btn-add-service:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+}
+
+.form-actions-bottom {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #f1f3f5;
+}
+
+/* ============================================
+   ACCIONES FLOTANTES
+   ============================================ */
+.floating-actions {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 100;
+}
+
+/* ============================================
+   LOADING Y EMPTY STATE
+   ============================================ */
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+    font-size: 1.1rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.empty-state p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}
+
+/* ============================================
+   DETALLE DE ORDEN (para uso futuro)
    ============================================ */
 .orden-detalle-header {
     background: white;
-    border-radius: 8px;
-    padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.orden-detalle-header h1 {
-    margin: 0 0 16px 0;
-    color: #2c3e50;
-    font-size: 28px;
-    font-weight: 600;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .orden-info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
+    gap: 1.5rem;
 }
 
 .info-item {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0.5rem;
 }
 
 .info-label {
-    font-size: 12px;
+    font-size: 0.85rem;
     color: #6c757d;
     font-weight: 600;
     text-transform: uppercase;
@@ -42,168 +540,109 @@
 }
 
 .info-value {
-    font-size: 14px;
+    font-size: 1rem;
     color: #2c3e50;
     font-weight: 500;
 }
 
 /* ============================================
-   ESTADÍSTICAS
+   ESTADÍSTICAS (para uso futuro)
    ============================================ */
 .estadisticas-container {
     background: white;
-    border-radius: 8px;
-    padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.estadisticas-container h3 {
-    margin: 0 0 16px 0;
-    color: #2c3e50;
-    font-size: 18px;
-    font-weight: 600;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .estadisticas-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 16px;
+    gap: 1.5rem;
 }
 
 .estadistica-card {
     background: #f8f9fa;
-    border-radius: 8px;
-    padding: 20px;
+    border-radius: 12px;
+    padding: 1.5rem;
     text-align: center;
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease;
 }
 
 .estadistica-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .estadistica-numero {
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 8px;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
 }
 
 .estadistica-label {
-    font-size: 13px;
+    font-size: 0.9rem;
     color: #6c757d;
     font-weight: 600;
 }
 
 /* ============================================
-   SECCIÓN DE SERVICIOS DE ORDEN
-   ============================================ */
-.servicios-orden-section {
-    background: white;
-    border-radius: 8px;
-    padding: 24px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.section-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.section-title h2 {
-    margin: 0;
-    color: #2c3e50;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.btn-add-small {
-    padding: 8px 16px;
-    background-color: #4A90E2;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.btn-add-small:hover {
-    background-color: #357abd;
-}
-
-/* ============================================
-   BADGES
-   ============================================ */
-.badge {
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    display: inline-block;
-}
-
-.badge-activo {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-.badge-inactivo {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-/* ============================================
-   BOTONES ADICIONALES
-   ============================================ */
-.btn-view {
-    background-color: #4A90E2;
-    color: white;
-    padding: 6px 12px;
-    font-size: 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.btn-view:hover {
-    background-color: #357abd;
-}
-
-.btn-delete {
-    background-color: #dc3545;
-    color: white;
-    padding: 6px 12px;
-    font-size: 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.btn-delete:hover {
-    background-color: #c82333;
-}
-
-/* ============================================
-   SERVICE DETAILS ESPECÍFICO
-   ============================================ */
-.service-details .service-meta {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-/* ============================================
-   RESPONSIVE PARA ÓRDENES
+   RESPONSIVE
    ============================================ */
 @media (max-width: 768px) {
+    .gestion-ordenes-container {
+        padding: 1rem;
+    }
+
+    .catalog-header h1,
+    .form-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .service-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .service-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .form-actions-bottom {
+        flex-direction: column;
+    }
+
+    .form-actions-bottom .btn {
+        width: 100%;
+    }
+
+    .floating-actions {
+        bottom: 1rem;
+        right: 1rem;
+    }
+
+    .btn-add-service {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .search-bar input {
+        max-width: 100%;
+    }
+
+    .service-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .orden-info-grid {
         grid-template-columns: 1fr;
     }
@@ -211,20 +650,201 @@
     .estadisticas-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+}
 
-    .section-title {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
+/* ============================================
+   MODAL
+   ============================================ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.modal-content-orden {
+    background: white;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
     }
 
-    .btn-add-small {
-        width: 100%;
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
+}
 
-    .orden-detalle-header h1 {
-        font-size: 24px;
-    }
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    border-bottom: 2px solid #f1f3f5;
+}
+
+.modal-header h2 {
+    font-size: 1.75rem;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #6c757d;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    line-height: 1;
+}
+
+.btn-close:hover {
+    background: #f1f3f5;
+    color: #2c3e50;
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.loading-modal {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.detalle-seccion {
+    margin-bottom: 2rem;
+}
+
+.detalle-seccion h3 {
+    font-size: 1.25rem;
+    color: #2c3e50;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #f1f3f5;
+}
+
+.info-grid-modal {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.info-item-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.info-item-modal.full-width {
+    grid-column: 1 / -1;
+}
+
+.info-label-modal {
+    font-size: 0.85rem;
+    color: #6c757d;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value-modal {
+    font-size: 1rem;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.badge-estado-modal {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    width: fit-content;
+}
+
+.badge-estado-modal.activo {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.badge-estado-modal.inactivo {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.servicios-lista-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.servicio-item-modal {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+}
+
+.servicio-icon-modal {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.servicio-nombre-modal {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+}
+
+.servicio-detalles-modal {
+    font-size: 0.9rem;
+    color: #6c757d;
+    line-height: 1.5;
+}
+
+.empty-servicios {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.modal-footer {
+    padding: 1.5rem 2rem;
+    border-top: 2px solid #f1f3f5;
+    display: flex;
+    justify-content: flex-end;
 }
 
 /* ============================================
@@ -242,26 +862,35 @@
     }
 }
 
-.estadistica-card {
+.service-card {
     animation: slideIn 0.3s ease;
 }
 
 /* ============================================
-   DATETIME INPUT STYLING
+   RESPONSIVE MODAL
    ============================================ */
-input[type="datetime-local"] {
-    padding: 10px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    font-size: 14px;
-    color: #495057;
-    transition: border-color 0.2s ease;
-    background-color: white;
-    width: 100%;
-}
+@media (max-width: 768px) {
+    .modal-content-orden {
+        max-width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+    }
 
-input[type="datetime-local"]:focus {
-    outline: none;
-    border-color: #4A90E2;
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 1.5rem;
+    }
+
+    .modal-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .info-grid-modal {
+        grid-template-columns: 1fr;
+    }
+
+    .btn-close {
+        font-size: 1.5rem;
+    }
 }
