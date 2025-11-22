@@ -1,0 +1,269 @@
+/* ... (Mantén las variables :root igual) ... */
+:root {
+    --emp-primary: #4a90e2;
+    --emp-primary-dark: #357abd;
+    --emp-dark: #2C3E7D;
+    --emp-bg: #f0f2f5;
+    --emp-white: #ffffff;
+    --emp-text: #333333;
+    --emp-gray: #6c757d;
+    --emp-border: #e9ecef;
+}
+
+/* ... (Mantén los estilos de Layout y Sidebar igual) ... */
+.emp-dashboard-container {
+    display: flex;
+    height: 100vh;
+    background-color: var(--emp-bg);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden;
+}
+
+.emp-sidebar {
+    width: 260px;
+    background-color: var(--emp-dark);
+    color: var(--emp-white);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    flex-shrink: 0;
+}
+
+.emp-sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.emp-logo { display: flex; align-items: center; gap: 10px; }
+.emp-logo .icon { font-size: 24px; }
+.emp-logo .text h3 { margin: 0; font-size: 16px; font-weight: 600; color: white;}
+.emp-logo .text small { color: #aaa; font-size: 12px; }
+
+.close-menu-btn {
+    background: none; border: none; color: white; font-size: 20px; display: none; cursor: pointer;
+}
+
+.emp-nav { flex: 1; padding: 20px 10px; display: flex; flex-direction: column; gap: 5px; }
+
+.emp-nav-item {
+    background: transparent; border: none; color: #adb5bd; width: 100%; text-align: left;
+    padding: 12px 15px; border-radius: 8px; cursor: pointer; display: flex; align-items: center;
+    gap: 12px; font-size: 15px; font-weight: 500; transition: all 0.2s;
+}
+.emp-nav-item:hover { background-color: rgba(255,255,255,0.05); color: white; }
+.emp-nav-item.active { background-color: var(--emp-primary); color: white; font-weight: 600; }
+
+.emp-logout-container { padding: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+
+.btn-logout {
+    width: 100%; padding: 12px; background-color: rgba(231, 76, 60, 0.1); color: #e74c3c;
+    border: 1px solid #e74c3c; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s;
+}
+.btn-logout:hover { background-color: #e74c3c; color: white; }
+
+.emp-main-content {
+    flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; width: 100%;
+}
+
+.emp-topbar {
+    background-color: var(--emp-white); padding: 0 20px; height: 70px;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); flex-shrink: 0;
+}
+
+.menu-toggle { background: none; border: none; font-size: 24px; color: var(--emp-dark); cursor: pointer; display: none; }
+.page-title-mobile { font-size: 18px; font-weight: 600; color: var(--emp-dark); display: none; }
+
+/* --- CORRECCIÓN DE USUARIO (AQUÍ ESTÁ EL CAMBIO) --- */
+.user-info {
+    display: flex;
+    flex-direction: row; /* Forzamos fila */
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Alinea el texto a la derecha (hacia el avatar) */
+    justify-content: center;
+    text-align: right; /* Asegura alineación de texto */
+    line-height: 1.2;
+}
+
+.user-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--emp-dark);
+    white-space: nowrap; /* Evita que el nombre se parta en dos líneas */
+}
+
+.user-role {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--emp-gray); /* Color gris para el rol */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.user-avatar {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, #4a90e2, #007bff);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    flex-shrink: 0; /* Evita que el círculo se aplaste */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* ... (El resto de estilos para content-area, cards, modal, etc. se mantiene igual) ... */
+.emp-content-area {
+    flex: 1; overflow-y: auto; padding: 24px; max-width: 1200px; width: 100%;
+    box-sizing: border-box; margin: 0 auto;
+}
+
+.welcome-banner {
+    background: linear-gradient(135deg, #4a90e2 0%, #2c3e50 100%); color: white;
+    padding: 32px; border-radius: 16px; margin-bottom: 32px;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);
+}
+.welcome-banner h1 { margin: 0 0 8px 0; font-size: 24px; }
+.welcome-banner p { margin: 0; opacity: 0.9; }
+
+.emp-actions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+
+.emp-action-card {
+    background: white; padding: 24px; border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04); cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s; border: 1px solid transparent;
+}
+.emp-action-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+.emp-action-card.primary:hover { border-color: var(--emp-primary); }
+.card-icon { font-size: 32px; margin-bottom: 16px; }
+.emp-action-card h3 { margin: 0 0 8px 0; font-size: 18px; color: var(--emp-dark); }
+.emp-action-card p { margin: 0; font-size: 14px; color: var(--emp-gray); line-height: 1.5; }
+
+/* Mis Asignaciones */
+.mis-asignaciones-container { animation: fadeIn 0.3s ease; }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.section-header h2 { margin: 0; font-size: 22px; color: var(--emp-dark); }
+.section-header .subtitle { margin: 4px 0 0 0; font-size: 14px; color: var(--emp-gray); }
+
+.btn-refresh {
+    background: white; border: 1px solid var(--emp-border); width: 40px; height: 40px;
+    border-radius: 50%; cursor: pointer; font-size: 18px;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+}
+.btn-refresh:hover { background-color: #f8f9fa; transform: rotate(180deg); }
+
+.filters-row { display: flex; gap: 12px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; }
+.filters-row::-webkit-scrollbar { display: none; }
+.filter-pill {
+    background: white; border: 1px solid var(--emp-border); padding: 8px 16px;
+    border-radius: 20px; font-size: 13px; font-weight: 600; color: var(--emp-gray);
+    cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+}
+.filter-pill:hover { background-color: #f8f9fa; border-color: #ced4da; }
+.filter-pill.active {
+    background-color: var(--emp-dark); color: white; border-color: var(--emp-dark);
+    box-shadow: 0 2px 5px rgba(44, 62, 80, 0.3);
+}
+
+.asignaciones-list { display: flex; flex-direction: column; gap: 20px; }
+
+.asignacion-card {
+    background: white; border-radius: 16px; padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid var(--emp-primary);
+    margin-bottom: 16px; transition: transform 0.2s;
+}
+.asignacion-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+
+.card-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.service-badge {
+    background-color: #e3f2fd; color: #1565c0; padding: 6px 12px;
+    border-radius: 6px; font-size: 13px; font-weight: 700;
+}
+.status-badge {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 12px;
+}
+.status-pendiente { background: #fff3cd; color: #856404; }
+.status-en_proceso { background: #d1ecf1; color: #0c5460; }
+.status-finalizado { background: #d4edda; color: #155724; }
+.status-cancelado { background: #f8d7da; color: #721c24; }
+
+.orden-title { margin: 0 0 12px 0; font-size: 18px; color: var(--emp-dark); display: flex; align-items: center; gap: 8px; }
+.card-detail { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.card-detail.highlight .icon { background-color: #e8f0fe; color: var(--emp-primary); }
+.card-detail .icon { 
+    font-size: 16px; background: #f8f9fa; width: 32px; height: 32px; 
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; color: var(--emp-gray); flex-shrink: 0;
+}
+.detail-content { display: flex; flex-direction: column; }
+.detail-content .label { font-size: 11px; color: #aaa; font-weight: 700; text-transform: uppercase; }
+.detail-content .value { font-size: 14px; color: var(--emp-text); font-weight: 500; }
+.address-value { color: var(--emp-dark); font-weight: 600; }
+.card-footer { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--emp-border); display: flex; justify-content: flex-end; }
+
+.btn-action {
+    padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+    border: none; cursor: pointer; transition: background 0.2s;
+}
+.btn-action.primary { background-color: var(--emp-primary); color: white; }
+.btn-action.primary:hover { background-color: var(--emp-primary-dark); }
+
+.loading-state, .empty-state { text-align: center; padding: 60px 20px; color: var(--emp-gray); background: white; border-radius: 16px; }
+.empty-icon { font-size: 40px; display: block; margin-bottom: 10px; opacity: 0.5; }
+
+/* Modal Centrado */
+.modal-overlay-centered {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); z-index: 2000;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; backdrop-filter: blur(2px);
+}
+
+.asignacion-modal {
+    background: white; border-radius: 16px; width: 100%; max-width: 500px;
+    max-height: 90vh; display: flex; flex-direction: column;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-header { padding: 16px 24px; border-bottom: 1px solid var(--emp-border); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.modal-header h3 { margin: 0; color: var(--emp-dark); }
+.close-btn-modal { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
+.modal-content-scroll { padding: 24px; overflow-y: auto; }
+.detail-section { margin-bottom: 24px; background: #f8f9fa; padding: 15px; border-radius: 12px; }
+.detail-section h4 { margin: 0 0 12px 0; color: var(--emp-primary); font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e9ecef; padding-bottom: 8px; }
+.detail-row { margin-bottom: 10px; font-size: 14px; display: flex; flex-direction: column; }
+.detail-row strong { color: #555; margin-bottom: 4px; }
+.desc-text { margin: 0; color: #333; line-height: 1.5; font-style: italic; }
+.tag-horario { display: inline-block; background: #e3f2fd; color: #1565c0; padding: 4px 10px; border-radius: 4px; font-weight: 600; font-size: 12px; align-self: flex-start; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--emp-border); text-align: right; flex-shrink: 0; background-color: #f8f9fa; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; }
+
+@keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .emp-sidebar { position: absolute; height: 100%; transform: translateX(-100%); box-shadow: none; }
+    .emp-sidebar.open { transform: translateX(0); box-shadow: 5px 0 20px rgba(0,0,0,0.2); }
+    .sidebar-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 900; animation: fadeIn 0.2s; }
+    .menu-toggle, .close-menu-btn, .page-title-mobile { display: block; }
+    .emp-content-area { padding: 16px; }
+    .card-header-row { flex-direction: column; gap: 8px; align-items: flex-start; }
+    /* Ajuste para móvil: en pantallas pequeñas, el usuario se puede ver diferente o ocultar detalles */
+}

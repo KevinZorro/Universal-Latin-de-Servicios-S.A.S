@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import Dashboard from './pages/Gerente/Dashboard';
 import AgregarEmpleado from './pages/Gerente/CreateEmployee';
+import EmployeeDashboard from './pages/Empleado/EmployeeDashboard';
 const TOKEN_KEY = 'token';
 const ROL_KEY = 'rol';
 
@@ -47,6 +48,10 @@ function App() {
 
         {/* Redirigir cualquier ruta no reconocida al login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
+        
+        <Route path="/employee-dashboard" 
+        element={<PrivateRoute requiredRole="EMPLEADO">
+          <EmployeeDashboard /></PrivateRoute>} />
       </Routes>
     </Router>
   );
