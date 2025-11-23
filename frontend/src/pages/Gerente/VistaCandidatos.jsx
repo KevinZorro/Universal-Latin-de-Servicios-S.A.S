@@ -137,15 +137,15 @@ const VistaCandidatos = () => {
                             <div className="detalle-seccion">
                                 <h3>Hoja de Vida</h3>
                                 <a
-                                    href={candidatoSeleccionado.hojaDeVidaURL}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="btn btn-download"
-                                >
-                                    📄 Descargar Hoja de Vida
+                                href={candidatoSeleccionado.hojaDeVidaURL}
+                                download={`HV_${candidatoSeleccionado.nombre}_${candidatoSeleccionado.apellido}.pdf`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-download"
+                                >📄 Descargar Hoja de Vida
                                 </a>
                             </div>
-                        )}
+)}
                     </div>
 
                     <div className="modal-footer">
