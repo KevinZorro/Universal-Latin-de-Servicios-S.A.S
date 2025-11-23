@@ -1,17 +1,27 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.controller;
 
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.OrdenServicioDto;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Orden_Servicio;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Servicio;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Orden;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Estado;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.OrdenServicioService;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.ServicioService;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.OrdenService;
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.OrdenServicioDto;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Estado;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Orden;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Orden_Servicio;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Servicio;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.OrdenService;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.OrdenServicioService;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.ServicioService;
 
 @RestController
 @RequestMapping("/api/ordenes-servicio")
@@ -53,6 +63,26 @@ public class OrdenServicioController {
     @DeleteMapping("/{id}")
     public void deleteOrdenServicio(@PathVariable int id) {
         ordenServicioService.deleteById(id);
+    }
+
+    @PatchMapping("/{id}/estado")
+    public OrdenServicioDto updateEstado(@PathVariable int id, @RequestParam String nuevoEstado) {
+        Optional<Orden_Servicio> ordenServicioOpt = ordenServicioService.findById(id);
+        
+        if (ordenServicioOpt.isPresent()) {
+            Orden_Servicio os = ordenServicioOpt.get();
+            // Asegúrate de que el String coincida con tu Enum (PENDIENTE, EN_PROCESO, FINALIZADO, etc.)
+            try {
+                os.setEstado(Estado.valueOf(nuevoEstado));
+                Orden_Servicio updatedOs = ordenServicioService.save(os);
+                return toDto(updatedOs);
+            } catch (IllegalArgumentException e) {
+                // Manejo si envían un estado que no existe en el Enum
+                throw new RuntimeException("Estado inválido: " + nuevoEstado);
+            }
+        } else {
+            throw new RuntimeException("Orden de servicio no encontrada con ID: " + id);
+        }
     }
 
     // Helpers

@@ -1,6 +1,5 @@
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8080/api';
 
-// Headers con Token
 const getHeaders = () => {
     const token = localStorage.getItem('token');
     return {
@@ -9,11 +8,29 @@ const getHeaders = () => {
     };
 };
 
+// ✅ NUEVA FUNCIÓN: Actualizar estado (PATCH)
+export const actualizarEstadoServicio = async (ordenServicioId, nuevoEstado) => {
+    try {
+        const response = await fetch(`${API_BASE}/ordenes-servicio/${ordenServicioId}/estado?nuevoEstado=${nuevoEstado}`, {
+            method: 'PATCH',
+            headers: getHeaders()
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Error al actualizar estado');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error actualizando estado:", error);
+        throw error;
+    }
+};
+
 export const obtenerMisAsignaciones = async (cedula) => {
     try {
         if (!cedula) throw new Error("Cédula no proporcionada");
 
-        // 1. Obtener las asignaciones del empleado
         const response = await fetch(`${API_BASE}/asignaciones/empleado/${cedula}`, {
             method: 'GET',
             headers: getHeaders()
@@ -25,7 +42,7 @@ export const obtenerMisAsignaciones = async (cedula) => {
 
         const data = await response.json();
 
-        // Aplanar la respuesta agrupada (pendientes, enProceso, etc.)
+        // Aplanar respuesta
         let listaAsignaciones = [
             ...(data.pendientes || []),
             ...(data.enProceso || []),
@@ -35,8 +52,7 @@ export const obtenerMisAsignaciones = async (cedula) => {
 
         if (listaAsignaciones.length === 0) return [];
 
-        // 2. CARGAR CATÁLOGOS PARA CRUZAR DATOS
-        // Obtenemos todos los servicios, órdenes y clientes para buscar por ID
+        // Cargar catálogos auxiliares
         const [serviciosRes, ordenesRes, clientesRes] = await Promise.all([
             fetch(`${API_BASE}/servicios`, { headers: getHeaders() }),
             fetch(`${API_BASE}/ordenes`, { headers: getHeaders() }),
@@ -46,13 +62,10 @@ export const obtenerMisAsignaciones = async (cedula) => {
         const servicios = serviciosRes.ok ? await serviciosRes.json() : [];
         const ordenes = ordenesRes.ok ? await ordenesRes.json() : [];
         
-        // Manejo seguro de clientes (por si viene paginado)
         const clientesData = clientesRes.ok ? await clientesRes.json() : {};
         const clientes = clientesData._embedded ? clientesData._embedded.clienteList : (Array.isArray(clientesData) ? clientesData : []);
 
-        // 3. CRUZAR INFORMACIÓN (Mapeo completo)
         return listaAsignaciones.map(asig => {
-            // Buscar los objetos completos usando los IDs de la asignación
             const servicio = servicios.find(s => s.id === asig.servicioId);
             const orden = ordenes.find(o => o.idOrden === asig.ordenId);
             
@@ -62,26 +75,28 @@ export const obtenerMisAsignaciones = async (cedula) => {
             }
 
             return {
-                // Datos originales de la asignación
+                // --- Datos Base ---
                 id: asig.id,
+                // ✅ CLAVE: El ID que devuelve este endpoint ES el ID de OrdenServicio
+                ordenServicioId: asig.id, 
                 estado: asig.estado,
-                fechaAsignacion: asig.fechaAsignacion || asig.fecha, // Usar la fecha que viene del backend
+                fechaAsignacion: asig.fechaAsignacion || asig.fecha,
 
-                // Datos enriquecidos del Servicio (ServicioDto)
+                // --- Datos Servicio ---
                 servicioNombre: servicio ? servicio.nombreServicio : `Servicio #${asig.servicioId}`,
-                servicioDescripcion: servicio ? servicio.descripcion : "Sin descripción disponible",
-                servicioTipoHorario: servicio ? servicio.tipoHorario : "No especificado",
+                servicioDescripcion: servicio ? servicio.descripcion : "Sin descripción",
+                servicioTipoHorario: servicio ? servicio.tipoHorario : "N/A",
                 
-                // Datos enriquecidos de la Orden
+                // --- Datos Orden ---
                 ordenId: asig.ordenId,
-                ordenFechaCreacion: orden ? orden.fechaCreacion : null, // Fecha creación orden
-                ordenFechaFin: orden ? orden.fechaFin : null, // Fecha creación orden
+                ordenFechaCreacion: orden ? orden.fechaCreacion : null,
+                ordenFechaFin: orden ? orden.fechaFin : null,
                 
-                // Datos enriquecidos del Cliente
+                // --- Datos Cliente (Preservando tus campos originales) ---
                 clienteNombre: cliente ? (cliente.nombre || `${cliente.nombres} ${cliente.apellidos}`) : "Cliente Desconocido",
                 clienteDireccion: cliente ? cliente.direccion : "Sin dirección registrada",
-                clienteTelefono: cliente ? cliente.telefono : "Sin teléfono registrado",
-                clienteEmail: cliente ? cliente.email : "Sin email registrado"
+                clienteTelefono: cliente ? cliente.telefono : "Sin teléfono",
+                clienteEmail: cliente ? cliente.email : "Sin email"
             };
         });
 
