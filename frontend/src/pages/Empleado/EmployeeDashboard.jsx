@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MisAsignaciones from './MisAsignaciones';
 import EmpleadoAgenda from './EmpleadoAgenda';
+import CargarEvidencia from './CargarEvidencia';
 import './EmployeeDashboard.css';
 
 // Claves de localStorage
@@ -39,6 +40,8 @@ export default function EmployeeDashboard() {
                 return <EmployeeHome userName={userData.nombre} onNavigate={setActiveSection} />;
             case 'mis-asignaciones':
                 return <MisAsignaciones cedula={userData.cedula} />;
+            case 'cargar-evidencia':
+                return <CargarEvidencia />;
             case 'mi-agenda':
                 return <EmpleadoAgenda empleadoId={userData.cedula} />;
             case 'mi-perfil':
@@ -99,6 +102,15 @@ export default function EmployeeDashboard() {
                         <span className="nav-icon">📑</span>
                         <span className="nav-label">Mi Agenda</span>
                     </button>
+
+                    <button 
+                        className={`emp-nav-item ${activeSection === 'cargar-evidencia' ? 'active' : ''}`}
+                        onClick={() => { setActiveSection('cargar-evidencia'); setIsSidebarOpen(false); }}
+                    >
+                        <span className="nav-icon">📷</span>
+                        <span className="nav-label">Cargar Evidencia</span>
+                    </button>
+
 
                     <button
                         className={`emp-nav-item ${activeSection === 'mi-perfil' ? 'active' : ''}`}
@@ -162,6 +174,12 @@ function EmployeeHome({ userName, onNavigate }) {
                     <div className="card-icon">📋</div>
                     <h3>Ver mis Asignaciones</h3>
                     <p>Consulta las órdenes de servicio asignadas y su estado.</p>
+                </div>
+
+                <div className="emp-action-card secondary" onClick={() => onNavigate('cargar-evidencia')}>
+                    <div className="card-icon">📷</div>
+                    <h3>Cargar Evidencia</h3>
+                    <p>Sube fotos y documentos de tus trabajos realizados.</p>
                 </div>
 
                 <div className="emp-action-card info">

@@ -6,6 +6,7 @@ import AgregarEmpleado from './CreateEmployee';
 import ListarEmpleados from './ListarEmpleados';
 import GestionCargos from './GestionCargos';
 import GestionServicios from './GestionServicios';
+import VistaOrdenesEvidencias from './VistaOrdenesEvidencias';
 import './Dashboard.css';
 import GestionServiciosOrden from './GestionServiciosOrden';
 import VistaCandidatos from './VistaCandidatos';
@@ -48,6 +49,7 @@ export default function Dashboard() {
                 { id: 'agregar-empleado', label: 'Agregar Empleado', icon: '➕' },
                 { id: 'agregar-cargo', label: 'Gestionar Cargos', icon: '💼' },
                 { id: 'candidatos', label: 'Ver Candidatos', icon: '📋' },
+                { id: 'ver-evidencias', label: 'Ver Evidencias', icon: '📷' },
             ]
         },
         {
@@ -96,6 +98,8 @@ export default function Dashboard() {
                 return <AsignarEmpleados />;
             case 'gestion-clientes':
                 return <ClienteManager />;
+            case 'ver-evidencias':
+                return <VistaOrdenesEvidencias />;
             case 'configuracion':
                 return <ComingSoon section="Configuración" />;
             default:
@@ -295,6 +299,12 @@ function DashboardHome({ userName, userRole, setActiveSection }) {
                         <span className="action-icon">👤</span>
                         <span className="action-label">Gestionar Clientes</span>
                     </button>
+
+                    <button className="action-card" onClick={() => setActiveSection('ver-evidencias')}>
+                        <span className="action-icon">📷</span>
+                        <span className="action-label">Ver Evidencias</span>
+                    </button>
+
                 </div>
             </div>
         </div>
