@@ -37,22 +37,21 @@ export default function MisAsignaciones({ cedula }) {
 
     // --- Lógica para cambiar estado ---
     const handleCambiarEstado = async (ordenServicioId, nuevoEstado) => {
-        if (!window.confirm(`¿Deseas cambiar el estado a ${nuevoEstado}?`)) return;
+    if (!window.confirm(`¿Deseas cambiar el estado a ${nuevoEstado}?`)) return;
 
-        try {
-            setProcesando(ordenServicioId); // Bloquear botón
-            await actualizarEstadoServicio(ordenServicioId, nuevoEstado);
-            
-            // Actualizar la lista localmente para feedback inmediato
-            await cargarDatos(); 
-            alert("✅ Estado actualizado correctamente");
-        } catch (err) {
-            alert("❌ Error al actualizar estado: " + err.message);
-        } finally {
-            setProcesando(null); // Desbloquear
-        }
+    try {
+        setProcesando(ordenServicioId);
+        await actualizarEstadoServicio(ordenServicioId, nuevoEstado);
+        
+        await cargarDatos();
+        alert("✅ Estado actualizado correctamente");
+        
+    } catch (err) {
+        alert("❌ Error al actualizar estado: " + err.message);
+    } finally {
+        setProcesando(null);
+    }
     };
-
     const handleVerDetalles = (asignacion) => {
         setSelectedAsignacion(asignacion);
         setShowModal(true);

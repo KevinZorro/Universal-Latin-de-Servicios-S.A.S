@@ -94,7 +94,7 @@ function FormularioServicio({ servicio, onClose }) {
             const ordenId = ordenCreada.idOrden;
             
             // --- PASO 3: Crear OrdenServicio ---
-            const ordenServicioData = { servicioId: servicio.id, ordenId: ordenId, estado: "PENDIENTE" };
+            const ordenServicioData = { servicioId: servicio.id, ordenId: ordenId, estado: true };
 
             const osResponse = await fetch(`${API_BASE_URL}/ordenes-servicio`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(ordenServicioData)
