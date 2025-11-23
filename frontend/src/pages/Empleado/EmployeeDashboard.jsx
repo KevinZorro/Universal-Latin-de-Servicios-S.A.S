@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MisAsignaciones from './MisAsignaciones';
+import EmpleadoAgenda from './EmpleadoAgenda';
 import './EmployeeDashboard.css';
 
 // Claves de localStorage
@@ -38,6 +39,8 @@ export default function EmployeeDashboard() {
                 return <EmployeeHome userName={userData.nombre} onNavigate={setActiveSection} />;
             case 'mis-asignaciones':
                 return <MisAsignaciones cedula={userData.cedula} />;
+            case 'mi-agenda':
+                return <EmpleadoAgenda empleadoId={userData.cedula} />;
             case 'mi-perfil':
                 return (
                     <div className="empty-state" style={{ marginTop: '50px' }}>
@@ -73,7 +76,7 @@ export default function EmployeeDashboard() {
                 </div>
 
                 <nav className="emp-nav">
-                    <button 
+                    <button
                         className={`emp-nav-item ${activeSection === 'inicio' ? 'active' : ''}`}
                         onClick={() => { setActiveSection('inicio'); setIsSidebarOpen(false); }}
                     >
@@ -81,7 +84,7 @@ export default function EmployeeDashboard() {
                         <span className="nav-label">Inicio</span>
                     </button>
 
-                    <button 
+                    <button
                         className={`emp-nav-item ${activeSection === 'mis-asignaciones' ? 'active' : ''}`}
                         onClick={() => { setActiveSection('mis-asignaciones'); setIsSidebarOpen(false); }}
                     >
@@ -89,7 +92,15 @@ export default function EmployeeDashboard() {
                         <span className="nav-label">Mis Asignaciones</span>
                     </button>
 
-                    <button 
+                    <button
+                        className={`emp-nav-item ${activeSection === 'mi-agenda' ? 'active' : ''}`}
+                        onClick={() => { setActiveSection('mi-agenda'); setIsSidebarOpen(false); }}
+                    >
+                        <span className="nav-icon">📑</span>
+                        <span className="nav-label">Mi Agenda</span>
+                    </button>
+
+                    <button
                         className={`emp-nav-item ${activeSection === 'mi-perfil' ? 'active' : ''}`}
                         onClick={() => { setActiveSection('mi-perfil'); setIsSidebarOpen(false); }}
                     >
@@ -112,7 +123,7 @@ export default function EmployeeDashboard() {
             <div className="emp-main-content">
                 <header className="emp-topbar">
                     <button className="menu-toggle" onClick={() => setIsSidebarOpen(true)}>☰</button>
-                    
+
                     {/* Título visible solo en móvil si es necesario */}
                     <div className="page-title-mobile">
                         Universal Latin
@@ -152,7 +163,7 @@ function EmployeeHome({ userName, onNavigate }) {
                     <h3>Ver mis Asignaciones</h3>
                     <p>Consulta las órdenes de servicio asignadas y su estado.</p>
                 </div>
-                
+
                 <div className="emp-action-card info">
                     <div className="card-icon">📢</div>
                     <h3>Anuncios</h3>

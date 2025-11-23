@@ -2,6 +2,8 @@ package com.ufps.Universal.Latin.De.Servicios.S.A.S.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -25,5 +27,14 @@ public class Evidencia {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaRegistro;
 
-    private String registradaPor;
+@Column(name = "hora_inicio")
+private LocalDateTime horaInicio;
+
+@Column(name = "hora_fin")
+private LocalDateTime horaFin;
+
+@ManyToOne
+@JoinColumn(name = "empleado_id")
+private Empleado registradaPor;
+
 }
