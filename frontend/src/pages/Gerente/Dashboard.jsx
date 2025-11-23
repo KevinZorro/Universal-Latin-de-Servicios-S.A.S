@@ -123,7 +123,11 @@ export default function Dashboard() {
             <aside className="sidebar">
                 <div className="sidebar-header">
                     <div className="logo-container">
-                        <div className="logo-icon">🌐</div>
+                        <img 
+                        src="/logo.png" 
+                        alt="Logo empresa" 
+                        className="logo-image"
+                        />
                         <div className="logo-text">
                             <span className="logo-title">Universal Latin</span>
                             <span className="logo-subtitle">de Servicios S.A.S</span>

@@ -8,12 +8,19 @@ export default function AsignarServicioOrden() {
     const [ordenes, setOrdenes] = useState([]);
     const [servicios, setServicios] = useState([]);
     const [asignaciones, setAsignaciones] = useState([]);
-    const [modalOpen, setModalOpen] = useState(false);
+
+    const [modalOpen, setModalOpen] = useState(false); // crear asignación
+    const [editModalOpen, setEditModalOpen] = useState(false); // modificar estado
 
     const [formData, setFormData] = useState({
         ordenId: "",
         servicioId: "",
         estado: "PENDIENTE",
+    });
+
+    const [editData, setEditData] = useState({
+        idAsignacion: "",
+        nuevoEstado: "",
     });
 
     useEffect(() => {
@@ -35,7 +42,7 @@ export default function AsignarServicioOrden() {
         e.preventDefault();
         try {
             await ordenServicioApi.crearOrdenServicio(formData);
-            alert("Servicio asignado correctamente ✅");
+            alert("Servicio asignado correctamente");
             setFormData({ ordenId: "", servicioId: "", estado: "PENDIENTE" });
             setModalOpen(false);
             cargarDatos();
@@ -51,6 +58,35 @@ export default function AsignarServicioOrden() {
         }
     }
 
+    // -------------------------
+    // MODIFICAR ESTADO
+    // -------------------------
+
+    function abrirModalEditar(a) {
+        setEditData({
+            idAsignacion: a.id,
+            nuevoEstado: a.estado,
+        });
+        setEditModalOpen(true);
+    }
+
+    async function actualizarEstado(e) {
+        e.preventDefault();
+
+        try {
+            await ordenServicioApi.actualizarEstado(
+                editData.idAsignacion,
+                editData.nuevoEstado
+            );
+
+            alert("Estado actualizado correctamente");
+            setEditModalOpen(false);
+            cargarDatos();
+        } catch (error) {
+            alert("Error al actualizar estado");
+        }
+    }
+
     return (
         <div className="container">
 
@@ -58,6 +94,7 @@ export default function AsignarServicioOrden() {
                 ➕ Crear nueva asignación
             </button>
 
+            {/* ---------------- Modal Crear ---------------- */}
             {modalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content">
@@ -110,7 +147,6 @@ export default function AsignarServicioOrden() {
                                     onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
                                     required
                                 >
-                                    <option value="">Seleccione un estado</option>
                                     <option value="PENDIENTE">PENDIENTE</option>
                                     <option value="FINALIZADO">FINALIZADO</option>
                                 </select>
@@ -124,7 +160,43 @@ export default function AsignarServicioOrden() {
                 </div>
             )}
 
+            {/* ---------------- Modal Editar Estado ---------------- */}
+            {editModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5>Modificar Estado</h5>
+                            <span className="close-btn" onClick={() => setEditModalOpen(false)}>
+                                &times;
+                            </span>
+                        </div>
+
+                        <form onSubmit={actualizarEstado}>
+                            <label>Nuevo estado:</label>
+                            <select
+                                className="form-select mb-3"
+                                value={editData.nuevoEstado}
+                                onChange={(e) =>
+                                    setEditData({ ...editData, nuevoEstado: e.target.value })
+                                }
+                                required
+                            >
+                                <option value="PENDIENTE">PENDIENTE</option>
+                                <option value="EN_PROCESO">EN PROCESO</option>
+                                <option value="FINALIZADO">FINALIZADO</option>
+                                <option value="CANCELADO">CANCELADO</option>
+                            </select>
+
+                            <button className="btn btn-success" type="submit">
+                                Guardar cambios
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
+
             <h4>📋 Asignaciones existentes</h4>
+
             <table className="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -135,6 +207,7 @@ export default function AsignarServicioOrden() {
                         <th>Acción</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     {asignaciones.map((a) => (
                         <tr key={a.id}>
@@ -144,7 +217,14 @@ export default function AsignarServicioOrden() {
                             <td>{a.estado}</td>
                             <td>
                                 <button
-                                    className="btn btn-danger btn-sm"
+                                    className="btn btn-warning btn-sm me-4"
+                                    onClick={() => abrirModalEditar(a)}
+                                >
+                                    ✏️ Modificar
+                                </button>
+
+                                <button
+                                    className="btn btn-danger btn-sm "
                                     onClick={() => eliminarAsignacion(a.id)}
                                 >
                                     🗑️ Eliminar
@@ -152,6 +232,7 @@ export default function AsignarServicioOrden() {
                             </td>
                         </tr>
                     ))}
+
                     {asignaciones.length === 0 && (
                         <tr>
                             <td colSpan="5" className="text-center">

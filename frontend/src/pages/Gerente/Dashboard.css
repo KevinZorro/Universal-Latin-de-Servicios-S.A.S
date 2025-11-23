@@ -20,7 +20,17 @@
     display: flex;
     flex-direction: column;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;        /* Permite scroll vertical */
+    overflow-x: hidden; 
 }
+
+.logo-image {
+    width: 45px;      /* tamaño del logo */
+    height: 45px;
+    object-fit: contain;
+    margin-right: 10px;
+}
+
 
 .sidebar-header {
     padding: 24px 20px;
@@ -817,7 +827,8 @@
 .submenu {
     background: rgba(0, 0, 0, 0.2);
     border-left: 3px solid rgba(255, 255, 255, 0.1);
-    margin-left: 20px;
+    margin-left: 0;              /* <--- IMPORTANTÍSIMO */
+    padding-left: 20px;          /* Para mantener la indentación */
     margin-top: 4px;
     margin-bottom: 8px;
     border-radius: 0 8px 8px 0;
