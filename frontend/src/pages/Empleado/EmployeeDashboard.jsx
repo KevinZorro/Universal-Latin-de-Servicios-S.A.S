@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MisAsignaciones from './MisAsignaciones';
 import EmpleadoAgenda from './EmpleadoAgenda';
 import CargarEvidencia from './CargarEvidencia';
+import MiPerfil from './MiPerfil';
 import './EmployeeDashboard.css';
 
 // Claves de localStorage
@@ -45,13 +46,7 @@ export default function EmployeeDashboard() {
             case 'mi-agenda':
                 return <EmpleadoAgenda empleadoId={userData.cedula} />;
             case 'mi-perfil':
-                return (
-                    <div className="empty-state" style={{ marginTop: '50px' }}>
-                        <span style={{ fontSize: '40px', display: 'block', marginBottom: '10px' }}>👤</span>
-                        <h3>Perfil de Usuario</h3>
-                        <p>Próximamente podrás gestionar tus datos personales aquí.</p>
-                    </div>
-                );
+                return <MiPerfil cedula={userData.cedula} />;
             default:
                 return <EmployeeHome userName={userData.nombre} onNavigate={setActiveSection} />;
         }
@@ -182,10 +177,10 @@ function EmployeeHome({ userName, onNavigate }) {
                     <p>Sube fotos y documentos de tus trabajos realizados.</p>
                 </div>
 
-                <div className="emp-action-card info">
-                    <div className="card-icon">📢</div>
-                    <h3>Anuncios</h3>
-                    <p>No hay anuncios importantes por el momento.</p>
+                <div className="emp-action-card info" onClick={() => onNavigate('mi-agenda')}>
+                    <div className="card-icon">📑</div>
+                    <h3>Agenda</h3>
+                    <p>consulta tu agenda de asignaciones</p>
                 </div>
             </div>
         </div>
