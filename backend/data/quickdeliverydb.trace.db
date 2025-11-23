@@ -730,3 +730,129 @@ insert into usuarios (apellido,email,nombre,password_hash,rol,telefono,cedula) v
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:491)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
+2025-11-22 17:42:29.009404-05:00 jdbc[73]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HTE_USUARIOS" ya existe
+Table "HTE_USUARIOS" already exists; SQL statement:
+create global temporary table HTE_usuarios(activo boolean, estado_proceso boolean, fecha_ingreso date, apellido varchar(255), cedula varchar(255) not null, desprendible_pago_url varchar(255), ejemplo varchar(255), email varchar(255), experiencia varchar(255), hoja_de_vida_url varchar(255), hoja_de_vidaurl varchar(255), mensaje TEXT, nombre varchar(255), password_hash varchar(255), posicion varchar(255), telefono varchar(255), rol enum ('ADMIN','CANDIDATO','EMPLEADO','GERENTE'), primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:29.016464-05:00 jdbc[73]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HT_CANDIDATO" ya existe
+Table "HT_CANDIDATO" already exists; SQL statement:
+create global temporary table HT_candidato(cedula varchar(255) not null, primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:29.017773-05:00 jdbc[73]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HTE_CANDIDATO" ya existe
+Table "HTE_CANDIDATO" already exists; SQL statement:
+create global temporary table HTE_candidato(estado_proceso boolean, apellido varchar(255), cedula varchar(255) not null, email varchar(255), experiencia varchar(255), hoja_de_vidaurl varchar(255), mensaje TEXT, nombre varchar(255), password_hash varchar(255), posicion varchar(255), telefono varchar(255), rol enum ('ADMIN','CANDIDATO','EMPLEADO','GERENTE'), primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:29.019151-05:00 jdbc[73]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HT_EMPLEADOS" ya existe
+Table "HT_EMPLEADOS" already exists; SQL statement:
+create global temporary table HT_empleados(cedula varchar(255) not null, primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:29.020150-05:00 jdbc[73]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HTE_EMPLEADOS" ya existe
+Table "HTE_EMPLEADOS" already exists; SQL statement:
+create global temporary table HTE_empleados(activo boolean, fecha_ingreso date, apellido varchar(255), cedula varchar(255) not null, desprendible_pago_url varchar(255), email varchar(255), hoja_de_vida_url varchar(255), nombre varchar(255), password_hash varchar(255), telefono varchar(255), rol enum ('ADMIN','CANDIDATO','EMPLEADO','GERENTE'), primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:29.021149-05:00 jdbc[73]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HT_GERENTES" ya existe
+Table "HT_GERENTES" already exists; SQL statement:
+create global temporary table HT_gerentes(cedula varchar(255) not null, primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:29.022183-05:00 jdbc[73]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HTE_GERENTES" ya existe
+Table "HTE_GERENTES" already exists; SQL statement:
+create global temporary table HTE_gerentes(apellido varchar(255), cedula varchar(255) not null, ejemplo varchar(255), email varchar(255), nombre varchar(255), password_hash varchar(255), telefono varchar(255), rol enum ('ADMIN','CANDIDATO','EMPLEADO','GERENTE'), primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:29.022183-05:00 jdbc[73]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HT_USUARIOS" ya existe
+Table "HT_USUARIOS" already exists; SQL statement:
+create global temporary table HT_usuarios(cedula varchar(255) not null, primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:35.615669-05:00 jdbc[83]: null
+org.h2.message.DbException: La conexión no fue cerrada por la aplicación y esta siendo limpiada (garbage collected)
+The connection was not closed by the application and is garbage collected [90018-232]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:217)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:134)
+	at org.h2.Driver.connect(Driver.java:59)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:370)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:207)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111)
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:126)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:485)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:334)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:129)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:81)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:226)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:194)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:973)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.ufps.Universal.Latin.De.Servicios.S.A.S.Application.main(Application.java:10)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: La conexión no fue cerrada por la aplicación y esta siendo limpiada (garbage collected)
+The connection was not closed by the application and is garbage collected [90018-232]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 54 more
+2025-11-22 17:42:35.790466-05:00 jdbc[83]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HTE_USUARIOS" ya existe
+Table "HTE_USUARIOS" already exists; SQL statement:
+create global temporary table HTE_usuarios(activo boolean, estado_proceso boolean, fecha_ingreso date, apellido varchar(255), cedula varchar(255) not null, desprendible_pago_url varchar(255), ejemplo varchar(255), email varchar(255), experiencia varchar(255), hoja_de_vida_url varchar(255), hoja_de_vidaurl varchar(255), mensaje TEXT, nombre varchar(255), password_hash varchar(255), posicion varchar(255), telefono varchar(255), rol enum ('ADMIN','CANDIDATO','EMPLEADO','GERENTE'), primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:35.790466-05:00 jdbc[83]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HT_CANDIDATO" ya existe
+Table "HT_CANDIDATO" already exists; SQL statement:
+create global temporary table HT_candidato(cedula varchar(255) not null, primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:35.791869-05:00 jdbc[83]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HTE_CANDIDATO" ya existe
+Table "HTE_CANDIDATO" already exists; SQL statement:
+create global temporary table HTE_candidato(estado_proceso boolean, apellido varchar(255), cedula varchar(255) not null, email varchar(255), experiencia varchar(255), hoja_de_vidaurl varchar(255), mensaje TEXT, nombre varchar(255), password_hash varchar(255), posicion varchar(255), telefono varchar(255), rol enum ('ADMIN','CANDIDATO','EMPLEADO','GERENTE'), primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:35.792884-05:00 jdbc[83]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HT_EMPLEADOS" ya existe
+Table "HT_EMPLEADOS" already exists; SQL statement:
+create global temporary table HT_empleados(cedula varchar(255) not null, primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:35.792884-05:00 jdbc[83]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HTE_EMPLEADOS" ya existe
+Table "HTE_EMPLEADOS" already exists; SQL statement:
+create global temporary table HTE_empleados(activo boolean, fecha_ingreso date, apellido varchar(255), cedula varchar(255) not null, desprendible_pago_url varchar(255), email varchar(255), hoja_de_vida_url varchar(255), nombre varchar(255), password_hash varchar(255), telefono varchar(255), rol enum ('ADMIN','CANDIDATO','EMPLEADO','GERENTE'), primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:35.794096-05:00 jdbc[83]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HT_GERENTES" ya existe
+Table "HT_GERENTES" already exists; SQL statement:
+create global temporary table HT_gerentes(cedula varchar(255) not null, primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:35.795092-05:00 jdbc[83]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HTE_GERENTES" ya existe
+Table "HTE_GERENTES" already exists; SQL statement:
+create global temporary table HTE_gerentes(apellido varchar(255), cedula varchar(255) not null, ejemplo varchar(255), email varchar(255), nombre varchar(255), password_hash varchar(255), telefono varchar(255), rol enum ('ADMIN','CANDIDATO','EMPLEADO','GERENTE'), primary key (cedula)) TRANSACTIONAL [42101-232]
+2025-11-22 17:42:35.796098-05:00 jdbc[83]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HT_USUARIOS" ya existe
+Table "HT_USUARIOS" already exists; SQL statement:
+create global temporary table HT_usuarios(cedula varchar(255) not null, primary key (cedula)) TRANSACTIONAL [42101-232]

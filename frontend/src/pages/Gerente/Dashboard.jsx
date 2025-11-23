@@ -11,6 +11,8 @@ import GestionServiciosOrden from './GestionServiciosOrden';
 import VistaCandidatos from './VistaCandidatos';
 import GestionOrdenes from './GestionOrdenes';
 import ClienteManager from './ClienteManager';
+import AsignarServicioOrden from './AsignarServicioOrden';
+import AsignarEmpleados from './AsignarEmpleados';
 
 export default function Dashboard() {
     const {
@@ -64,6 +66,8 @@ export default function Dashboard() {
             type: 'expandable',
             submenu: [
                 { id: 'gestion-ordenes', label: 'Gestionar Órdenes', icon: '📋' },
+                { id: 'gestion-ordenes-servicios', label: 'Gestionar Órdenes y Servicios' },
+                { id: 'asignar-empleados', label: 'Asignar Empleados' },
             ]
         },
         { id: 'gestion-clientes', label: 'Clientes', icon: '👤', type: 'single' },
@@ -86,6 +90,10 @@ export default function Dashboard() {
                 return <GestionCargos />;
             case 'gestion-ordenes':
                 return <GestionOrdenes />;
+            case 'gestion-ordenes-servicios':
+                return <AsignarServicioOrden />;
+            case 'asignar-empleados':
+                return <AsignarEmpleados />;
             case 'gestion-clientes':
                 return <ClienteManager />;
             case 'configuracion':

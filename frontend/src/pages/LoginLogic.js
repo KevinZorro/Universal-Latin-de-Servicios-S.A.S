@@ -1,4 +1,3 @@
-// src/pages/LoginLogic.js
 import { useState } from 'react';
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8080';
@@ -44,25 +43,40 @@ export const useLogin = () => {
                 throw new Error('Respuesta inválida del servidor: no se recibió token');
             }
 
-            // Guardamos los datos
+            // --- VALIDACIÓN DE ROL SELECCIONADO ---
+            const rolRealDelUsuario = body?.rol; // Ej: 'EMPLEADO' (Viene del Backend)
+            const rolSeleccionadoEnUI = selectedRole.toUpperCase(); // Ej: 'GERENTE' (Viene del Botón)
+
+            // Si el usuario seleccionó un rol diferente al que tiene asignado, bloqueamos el acceso
+            if (rolRealDelUsuario !== rolSeleccionadoEnUI) {
+                throw new Error(`Credenciales correctas`);
+            }
+            // --------------------------------------
+
+            // Guardamos los datos (Solo si pasó la validación de rol)
             localStorage.setItem(TOKEN_KEY, token);
             if (body?.rol) localStorage.setItem(ROL_KEY, body.rol);
             if (body?.nombre) localStorage.setItem(NOMBRE_KEY, body.nombre);
             localStorage.setItem(CEDULA_KEY, cedula);
 
-            // 🟢 Mensaje en consola cuando el login fue exitoso
-            console.log('✅ Login exitoso');
-            console.log('Datos guardados en localStorage:', {
-                token,
-                rol: body?.rol,
-                nombre: body?.nombre,
-                cedula
-            });
+            console.log('✅ Login exitoso y rol verificado');
+            
+            // Redirección
+            if (rolRealDelUsuario === 'EMPLEADO') {
+                window.location.href = '/employee-dashboard';
+            } else {
+                window.location.href = '/dashboard';
+            }
 
-            window.location.href = '/dashboard';
         } catch (err) {
             console.error('❌ Error en el login:', err);
+            // Si el error es nuestro mensaje personalizado, lo mostramos tal cual
             setError(err.message || 'Error inesperado al iniciar sesión');
+            
+            // Opcional: Limpiar el localStorage si falló la validación de rol para evitar estados inconsistentes
+            if (err.message.includes('permisos')) {
+                localStorage.clear();
+            }
         } finally {
             setLoading(false);
         }
