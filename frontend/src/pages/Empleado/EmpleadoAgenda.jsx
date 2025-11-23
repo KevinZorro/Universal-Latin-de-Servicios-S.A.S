@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, MapPin, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 import { obtenerAgendaEmpleado } from './agendaService';
+import ListaAgenda from './ListaAgenda';
 
 const EmpleadoAgenda = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -257,55 +258,6 @@ const EmpleadoAgenda = () => {
                     </div>
                 </div>
 
-                {/* Lista de próximos servicios */}
-                <div className="bg-white rounded-lg shadow-sm">
-                    <div className="p-4 border-b">
-                        <h3 className="text-lg font-semibold text-gray-900">Próximos Servicios</h3>
-                    </div>
-                    <div className="divide-y">
-                        {eventos
-                            .filter(evento => new Date(evento.fechaInicio) >= new Date())
-                            .sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio))
-                            .slice(0, 5)
-                            .map((evento, index) => (
-                                <div key={index} className={`p-4 ${getColorEstado(evento.estado)}`}>
-                                    <div className="flex items-start justify-between">
-                                        <div className="flex-1">
-                                            <div className="flex items-center space-x-2 mb-2">
-                                                <h4 className="font-semibold text-gray-900">{evento.cliente}</h4>
-                                                <span className={`px-2 py-1 text-xs font-medium rounded ${evento.estado === 'COMPLETADA' ? 'bg-green-200 text-green-800' :
-                                                    evento.estado === 'PENDIENTE' ? 'bg-blue-200 text-blue-800' :
-                                                        'bg-yellow-200 text-yellow-800'
-                                                    }`}>
-                                                    {evento.estado}
-                                                </span>
-                                            </div>
-                                            <div className="space-y-1 text-sm text-gray-600">
-                                                <div className="flex items-center space-x-2">
-                                                    <Clock className="w-4 h-4" />
-                                                    <span>
-                                                        {new Date(evento.fechaInicio).toLocaleDateString('es-ES', {
-                                                            weekday: 'long',
-                                                            day: 'numeric',
-                                                            month: 'long'
-                                                        })} - {formatearHora(evento.fechaInicio)}
-                                                    </span>
-                                                </div>
-                                                <div className="flex items-center space-x-2">
-                                                    <MapPin className="w-4 h-4" />
-                                                    <span>{evento.ubicacion}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {evento.estado === 'COMPLETADA' && (
-                                            <CheckCircle className="w-6 h-6 text-green-600" />
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                    </div>
-                </div>
-
                 {/* Leyenda */}
                 <div className="mt-6 bg-white rounded-lg shadow-sm p-4">
                     <h4 className="text-sm font-semibold text-gray-900 mb-3">Estados</h4>
@@ -328,6 +280,8 @@ const EmpleadoAgenda = () => {
                         </div>
                     </div>
                 </div>
+
+                <ListaAgenda />
             </div>
         </div>
     );
