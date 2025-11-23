@@ -8,6 +8,33 @@ const getHeaders = () => {
     };
 };
 
+const getMultipartHeaders = () => {
+    const token = localStorage.getItem('token');
+    return {
+        'Authorization': `Bearer ${token}`
+    };
+};
+
+export const crearEvidencia = async (formData) => {
+    try {
+        const response = await fetch(`${API_BASE}/evidencias`, {
+            method: 'POST',
+            headers: getMultipartHeaders(), // Usamos los headers especiales
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Error al subir la evidencia');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error en crearEvidencia:", error);
+        throw error;
+    }
+};
+
 // ✅ NUEVA FUNCIÓN: Actualizar estado (PATCH)
 export const actualizarEstadoServicio = async (ordenServicioId, nuevoEstado) => {
     try {
