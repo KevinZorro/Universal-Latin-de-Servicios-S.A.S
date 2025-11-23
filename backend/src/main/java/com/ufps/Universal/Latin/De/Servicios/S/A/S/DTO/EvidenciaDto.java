@@ -1,6 +1,8 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -11,5 +13,7 @@ public class EvidenciaDto {
     private String tipoArchivo;
     private String rutaArchivo;
     private Date fechaRegistro;
-    private String registradaPor;
+    private String empleadoId;
+    private LocalDateTime horaInicio;
+    private LocalDateTime horaFin;
 }
