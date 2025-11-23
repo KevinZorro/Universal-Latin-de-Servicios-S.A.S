@@ -1,18 +1,21 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.config;
 
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Cliente;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.ClienteRepository;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Empleado;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Gerente;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Rol;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.EmpleadoRepository;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.GerenteRepository;
+import java.time.LocalDate;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDate;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Categoria;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Cliente;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Empleado;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Gerente;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Rol;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.CategoriaRepository;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.ClienteRepository;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.EmpleadoRepository;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.GerenteRepository;
 
 @Configuration
 public class DataInitializer {
@@ -22,16 +25,57 @@ public class DataInitializer {
             EmpleadoRepository empleadoRepository,
             GerenteRepository gerenteRepository,
             ClienteRepository clienteRepository,
+            CategoriaRepository categoriaRepository,
             PasswordEncoder passwordEncoder) {
+
         return args -> {
+
             boolean sinGerentes = gerenteRepository.count() == 0;
             boolean sinEmpleados = empleadoRepository.count() == 0;
             boolean sinClientes = clienteRepository.count() == 0;
+            boolean sinCategorias = categoriaRepository.count() == 0;
 
-            if (sinGerentes || sinEmpleados || sinClientes) {
+            if (sinGerentes || sinEmpleados || sinClientes || sinCategorias) {
                 System.out.println("🚀 Inicializando datos por defecto...");
 
-                // ==== Crear Gerente ====
+                // ===============================
+                //  CATEGORÍAS
+                // ===============================
+
+                        if (sinCategorias) {
+                System.out.println("📌 Insertando categorías...");
+
+                Categoria c1 = new Categoria();
+                c1.setNombre("Servicios de Atención y Recepción");
+                categoriaRepository.save(c1);
+
+                Categoria c2 = new Categoria();
+                c2.setNombre("Servicios de Aseo y Operación Interna");
+                categoriaRepository.save(c2);
+
+                Categoria c3 = new Categoria();
+                c3.setNombre("Servicios de Jardinería y Áreas Verdes");
+                categoriaRepository.save(c3);
+
+                Categoria c4 = new Categoria();
+                c4.setNombre("Servicios para Piscinas");
+                categoriaRepository.save(c4);
+
+                Categoria c5 = new Categoria();
+                c5.setNombre("Servicios de Mantenimiento");
+                categoriaRepository.save(c5);
+
+                Categoria c6 = new Categoria();
+                c6.setNombre("Servicios Integrales");
+                categoriaRepository.save(c6);
+
+                System.out.println("✅ Categorías principales creadas.");
+            }
+
+
+                // ===============================
+                //  GERENTE
+                // ===============================
                 if (sinGerentes) {
                     Gerente gerente = new Gerente();
                     gerente.setCedula("1001");
@@ -45,7 +89,9 @@ public class DataInitializer {
                     System.out.println("✅ Gerente inicial creado.");
                 }
 
-                // ==== Crear Empleado ====
+                // ===============================
+                //  EMPLEADO
+                // ===============================
                 if (sinEmpleados) {
                     Empleado empleado = new Empleado();
                     empleado.setCedula("2001");
@@ -61,6 +107,9 @@ public class DataInitializer {
                     System.out.println("✅ Empleado inicial creado.");
                 }
 
+                // ===============================
+                // CLIENTES
+                // ===============================
                 if (sinClientes) {
                     Cliente cliente1 = new Cliente();
                     cliente1.setNombre("Pedro Gómez");
@@ -82,6 +131,7 @@ public class DataInitializer {
 
                     System.out.println("✅ Clientes iniciales creados.");
                 }
+
             } else {
                 System.out.println("ℹ️ Los datos iniciales ya existen. No se insertaron nuevos registros.");
             }
