@@ -1,11 +1,13 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.service;
 
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Servicio;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.ServicioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Servicio;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.ServicioRepository;
 
 @Service
 public class ServicioService {
@@ -45,4 +47,9 @@ public class ServicioService {
     public void eliminarServicio(int id) {
         servicioRepository.deleteById(id);
     }
+
+    public List<Servicio> findByCategoria(Long categoriaId) {
+    return servicioRepository.findByCategoriaId(categoriaId);
+}
+
 }
