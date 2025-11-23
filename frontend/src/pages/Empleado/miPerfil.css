@@ -1,0 +1,89 @@
+/* Contenedor principal del perfil */
+.perfil-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 40px 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título de la sección */
+.perfil-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+/* Formulario de edición */
+.perfil-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Etiquetas */
+.perfil-form label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #555;
+    display: block;
+}
+
+/* Campos de entrada */
+.perfil-form input {
+    padding: 12px 15px;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.perfil-form input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74,144,226,0.5);
+}
+
+/* Botón guardar */
+.perfil-form button {
+    padding: 14px;
+    background-color: #4a90e2;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.05rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.perfil-form button:hover {
+    background-color: #357ABD;
+    transform: translateY(-2px);
+}
+
+/* Mensajes de estado */
+.perfil-message {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.perfil-message.success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.perfil-message.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}

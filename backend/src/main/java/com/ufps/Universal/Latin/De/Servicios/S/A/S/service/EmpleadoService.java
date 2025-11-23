@@ -1,15 +1,17 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.RegistroDto;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Cargo;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Empleado;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.CargoRepository;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.EmpleadoRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -114,6 +116,24 @@ public Empleado actualizarEmpleado(String cedula, Empleado datosActualizados) {
     return empleadoRepository.save(empleado);
 }
 
+public Empleado actualizarPerfilEmpleado(String cedula, Empleado datosActualizados) {
+    Empleado empleado = empleadoRepository.findById(cedula)
+            .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado con cédula: " + cedula));
+
+    if (datosActualizados.getNombre() != null) {
+        empleado.setNombre(datosActualizados.getNombre());
+    }
+    if (datosActualizados.getApellido() != null) {
+        empleado.setApellido(datosActualizados.getApellido());
+    }
+    if (datosActualizados.getTelefono() != null) {
+        empleado.setTelefono(datosActualizados.getTelefono());
+    }
+    if (datosActualizados.getEmail() != null) {
+        empleado.setEmail(datosActualizados.getEmail());
+    }
+    return empleadoRepository.save(empleado);
+}
 
 
     // ================== CRUD DE CARGOS ==================
