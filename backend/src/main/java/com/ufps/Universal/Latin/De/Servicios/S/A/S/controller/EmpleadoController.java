@@ -1,15 +1,24 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.controller;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Cargo;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Empleado;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.EmpleadoService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/empleados")
@@ -54,6 +63,17 @@ public ResponseEntity<Empleado> updateEmpleado(@PathVariable String cedula, @Val
     }
 }
 
+// Actualizar perfil del empleado (solo campos personales)
+@PutMapping("/perfil/{cedula}")
+@PreAuthorize("hasAuthority('EMPLEADO')")
+public ResponseEntity<Empleado> actualizarPerfil(@PathVariable String cedula, @Valid @RequestBody Empleado perfilActualizado) {
+    try {
+        Empleado actualizado = empleadoService.actualizarPerfilEmpleado(cedula, perfilActualizado);
+        return ResponseEntity.ok(actualizado);
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.notFound().build();
+    }
+}
 
     // ================== RELACIÓN EMPLEADO - CARGO ==================
 
