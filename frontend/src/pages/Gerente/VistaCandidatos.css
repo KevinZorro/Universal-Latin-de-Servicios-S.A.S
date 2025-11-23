@@ -5,11 +5,9 @@
     padding: 2rem;
     margin: 0 auto;
     background: #f8f9fa;
-    min-height: 100vh;
-    height: 100vh;
     overflow-y: auto;
     box-sizing: border-box;
-    padding-bottom: 2rem
+    padding-bottom: 2rem;
 }
 
 /* Header */
