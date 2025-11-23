@@ -30,7 +30,7 @@ public class EmpleadoService {
         dto.setApellido(empleado.getApellido());
         dto.setTelefono(empleado.getTelefono());
         dto.setEmail(empleado.getEmail());
-        dto.setPassword("1234"); // 🔒 Podrías asignar una contraseña temporal
+        dto.setPassword(empleado.getPasswordHash()); // 🔒 Podrías asignar una contraseña temporal
         dto.setRol("EMPLEADO");
 
         // Usar el AuthService para registrar correctamente
