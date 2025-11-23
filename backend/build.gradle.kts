@@ -1,6 +1,6 @@
 plugins {
 	java
-	id("org.springframework.boot") version "3.5.7"
+	id("org.springframework.boot") version "3.5.8"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.asciidoctor.jvm.convert") version "3.3.2"
 }
@@ -29,6 +29,8 @@ extra["snippetsDir"] = file("build/generated-snippets")
 extra["springCloudVersion"] = "2025.0.0"
 
 dependencies {
+	implementation("org.apache.poi:poi-ooxml:5.2.5")
+	implementation("org.apache.pdfbox:pdfbox:2.0.30")
 	implementation("com.squareup.okhttp3:okhttp:4.12.0")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas")

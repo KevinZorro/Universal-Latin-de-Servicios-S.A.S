@@ -22,9 +22,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import java.io.File;
 import java.util.Date;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/evidencias")
@@ -44,6 +42,20 @@ public class EvidenciaController {
         this.ordenServicioService = ordenServicioService;
         this.empleadoService = empleadoService;
         this.supabaseStorageService = supabaseStorageService;
+    }
+
+    @GetMapping("/por-orden/{ordenServicioId}")
+    public List<EvidenciaDto> getEvidenciasPorOrden(@PathVariable int ordenServicioId) {
+
+        Optional<Orden_Servicio> ordenOpt = ordenServicioService.findById(ordenServicioId);
+        if (!ordenOpt.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Orden de Servicio no encontrada");
+        }
+
+        return evidenciaService.findByOrdenServicioId(ordenServicioId)
+                .stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
