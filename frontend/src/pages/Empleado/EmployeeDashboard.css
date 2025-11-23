@@ -257,6 +257,125 @@
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+/* --- ESTILOS FORMULARIO EVIDENCIA --- */
+.cargar-evidencia-container {
+    max-width: 800px;
+    margin: 0 auto;
+    animation: fadeIn 0.3s ease;
+}
+
+.evidencia-form {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--emp-dark);
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--emp-border);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--emp-text);
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--emp-primary);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.file-upload-wrapper {
+    border: 2px dashed var(--emp-border);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+.file-upload-wrapper:hover {
+    border-color: var(--emp-primary);
+}
+
+.file-input {
+    width: 100%;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--emp-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-submit:hover:not(:disabled) {
+    background-color: var(--emp-primary-dark);
+}
+
+.btn-submit:disabled {
+    background-color: var(--emp-border);
+    cursor: not-allowed;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+}
+
+/* Responsive Form */
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .evidencia-form {
+        padding: 20px;
+    }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .emp-sidebar { position: absolute; height: 100%; transform: translateX(-100%); box-shadow: none; }
