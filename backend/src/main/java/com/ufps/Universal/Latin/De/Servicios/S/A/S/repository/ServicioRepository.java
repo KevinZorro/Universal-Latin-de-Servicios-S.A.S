@@ -1,8 +1,12 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.repository;
 
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Servicio;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Servicio;
+
 public interface ServicioRepository extends JpaRepository<Servicio, Integer> {
-    // Métodos CRUD básicos ya disponibles por JpaRepository
+
+    List<Servicio> findByCategoriaId(Long categoriaId);
 }

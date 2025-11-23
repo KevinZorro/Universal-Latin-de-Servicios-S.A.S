@@ -1,15 +1,25 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.controller;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.ServicioDto;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Servicio;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.ServicioService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/servicios")
@@ -18,10 +28,21 @@ public class ServicioController {
 
     private final ServicioService servicioService;
 
-    // Obtener todos los servicios
+    // -------------------------
+    // HU-12: Obtener servicios (todos o filtrados por categoría)
+    // -------------------------
     @GetMapping
-    public ResponseEntity<List<Servicio>> getAllServicios() {
-        List<Servicio> servicios = servicioService.obtenerTodos();
+    public ResponseEntity<List<Servicio>> getServicios(
+            @RequestParam(required = false) Long categoria
+    ) {
+        List<Servicio> servicios;
+
+        if (categoria != null) {
+            servicios = servicioService.findByCategoria(categoria);
+        } else {
+            servicios = servicioService.obtenerTodos();
+        }
+
         return ResponseEntity.ok(servicios);
     }
 
@@ -69,7 +90,8 @@ public class ServicioController {
                     dto.getNombreServicio(),
                     dto.getDescripcion(),
                     dto.isEstado(),
-                    dto.getTipoHorario()).orElseThrow(() -> new IllegalArgumentException("No existe el servicio"));
+                    dto.getTipoHorario())
+                    .orElseThrow(() -> new IllegalArgumentException("No existe el servicio"));
             return ResponseEntity.ok(actualizado);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
