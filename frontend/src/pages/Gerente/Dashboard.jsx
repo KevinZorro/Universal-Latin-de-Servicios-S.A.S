@@ -15,7 +15,7 @@ import ClienteManager from './ClienteManager';
 import AsignarServicioOrden from './AsignarServicioOrden';
 import AsignarEmpleados from './AsignarEmpleados';
 import VerPqrs from './verPqrs';
-import AnalyticsDashboard from './AnalyticsDashboard';
+import DashboardGerencial from './DashboardGerencial';
 
 export default function Dashboard() {
     const {
@@ -85,7 +85,7 @@ export default function Dashboard() {
             case 'dashboard':
                 return <DashboardHome userName={userName} userRole={userRole} setActiveSection={setActiveSection} />;
             case 'analytics':
-                return <AnalyticsDashboard />;
+                return <DashboardGerencial />;
             case 'empleados':
                 return <ListarEmpleados />;
             case 'agregar-empleado':
