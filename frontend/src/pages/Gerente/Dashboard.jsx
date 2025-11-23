@@ -14,6 +14,7 @@ import GestionOrdenes from './GestionOrdenes';
 import ClienteManager from './ClienteManager';
 import AsignarServicioOrden from './AsignarServicioOrden';
 import AsignarEmpleados from './AsignarEmpleados';
+import VerPqrs from './verPqrs';
 
 export default function Dashboard() {
     const {
@@ -73,6 +74,7 @@ export default function Dashboard() {
             ]
         },
         { id: 'gestion-clientes', label: 'Clientes', icon: '👤', type: 'single' },
+        { id: 'ver-pqrs', label: 'Ver PQRS', icon: '📨', type: 'single' },
         { id: 'configuracion', label: 'Configuración', icon: '⚙️', type: 'single' },
     ];
 
@@ -100,6 +102,8 @@ export default function Dashboard() {
                 return <ClienteManager />;
             case 'ver-evidencias':
                 return <VistaOrdenesEvidencias />;
+            case 'ver-pqrs':
+                return <VerPqrs />;
             case 'configuracion':
                 return <ComingSoon section="Configuración" />;
             default:
