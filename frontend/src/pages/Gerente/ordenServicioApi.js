@@ -27,3 +27,23 @@ export async function eliminarOrdenServicio(id) {
     const res = await fetch(`${API_BASE}/${id}`, { method: "DELETE" });
     if (!res.ok) throw new Error("Error al eliminar la orden-servicio");
 }
+
+export async function actualizarEstado(idOrdenServicio, nuevoEstado) {
+    const response = await fetch(
+        `http://localhost:8080/api/ordenes-servicio/${idOrdenServicio}/estado?nuevoEstado=${nuevoEstado}`,
+        {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Basic " + btoa("gerente:password"), // ajusta según corresponda
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Error al actualizar el estado");
+    }
+
+    return await response.json();
+}
+
