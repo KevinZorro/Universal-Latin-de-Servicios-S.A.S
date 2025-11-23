@@ -63,7 +63,7 @@ export default function AgregarEmpleado() {
         fechaIngreso: formData.fechaIngreso,
         activo: formData.estado === 'Activo',
         rol: 'EMPLEADO', // Todos los empleados creados tendrán rol EMPLEADO
-        passwordHash: formData.numeroDocumento // Usar la cédula como contraseña inicial
+        passwordHash: formData.password
       };
 
       console.log('Datos del formulario:', formData);
@@ -126,6 +126,7 @@ export default function AgregarEmpleado() {
           genero: '',
           telefonoPrincipal: '',
           telefonoSecundario: '',
+          password: '',
           email: '',
           direccion: '',
           ciudad: '',
@@ -382,6 +383,23 @@ export default function AgregarEmpleado() {
               </select>
             </div>
           </div>
+
+          <div className="form-field">
+            <label className="field-label">
+              Contraseña del Empleado <span className="required">*</span>
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="form-input"
+              placeholder="Ingrese una contraseña"
+              required
+              disabled={loading}
+            />
+          </div>
+
         </section>
 
         {/* Información de Contacto */}

@@ -97,4 +97,8 @@ class ClienteService {
     }
 }
 
+const clienteService = new ClienteService();
+export const getAllClientes = () => clienteService.getAllClientes();
+
+
 export default new ClienteService();

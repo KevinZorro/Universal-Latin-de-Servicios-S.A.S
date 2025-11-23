@@ -15,6 +15,7 @@ import ClienteManager from './ClienteManager';
 import AsignarServicioOrden from './AsignarServicioOrden';
 import AsignarEmpleados from './AsignarEmpleados';
 import VerPqrs from './verPqrs';
+import AnalyticsDashboard from './AnalyticsDashboard';
 
 export default function Dashboard() {
     const {
@@ -40,6 +41,7 @@ export default function Dashboard() {
 
     const menuStructure = [
         { id: 'dashboard', label: 'Dashboard', icon: '📊', type: 'single' },
+        { id: 'analytics', label: 'Análisis y Reportes', icon: '📈', type: 'single' },
         {
             id: 'empleados',
             label: 'Empleados',
@@ -82,6 +84,8 @@ export default function Dashboard() {
         switch (activeSection) {
             case 'dashboard':
                 return <DashboardHome userName={userName} userRole={userRole} setActiveSection={setActiveSection} />;
+            case 'analytics':
+                return <AnalyticsDashboard />;
             case 'empleados':
                 return <ListarEmpleados />;
             case 'agregar-empleado':
@@ -131,10 +135,10 @@ export default function Dashboard() {
             <aside className="sidebar">
                 <div className="sidebar-header">
                     <div className="logo-container">
-                        <img 
-                        src="/logo.png" 
-                        alt="Logo empresa" 
-                        className="logo-image"
+                        <img
+                            src="/logo.png"
+                            alt="Logo empresa"
+                            className="logo-image"
                         />
                         <div className="logo-text">
                             <span className="logo-title">Universal Latin</span>
@@ -284,6 +288,11 @@ function DashboardHome({ userName, userRole, setActiveSection }) {
             <div className="quick-actions">
                 <h2 className="section-title">Acciones Rápidas</h2>
                 <div className="actions-grid">
+                    <button className="action-card" onClick={() => setActiveSection('analytics')}>
+                        <span className="action-icon">📊</span>
+                        <span className="action-label">Ver Análisis</span>
+                    </button>
+
                     <button className="action-card" onClick={() => setActiveSection('agregar-empleado')}>
                         <span className="action-icon">➕</span>
                         <span className="action-label">Agregar Empleado</span>
