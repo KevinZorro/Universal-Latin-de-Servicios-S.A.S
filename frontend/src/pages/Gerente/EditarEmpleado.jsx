@@ -251,8 +251,6 @@ export default function EditarEmpleado({ empleado, onClose, onSuccess }) {
                                     disabled={loading}
                                 >
                                     <option value="EMPLEADO">Empleado</option>
-                                    <option value="GERENTE">Gerente</option>
-                                    <option value="ADMIN">Administrador</option>
                                 </select>
                             </div>
                         </div>
