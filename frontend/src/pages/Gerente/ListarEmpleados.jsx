@@ -440,7 +440,6 @@ function EmpleadoDetailModal({ empleado, onClose }) {
                             <DetailItem label="Nombre" value={empleado.nombre} />
                             <DetailItem label="Apellido" value={empleado.apellido} />
                             <DetailItem label="Cédula" value={empleado.cedula} />
-                            <DetailItem label="ID del Sistema" value={empleado.id || 'N/A'} />
                         </div>
                     </div>
 
@@ -504,24 +503,6 @@ function EmpleadoDetailModal({ empleado, onClose }) {
                                     Math.floor((new Date() - new Date(empleado.fechaIngreso)) / (1000 * 60 * 60 * 24)) + ' días'
                                     : 'N/A'
                                 }
-                            />
-                        </div>
-                    </div>
-
-                    {/* Información Adicional */}
-                    <div style={sectionStyle}>
-                        <h3 style={sectionTitleStyle}>
-                            <span style={{ marginRight: '8px' }}>ℹ️</span>
-                            Información Adicional
-                        </h3>
-                        <div style={detailsGridStyle}>
-                            <DetailItem
-                                label="Fecha de Registro"
-                                value={empleado.createdAt ? new Date(empleado.createdAt).toLocaleString('es-CO') : 'N/A'}
-                            />
-                            <DetailItem
-                                label="Última Actualización"
-                                value={empleado.updatedAt ? new Date(empleado.updatedAt).toLocaleString('es-CO') : 'N/A'}
                             />
                         </div>
                     </div>
