@@ -12,7 +12,7 @@ public class Candidato extends Usuario {
     private String hojaDeVidaURL;
 
     private boolean estadoProceso;
-
+ 
     private String posicion;
     
     private String experiencia;

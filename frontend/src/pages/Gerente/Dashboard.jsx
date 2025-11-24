@@ -77,7 +77,6 @@ export default function Dashboard() {
         },
         { id: 'gestion-clientes', label: 'Clientes', icon: '👤', type: 'single' },
         { id: 'ver-pqrs', label: 'Ver PQRS', icon: '📨', type: 'single' },
-        { id: 'configuracion', label: 'Configuración', icon: '⚙️', type: 'single' },
     ];
 
     const renderContent = () => {
@@ -108,8 +107,6 @@ export default function Dashboard() {
                 return <VistaOrdenesEvidencias />;
             case 'ver-pqrs':
                 return <VerPqrs />;
-            case 'configuracion':
-                return <ComingSoon section="Configuración" />;
             default:
                 return <DashboardHome userName={userName} userRole={userRole} setActiveSection={setActiveSection} />;
         }
