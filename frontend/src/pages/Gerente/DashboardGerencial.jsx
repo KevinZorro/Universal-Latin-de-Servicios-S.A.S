@@ -19,22 +19,59 @@ const DashboardGerencial = () => {
     }, []);
 
     const cargarDatos = async () => {
+        let hayFiltros = false;
+
         try {
             setLoading(true);
             const queryParams = new URLSearchParams();
 
-            if (filtros.fechaInicio) queryParams.append('fechaInicio', filtros.fechaInicio);
-            if (filtros.fechaFin) queryParams.append('fechaFin', filtros.fechaFin);
-            if (filtros.cliente) queryParams.append('cliente', filtros.cliente);
-            if (filtros.servicio) queryParams.append('servicio', filtros.servicio);
+            // Convertir fechas al formato LocalDateTime que espera el backend
+            if (filtros.fechaInicio) {
+                queryParams.append('fechaInicio', `${filtros.fechaInicio}T00:00:00`);
+                hayFiltros = true;
+            }
+            if (filtros.fechaFin) {
+                queryParams.append('fechaFin', `${filtros.fechaFin}T23:59:59`);
+                hayFiltros = true;
+            }
+            if (filtros.cliente) {
+                queryParams.append('cliente', filtros.cliente);
+                hayFiltros = true;
+            }
+            if (filtros.servicio) {
+                queryParams.append('servicio', filtros.servicio);
+                hayFiltros = true;
+            }
 
             const url = `http://localhost:8080/api/dashboard/filtros${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+            console.log('Llamando a:', url);
+
             const response = await fetch(url);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Error del servidor:', errorText);
+                throw new Error(`Error ${response.status}: ${errorText}`);
+            }
+
             const resultado = await response.json();
+
+            // Validar que tenga la estructura esperada
+            if (!resultado.detalles || !Array.isArray(resultado.detalles)) {
+                console.error('Respuesta sin estructura válida:', resultado);
+                throw new Error('La respuesta del servidor no tiene el formato esperado');
+            }
+
             setData(resultado);
         } catch (error) {
             console.error('Error al cargar datos:', error);
-            alert('Error al cargar los datos del dashboard');
+            alert(`Error al cargar los datos del dashboard:\n${error.message}\n\nRevisa la consola para más detalles.`);
+
+            // Si falla con filtros, intentar cargar sin filtros
+            if (hayFiltros) {
+                console.log('Intentando cargar sin filtros...');
+                setFiltros({ fechaInicio: '', fechaFin: '', cliente: '', servicio: '' });
+            }
         } finally {
             setLoading(false);
         }
@@ -159,8 +196,8 @@ const DashboardGerencial = () => {
     const serviciosUnicos = [...new Set(data.detalles.map(d => d.servicio))];
 
     return (
-        <div className="min-h-screen bg-gray-50 p-6">
-            <div className="max-w-7xl mx-auto">
+        <div className="min-h-screen bg-gray-50 p-6 overflow-y-auto">
+            <div className="max-w-7xl mx-auto pb-8">
                 {/* Header */}
                 <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                     <div className="flex justify-between items-center">
@@ -348,9 +385,9 @@ const DashboardGerencial = () => {
                 {/* Tabla de Detalles */}
                 <div className="bg-white rounded-lg shadow-md p-6">
                     <h3 className="text-xl font-bold text-gray-800 mb-4">Detalle de Evidencias</h3>
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto max-h-96 overflow-y-auto">
                         <table className="w-full text-left">
-                            <thead className="bg-gray-100">
+                            <thead className="bg-gray-100 sticky top-0">
                                 <tr>
                                     <th className="px-4 py-3 text-sm font-semibold text-gray-700">ID</th>
                                     <th className="px-4 py-3 text-sm font-semibold text-gray-700">Cliente</th>
