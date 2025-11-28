@@ -35,6 +35,11 @@ public class Empleado extends Usuario {
 
     private Boolean activo;
 
+    @Enumerated(EnumType.STRING)
+    private TipoContrato tipoContrato;
+
+    private LocalDate fechaRetiro;
+
     @URL
     @Column(name = "desprendible_pago_url")
     private String desprendiblePagoURL;
