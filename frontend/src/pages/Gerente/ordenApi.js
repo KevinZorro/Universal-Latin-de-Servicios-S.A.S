@@ -121,12 +121,21 @@ export const eliminarOrden = async (idOrden) => {
             headers: getHeaders()
         });
 
-        return await handleResponse(response);
+        if (!response.ok) {
+            throw {
+                status: response.status,
+                statusText: response.statusText,
+                message: `Error ${response.status}: ${response.statusText}`
+            };
+        }
+
+        return;
     } catch (error) {
         console.error(`Error al eliminar orden ${idOrden}:`, error);
         throw error;
     }
 };
+
 
 // ============================================
 // ORDEN-SERVICIO - API
@@ -202,7 +211,14 @@ export const eliminarOrdenServicio = async (id) => {
             headers: getHeaders()
         });
 
-        return await handleResponse(response);
+        if (!response.ok) {
+            throw {
+                status: response.status,
+                statusText: response.statusText,
+                message: `Error ${response.status}: ${response.statusText}`
+            };
+        }
+        return;
     } catch (error) {
         console.error(`Error al eliminar orden-servicio ${id}:`, error);
         throw error;

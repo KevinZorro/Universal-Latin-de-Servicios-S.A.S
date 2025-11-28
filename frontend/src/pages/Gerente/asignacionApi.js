@@ -15,6 +15,21 @@ export async function crearAsignacion(data) {
     return res.json();
 }
 
+export async function actualizarAsignacion(id, data) {
+    const res = await fetch(`${API_BASE}/asignaciones/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    if (!res.ok) {
+        throw new Error("Error al actualizar la asignación");
+    }
+
+    return res.json();
+}
+
+
 export async function eliminarAsignacion(id) {
     const res = await fetch(`${API_BASE}/asignaciones/${id}`, {
         method: "DELETE",

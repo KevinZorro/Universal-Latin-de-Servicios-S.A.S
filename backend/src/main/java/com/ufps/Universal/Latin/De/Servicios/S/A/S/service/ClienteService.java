@@ -28,4 +28,8 @@ public class ClienteService {
     public Optional<Cliente> buscarPorEmail(String email) {
         return clienteRepository.findByEmail(email);
     }
+
+    public Optional<Cliente> buscarPorNit(int nit) {
+        return clienteRepository.findByNit(nit);
+    }
 }

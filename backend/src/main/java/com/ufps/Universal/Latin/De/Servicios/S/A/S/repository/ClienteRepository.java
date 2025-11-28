@@ -10,4 +10,5 @@ import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Cliente;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
     Optional<Cliente> findByEmail(String email);
+    Optional<Cliente> findByNit(int nit);
 }

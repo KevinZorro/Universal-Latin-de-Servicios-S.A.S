@@ -10,17 +10,14 @@ export default function AsignarServicioOrden() {
     const [asignaciones, setAsignaciones] = useState([]);
 
     const [modalOpen, setModalOpen] = useState(false); // crear asignación
-    const [editModalOpen, setEditModalOpen] = useState(false); // modificar estado
+    const [modoEdicion, setModoEdicion] = useState(false);
+    const [idEditando, setIdEditando] = useState(null);
+
 
     const [formData, setFormData] = useState({
         ordenId: "",
         servicioId: "",
         estado: "PENDIENTE",
-    });
-
-    const [editData, setEditData] = useState({
-        idAsignacion: "",
-        nuevoEstado: "",
     });
 
     useEffect(() => {
@@ -39,67 +36,90 @@ export default function AsignarServicioOrden() {
     }
 
     async function handleSubmit(e) {
-        e.preventDefault();
-        try {
+    e.preventDefault();
+
+    try {
+        if (modoEdicion) {
+            // ✅ PUT (ACTUALIZAR)
+            await ordenServicioApi.actualizarOrdenServicio(idEditando, formData);
+            alert("✅ Asignación actualizada correctamente");
+        } else {
+            // ✅ POST (CREAR)
             await ordenServicioApi.crearOrdenServicio(formData);
-            alert("Servicio asignado correctamente");
-            setFormData({ ordenId: "", servicioId: "", estado: "PENDIENTE" });
-            setModalOpen(false);
-            cargarDatos();
-        } catch (error) {
-            alert(error.message);
+            alert("✅ Servicio asignado correctamente");
         }
+
+        setFormData({ ordenId: "", servicioId: "", estado: "PENDIENTE" });
+        setModalOpen(false);
+        setModoEdicion(false);
+        setIdEditando(null);
+
+        cargarDatos();
+
+    } catch (error) {
+        alert("❌ Error al guardar la asignación");
     }
+}
+
 
     async function eliminarAsignacion(id) {
-        if (window.confirm("¿Deseas eliminar esta asignación?")) {
-            await ordenServicioApi.eliminarOrdenServicio(id);
-            cargarDatos();
-        }
+    const confirmado = window.confirm("¿Estás seguro de que deseas eliminar esta asignación?");
+
+    if (!confirmado) return;
+
+    try {
+        await ordenServicioApi.eliminarOrdenServicio(id);
+
+        alert("✅ Asignación eliminada correctamente");
+
+        // Actualizar tabla sin recargar todo
+        setAsignaciones(prev => prev.filter(a => a.id !== id));
+
+    } catch (error) {
+        console.error(error);
+        alert("❌ Error al eliminar la asignación");
     }
+}
+
 
     // -------------------------
-    // MODIFICAR ESTADO
+    // MODIFICAR ASIGNACIÓN
     // -------------------------
 
     function abrirModalEditar(a) {
-        setEditData({
-            idAsignacion: a.id,
-            nuevoEstado: a.estado,
-        });
-        setEditModalOpen(true);
-    }
+    setFormData({
+        ordenId: a.ordenId,
+        servicioId: a.servicioId,
+        estado: a.estado
+    });
 
-    async function actualizarEstado(e) {
-        e.preventDefault();
-
-        try {
-            await ordenServicioApi.actualizarEstado(
-                editData.idAsignacion,
-                editData.nuevoEstado
-            );
-
-            alert("Estado actualizado correctamente");
-            setEditModalOpen(false);
-            cargarDatos();
-        } catch (error) {
-            alert("Error al actualizar estado");
-        }
-    }
+    setIdEditando(a.id);
+    setModoEdicion(true);
+    setModalOpen(true);
+}
 
     return (
         <div className="container">
 
-            <button className="btn btn-primary mb-3" onClick={() => setModalOpen(true)}>
-                ➕ Crear nueva asignación
-            </button>
+            <button
+    className="btn btn-primary mb-3"
+    onClick={() => {
+        setModoEdicion(false); // ✅ MODO CREAR
+        setIdEditando(null);
+        setFormData({ ordenId: "", servicioId: "", estado: "PENDIENTE" }); // ✅ LIMPIAR FORM
+        setModalOpen(true);
+    }}
+>
+    ➕ Crear nueva asignación
+</button>
+
 
             {/* ---------------- Modal Crear ---------------- */}
             {modalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5>Crear Asignación</h5>
+                            <h5>{modoEdicion ? "Actualizar Asignación" : "Crear Asignación"}</h5>
                             <span className="close-btn" onClick={() => setModalOpen(false)}>
                                 &times;
                             </span>
@@ -148,48 +168,16 @@ export default function AsignarServicioOrden() {
                                     required
                                 >
                                     <option value="PENDIENTE">PENDIENTE</option>
+                                    <option value="EN_PROCESO">EN PROCESO</option>
+                                    <option value="CANCELADO">CANCELADO</option>
                                     <option value="FINALIZADO">FINALIZADO</option>
                                 </select>
                             </div>
 
                             <button className="btn btn-primary" type="submit">
-                                Guardar
+                                {modoEdicion ? "Actualizar" : "Guardar"}
                             </button>
-                        </form>
-                    </div>
-                </div>
-            )}
 
-            {/* ---------------- Modal Editar Estado ---------------- */}
-            {editModalOpen && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5>Modificar Estado</h5>
-                            <span className="close-btn" onClick={() => setEditModalOpen(false)}>
-                                &times;
-                            </span>
-                        </div>
-
-                        <form onSubmit={actualizarEstado}>
-                            <label>Nuevo estado:</label>
-                            <select
-                                className="form-select mb-3"
-                                value={editData.nuevoEstado}
-                                onChange={(e) =>
-                                    setEditData({ ...editData, nuevoEstado: e.target.value })
-                                }
-                                required
-                            >
-                                <option value="PENDIENTE">PENDIENTE</option>
-                                <option value="EN_PROCESO">EN PROCESO</option>
-                                <option value="FINALIZADO">FINALIZADO</option>
-                                <option value="CANCELADO">CANCELADO</option>
-                            </select>
-
-                            <button className="btn btn-success" type="submit">
-                                Guardar cambios
-                            </button>
                         </form>
                     </div>
                 </div>
