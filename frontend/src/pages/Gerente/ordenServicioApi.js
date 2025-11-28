@@ -28,22 +28,16 @@ export async function eliminarOrdenServicio(id) {
     if (!res.ok) throw new Error("Error al eliminar la orden-servicio");
 }
 
-export async function actualizarEstado(idOrdenServicio, nuevoEstado) {
-    const response = await fetch(
-        `http://localhost:8080/api/ordenes-servicio/${idOrdenServicio}/estado?nuevoEstado=${nuevoEstado}`,
-        {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Basic " + btoa("gerente:password"), // ajusta según corresponda
-            },
-        }
-    );
+export async function actualizarOrdenServicio(id, dto) {
+    const res = await fetch(`${API_BASE}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+    });
 
-    if (!response.ok) {
-        throw new Error("Error al actualizar el estado");
-    }
+    if (!res.ok) throw new Error("Error al actualizar la orden-servicio");
 
-    return await response.json();
+    return await res.json();
 }
+
 

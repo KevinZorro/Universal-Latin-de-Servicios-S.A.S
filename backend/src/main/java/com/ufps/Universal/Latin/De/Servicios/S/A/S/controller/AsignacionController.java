@@ -39,6 +39,12 @@ public class AsignacionController {
         return asignacionService.saveByDto(dto);
     }
 
+    @PutMapping("/{id}")
+    public AsignacionDto updateAsignacion(@PathVariable int id, @RequestBody AsignacionDto dto) {
+        dto.setId(id);
+        return asignacionService.updateByDto(dto);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteAsignacion(@PathVariable int id) {
         asignacionService.deleteById(id);

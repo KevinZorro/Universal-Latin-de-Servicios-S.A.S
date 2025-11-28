@@ -1,13 +1,11 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.Map;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
-
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -19,8 +17,6 @@ import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Asignacion;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Empleado;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Orden_Servicio;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.AsignacionRepository;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.EmpleadoService;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.OrdenServicioService;
 
 @Service
 public class AsignacionService {
@@ -104,6 +100,28 @@ public List<EventoAgendaDto> obtenerEventosAgendaPorEmpleado(Empleado empleado) 
 
     public void deleteById(int id) {
         asignacionRepository.deleteById(id);
+    }
+
+    public AsignacionDto updateByDto(AsignacionDto dto) {
+        Asignacion existente = asignacionRepository.findById(dto.getId())
+                .orElseThrow(() -> new RuntimeException("Asignacion no encontrada"));
+
+        // Mapea y valida Orden
+        Orden_Servicio orden = ordenServicioService.findById(dto.getOrdenServicioId())
+                .orElseThrow(() -> new RuntimeException("Orden Servicio no encontrada"));
+        existente.setOrden(orden);
+
+        // Mapea y valida Empleado
+        Empleado empleado = empleadoService.obtenerEmpleadoPorId(dto.getEmpleadoId());
+        if (empleado == null) {
+            throw new RuntimeException("Empleado no encontrado");
+        }
+        existente.setEmpleado(empleado);
+
+        existente.setFechaAsignacion(dto.getFechaAsignacion());
+
+        Asignacion updated = asignacionRepository.save(existente);
+        return toDto(updated);
     }
 
     public OrdenesPorEstadoDto obtenerOrdenesPorEmpleadoAgrupadasPorEstado(Empleado empleado) {

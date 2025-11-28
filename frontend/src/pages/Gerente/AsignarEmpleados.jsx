@@ -6,6 +6,8 @@ export default function AsignarEmpleados() {
     const [ordenesServicio, setOrdenesServicio] = useState([]);
     const [empleados, setEmpleados] = useState([]);
     const [asignaciones, setAsignaciones] = useState([]);
+    const [modoEdicion, setModoEdicion] = useState(false);
+    const [asignacionEditandoId, setAsignacionEditandoId] = useState(null);
     const [formData, setFormData] = useState({
         ordenServicioId: "",
         empleadoId: "",
@@ -28,41 +30,91 @@ export default function AsignarEmpleados() {
         setAsignaciones(asig);
     }
 
+    function abrirEdicion(asignacion) {
+    setFormData({
+        ordenServicioId: asignacion.ordenServicioId,
+        empleadoId: asignacion.empleadoId,
+        fechaAsignacion: asignacion.fechaAsignacion.split("T")[0]
+    });
+
+    setAsignacionEditandoId(asignacion.id);
+    setModoEdicion(true);
+    setModalOpen(true);
+}
+
     async function handleSubmit(e) {
-        e.preventDefault();
-        try {
+    e.preventDefault();
+
+    try {
+        if (modoEdicion) {
+            await asignacionApi.actualizarAsignacion(asignacionEditandoId, formData);
+            alert("✅ Asignación actualizada correctamente");
+        } else {
             await asignacionApi.crearAsignacion(formData);
-            alert("Empleado asignado correctamente ✅");
-            setFormData({
-                ordenServicioId: "",
-                empleadoId: "",
-                fechaAsignacion: new Date().toISOString().split("T")[0]
-            });
-            setModalOpen(false);
-            cargarDatos();
-        } catch (error) {
-            alert(error.message);
+            alert("✅ Empleado asignado correctamente");
         }
+
+        setFormData({
+            ordenServicioId: "",
+            empleadoId: "",
+            fechaAsignacion: new Date().toISOString().split("T")[0]
+        });
+
+        setModoEdicion(false);
+        setAsignacionEditandoId(null);
+        setModalOpen(false);
+        cargarDatos();
+
+    } catch (error) {
+        alert("❌ Error al guardar la asignación");
     }
+}
+
 
     async function handleEliminar(id) {
-        if (window.confirm("¿Deseas eliminar esta asignación?")) {
-            await asignacionApi.eliminarAsignacion(id);
-            cargarDatos();
-        }
+    const confirmado = window.confirm("¿Estás seguro de que deseas eliminar esta asignación de empleado?");
+
+    if (!confirmado) return;
+
+    try {
+        await asignacionApi.eliminarAsignacion(id);
+
+        alert("✅ Asignación de empleado eliminada correctamente");
+
+        // Actualiza la tabla sin recargar todo
+        setAsignaciones(prev => prev.filter(a => a.id !== id));
+
+    } catch (error) {
+        console.error(error);
+        alert("❌ Error al eliminar la asignación del empleado");
     }
+}
+
 
     return (
         <div className="container mt-4">
-            <button className="btn btn-primary mb-3" onClick={() => setModalOpen(true)}>
-                ➕ Crear nueva asignación
-            </button>
+            <button 
+    className="btn btn-primary mb-3"
+    onClick={() => {
+        setModoEdicion(false);
+        setAsignacionEditandoId(null);
+        setFormData({
+            ordenServicioId: "",
+            empleadoId: "",
+            fechaAsignacion: new Date().toISOString().split("T")[0]
+        });
+        setModalOpen(true);
+    }}
+>
+    ➕ Crear nueva asignación
+</button>
+
 
             {modalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5>Crear Asignación</h5>
+                            <h5>{modoEdicion ? "Editar Asignación" : "Crear Asignación"}</h5>
                             <span className="close-btn" onClick={() => setModalOpen(false)}>
                                 &times;
                             </span>
@@ -114,7 +166,9 @@ export default function AsignarEmpleados() {
                                 />
                             </div>
 
-                            <button className="btn btn-primary" type="submit">Guardar</button>
+                            <button className="btn btn-primary" type="submit">
+                                {modoEdicion ? "Actualizar" : "Guardar"}
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -139,10 +193,21 @@ export default function AsignarEmpleados() {
                             <td>{a.empleadoId}</td>
                             <td>{new Date(a.fechaAsignacion).toLocaleDateString('es-CO')}</td>
                             <td>
-                                <button className="btn btn-danger btn-sm" onClick={() => handleEliminar(a.id)}>
-                                    🗑️ Eliminar
-                                </button>
-                            </td>
+    <button 
+        className="btn btn-warning btn-sm me-2"
+        onClick={() => abrirEdicion(a)}
+    >
+        ✏️ Editar
+    </button>
+
+    <button 
+        className="btn btn-danger btn-sm"
+        onClick={() => handleEliminar(a.id)}
+    >
+        🗑️ Eliminar
+    </button>
+</td>
+
                         </tr>
                     ))}
                     {asignaciones.length === 0 && (

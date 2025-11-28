@@ -1,12 +1,20 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.controller;
 
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.ClienteDto;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Cliente;
-import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.ClienteService;
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.ClienteDto;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Cliente;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.ClienteService;
 
 @RestController
 @RequestMapping("/api/clientes")
@@ -33,6 +41,10 @@ public class ClienteController {
 
     @PostMapping
     public ClienteDto createCliente(@RequestBody ClienteDto clienteDto) {
+        Optional<Cliente> existente= clienteService.buscarPorNit(clienteDto.getNit());
+        if (existente.isPresent()) {
+            return toDto(existente.get());
+        }
         Cliente cliente = toEntity(clienteDto);
         Cliente savedCliente = clienteService.save(cliente);
         return toDto(savedCliente);
