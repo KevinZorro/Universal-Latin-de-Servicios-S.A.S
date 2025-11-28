@@ -1,5 +1,6 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.RegistroDto;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Cargo;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Empleado;
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.TipoContrato;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.CargoRepository;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.repository.EmpleadoRepository;
 
@@ -22,27 +24,72 @@ public class EmpleadoService {
     private final CargoRepository cargoRepository;
     private final AuthService authService;
 
-    public Empleado crearEmpleado(Empleado empleado) {
-        // Convertimos los datos del Empleado a un RegistroDto
-        RegistroDto dto = new RegistroDto();
-        dto.setCedula(empleado.getCedula());
-        dto.setNombre(empleado.getNombre());
-        dto.setApellido(empleado.getApellido());
-        dto.setTelefono(empleado.getTelefono());
-        dto.setEmail(empleado.getEmail());
-        dto.setPassword(empleado.getPasswordHash()); // 🔒 Podrías asignar una contraseña temporal
-        dto.setRol("EMPLEADO");
+public Empleado crearEmpleado(Empleado empleado) {
 
-        // Usar el AuthService para registrar correctamente
-        Empleado nuevoEmpleado = (Empleado) authService.registrar(dto);
-
-        // Si quieres agregar cargos o campos adicionales:
-        nuevoEmpleado.setFechaIngreso(empleado.getFechaIngreso());
-        nuevoEmpleado.setActivo(empleado.getActivo());
-
-        // Guardar con campos adicionales actualizados
-        return empleadoRepository.save(nuevoEmpleado);
+    // 1. Validación: la fecha de ingreso no puede ser null
+    if (empleado.getFechaIngreso() == null) {
+        throw new IllegalArgumentException("La fecha de ingreso es obligatoria.");
     }
+
+    // 2. Validación según el tipo de contrato
+    TipoContrato tipoContrato = empleado.getTipoContrato();
+    LocalDate ingreso = empleado.getFechaIngreso();
+    LocalDate retiro = empleado.getFechaRetiro();
+
+    // Contratos que NO deben tener fecha de retiro
+    List<TipoContrato> contratosSinRetiro = List.of(TipoContrato.INDEFINIDO);
+
+    // Contratos que SÍ usan fecha de retiro (ejemplo)
+    List<TipoContrato> contratosConRetiro = List.of(TipoContrato.FIJO, TipoContrato.POR_PROYECTO, TipoContrato.TEMPORAL);
+
+    // A) Contrato sin fecha de retiro (ej: INDEFINIDO)
+    if (contratosSinRetiro.contains(tipoContrato)) {
+        if (retiro != null) {
+            throw new IllegalArgumentException(
+                "Un contrato de tipo " + tipoContrato + " no debe tener fecha de retiro."
+            );
+        }
+    }
+
+    // B) Contratos que requieren fecha de retiro
+    if (contratosConRetiro.contains(tipoContrato)) {
+        if (retiro == null) {
+            throw new IllegalArgumentException(
+                "Un contrato de tipo " + tipoContrato + " requiere una fecha de retiro."
+            );
+        }
+
+        // Fecha retiro debe ser posterior a ingreso
+        if (!retiro.isAfter(ingreso)) {
+            throw new IllegalArgumentException(
+                "La fecha de retiro debe ser posterior a la fecha de ingreso."
+            );
+        }
+    }
+
+    // 3. Convertimos datos a DTO
+    RegistroDto dto = new RegistroDto();
+    dto.setCedula(empleado.getCedula());
+    dto.setNombre(empleado.getNombre());
+    dto.setApellido(empleado.getApellido());
+    dto.setTelefono(empleado.getTelefono());
+    dto.setEmail(empleado.getEmail());
+    dto.setPassword(empleado.getPasswordHash());
+    dto.setRol("EMPLEADO");
+
+    // Registro en Auth
+    Empleado nuevoEmpleado = (Empleado) authService.registrar(dto);
+
+    // Campos adicionales
+    nuevoEmpleado.setFechaIngreso(empleado.getFechaIngreso());
+    nuevoEmpleado.setActivo(empleado.getActivo());
+    nuevoEmpleado.setTipoContrato(tipoContrato);
+    nuevoEmpleado.setFechaRetiro(empleado.getFechaRetiro());
+
+    // Guardar final
+    return empleadoRepository.save(nuevoEmpleado);
+}
+
 
     @Transactional(readOnly = true)
     public Empleado obtenerEmpleadoPorId(String cedula) {
@@ -83,58 +130,65 @@ public class EmpleadoService {
         return empleadoRepository.findEmpleadosByCargoId(cargoId);
     }
 
-public Empleado actualizarEmpleado(String cedula, Empleado datosActualizados) {
-    Empleado empleado = empleadoRepository.findById(cedula)
-            .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado con cédula: " + cedula));
+    public Empleado actualizarEmpleado(String cedula, Empleado datosActualizados) {
+        Empleado empleado = empleadoRepository.findById(cedula)
+                .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado con cédula: " + cedula));
 
-    if (datosActualizados.getNombre() != null) {
-        empleado.setNombre(datosActualizados.getNombre());
-    }
-    if (datosActualizados.getApellido() != null) {
-        empleado.setApellido(datosActualizados.getApellido());
-    }
-    if (datosActualizados.getTelefono() != null) {
-        empleado.setTelefono(datosActualizados.getTelefono());
-    }
-    if (datosActualizados.getEmail() != null) {
-        empleado.setEmail(datosActualizados.getEmail());
-    }
-    if (datosActualizados.getActivo() != null) {
-        empleado.setActivo(datosActualizados.getActivo());
-    }
-    if (datosActualizados.getFechaIngreso() != null) {
-        empleado.setFechaIngreso(datosActualizados.getFechaIngreso());
-    }
-    if (datosActualizados.getDesprendiblePagoURL() != null) {
-        empleado.setDesprendiblePagoURL(datosActualizados.getDesprendiblePagoURL());
-    }
-    if (datosActualizados.getHojaDeVidaURL() != null) {
-        empleado.setHojaDeVidaURL(datosActualizados.getHojaDeVidaURL());
-    }
-    // Repite para otros campos que puedan ser actualizados.
+        if (datosActualizados.getNombre() != null) {
+            empleado.setNombre(datosActualizados.getNombre());
+        }
+        if (datosActualizados.getApellido() != null) {
+            empleado.setApellido(datosActualizados.getApellido());
+        }
+        if (datosActualizados.getTelefono() != null) {
+            empleado.setTelefono(datosActualizados.getTelefono());
+        }
+        if (datosActualizados.getEmail() != null) {
+            empleado.setEmail(datosActualizados.getEmail());
+        }
+        if (datosActualizados.getActivo() != null) {
+            empleado.setActivo(datosActualizados.getActivo());
+        }
+        if (datosActualizados.getFechaIngreso() != null) {
+            empleado.setFechaIngreso(datosActualizados.getFechaIngreso());
+        }
+        if (datosActualizados.getDesprendiblePagoURL() != null) {
+            empleado.setDesprendiblePagoURL(datosActualizados.getDesprendiblePagoURL());
+        }
+        if (datosActualizados.getHojaDeVidaURL() != null) {
+            empleado.setHojaDeVidaURL(datosActualizados.getHojaDeVidaURL());
+        }
 
-    return empleadoRepository.save(empleado);
-}
+        if (datosActualizados.getTipoContrato() != null) {
+            empleado.setTipoContrato(datosActualizados.getTipoContrato());
+        }
 
-public Empleado actualizarPerfilEmpleado(String cedula, Empleado datosActualizados) {
-    Empleado empleado = empleadoRepository.findById(cedula)
-            .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado con cédula: " + cedula));
+        if (datosActualizados.getFechaRetiro() != null) {
+            empleado.setFechaRetiro(datosActualizados.getFechaRetiro());
+        }
+        // Repite para otros campos que puedan ser actualizados.
 
-    if (datosActualizados.getNombre() != null) {
-        empleado.setNombre(datosActualizados.getNombre());
+        return empleadoRepository.save(empleado);
     }
-    if (datosActualizados.getApellido() != null) {
-        empleado.setApellido(datosActualizados.getApellido());
-    }
-    if (datosActualizados.getTelefono() != null) {
-        empleado.setTelefono(datosActualizados.getTelefono());
-    }
-    if (datosActualizados.getEmail() != null) {
-        empleado.setEmail(datosActualizados.getEmail());
-    }
-    return empleadoRepository.save(empleado);
-}
 
+    public Empleado actualizarPerfilEmpleado(String cedula, Empleado datosActualizados) {
+        Empleado empleado = empleadoRepository.findById(cedula)
+                .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado con cédula: " + cedula));
+
+        if (datosActualizados.getNombre() != null) {
+            empleado.setNombre(datosActualizados.getNombre());
+        }
+        if (datosActualizados.getApellido() != null) {
+            empleado.setApellido(datosActualizados.getApellido());
+        }
+        if (datosActualizados.getTelefono() != null) {
+            empleado.setTelefono(datosActualizados.getTelefono());
+        }
+        if (datosActualizados.getEmail() != null) {
+            empleado.setEmail(datosActualizados.getEmail());
+        }
+        return empleadoRepository.save(empleado);
+    }
 
     // ================== CRUD DE CARGOS ==================
     public Cargo crearCargo(Cargo cargo) {

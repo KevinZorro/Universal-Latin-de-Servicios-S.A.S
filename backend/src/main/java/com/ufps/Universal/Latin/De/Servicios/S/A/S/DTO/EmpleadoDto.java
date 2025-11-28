@@ -1,6 +1,9 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO;
 
 import org.hibernate.validator.constraints.URL;
+
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.TipoContrato;
+
 import lombok.Data;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
@@ -29,4 +32,8 @@ public class EmpleadoDto {
 
     @URL
     private String hojaDeVidaURL;
+
+    private TipoContrato tipoContrato;
+private LocalDate fechaRetiro;
+
 }
