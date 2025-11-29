@@ -162,10 +162,9 @@ public Empleado crearEmpleado(Empleado empleado) {
         if (datosActualizados.getTipoContrato() != null) {
             empleado.setTipoContrato(datosActualizados.getTipoContrato());
         }
-
-        if (datosActualizados.getFechaRetiro() != null) {
+        
             empleado.setFechaRetiro(datosActualizados.getFechaRetiro());
-        }
+        
         // Repite para otros campos que puedan ser actualizados.
 
         return empleadoRepository.save(empleado);
