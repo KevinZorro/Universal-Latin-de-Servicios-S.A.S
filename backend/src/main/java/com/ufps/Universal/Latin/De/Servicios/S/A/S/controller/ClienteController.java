@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -79,4 +80,28 @@ public class ClienteController {
         cliente.setCiudad(dto.getCiudad());
         return cliente;
     }
+
+    @PutMapping("/{id}")
+    public ClienteDto updateCliente(@PathVariable int id, @RequestBody ClienteDto clienteDto) {
+        Optional<Cliente> clienteExistente = clienteService.findById(id);
+
+        if (!clienteExistente.isPresent()) {
+            return null; // O lanza una excepción personalizada
+        }
+
+        Cliente cliente = clienteExistente.get();
+
+        // Actualizar valores
+        cliente.setNombre(clienteDto.getNombre());
+        cliente.setTelefono(clienteDto.getTelefono());
+        cliente.setDireccion(clienteDto.getDireccion());
+        cliente.setNit(clienteDto.getNit());
+        cliente.setEmail(clienteDto.getEmail());
+        cliente.setCiudad(clienteDto.getCiudad());
+
+        Cliente actualizado = clienteService.save(cliente);
+
+        return toDto(actualizado);
+    }
+
 }
