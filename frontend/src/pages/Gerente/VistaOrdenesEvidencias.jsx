@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./VerEvidencias.css";
+import { obtenerOrdenPorId, obtenerClientePorId } from "../Gerente/verEvidenciasApi";
 
 export default function VistaOrdenesEvidencias() {
     const [ordenes, setOrdenes] = useState([]);
     const [evidencias, setEvidencias] = useState([]);
     const [ordenSeleccionada, setOrdenSeleccionada] = useState(null);
     const [loadingEvidencias, setLoadingEvidencias] = useState(false);
-
     const [imagenAmpliada, setImagenAmpliada] = useState(null);
+    const [ordenesConCliente, setOrdenesConCliente] = useState([]);
+    const [ordenesConNit, setOrdenesConNit] = useState([]);
+    const [filtroNit, setFiltroNit] = useState("");
+
+    // ✅ NUEVO: filtro por cliente
+    const [filtroCliente, setFiltroCliente] = useState("");
 
     // Formato legible para horas
     const formatearHora = (fechaISO) => {
@@ -19,10 +25,35 @@ export default function VistaOrdenesEvidencias() {
     };
 
     useEffect(() => {
-        axios.get("/api/ordenes-servicio")
-            .then(res => setOrdenes(res.data))
-            .catch(err => console.error("Error cargando órdenes:", err));
-    }, []);
+    const cargarDatos = async () => {
+        try {
+            const res = await axios.get("/api/ordenes-servicio");
+            const ordenesServicio = res.data;
+
+            const ordenesFinales = await Promise.all(
+                ordenesServicio.map(async (os) => {
+                    const orden = await obtenerOrdenPorId(os.ordenId);
+                    const cliente = await obtenerClientePorId(orden.clienteId);
+
+                    return {
+                        ...os,
+                        clienteId: orden.clienteId,
+                        nitCliente: cliente.nit
+                    };
+                })
+            );
+
+            setOrdenesConNit(ordenesFinales);
+
+        } catch (error) {
+            console.error("Error cargando órdenes:", error);
+        }
+    };
+
+    cargarDatos();
+}, []);
+
+
 
     const verEvidencias = async (idOrden) => {
         setOrdenSeleccionada(idOrden);
@@ -39,15 +70,43 @@ export default function VistaOrdenesEvidencias() {
         setLoadingEvidencias(false);
     };
 
+    // ✅ NUEVO: órdenes filtradas por nit
+    const ordenesFiltradas = ordenesConNit.filter(o => {
+    if (!filtroNit) return true;
+
+    const nit = o.nitCliente?.toString() || "";
+    return nit.includes(filtroNit);
+});
+
+
+
+
+
     return (
         <div className="content-area">
 
             <h2 className="section-title">Órdenes de Servicio</h2>
 
+            {/* ✅ FILTRO POR CLIENTE */}
+            <div className="filtro-cliente">
+    <input
+    type="text"
+    value={filtroNit}
+    onChange={(e) => {
+        const soloNumeros = e.target.value.replace(/\D/g, "");
+        setFiltroNit(soloNumeros);
+    }}
+    placeholder="Filtrar por NIT"
+/>
+</div>
+
+
+
             <table className="tabla-estilos">
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>NIT Cliente</th>
                         <th>Servicio</th>
                         <th>Orden</th>
                         <th>Estado</th>
@@ -55,9 +114,10 @@ export default function VistaOrdenesEvidencias() {
                     </tr>
                 </thead>
                 <tbody>
-                    {ordenes.map(orden => (
+                    {ordenesFiltradas.map(orden => (
                         <tr key={orden.id}>
                             <td>{orden.id}</td>
+                            <td>{orden.nitCliente}</td>
                             <td>{orden.servicioId}</td>
                             <td>{orden.ordenId}</td>
                             <td>{orden.estado}</td>
@@ -73,6 +133,13 @@ export default function VistaOrdenesEvidencias() {
                     ))}
                 </tbody>
             </table>
+
+            {/* ✅ MENSAJE CUANDO NO HAY RESULTADOS */}
+            {ordenesFiltradas.length === 0 && (
+                <p style={{ textAlign: "center", marginTop: "20px" }}>
+                    ❌ No hay órdenes para ese cliente
+                </p>
+            )}
 
             <hr style={{ margin: "30px 0" }} />
 

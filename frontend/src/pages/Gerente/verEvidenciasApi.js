@@ -13,3 +13,17 @@ export async function obtenerEvidenciasPorOrden(ordenServicioId) {
     if (!resp.ok) throw new Error("Error al obtener evidencias");
     return resp.json();
 }
+
+export async function obtenerOrdenPorId(idOrden) {
+    const resp = await fetch(`${API_URL}/ordenes/${idOrden}`);
+    if (!resp.ok) throw new Error("Error al obtener la orden");
+    return resp.json(); // ⬅ aquí viene el clienteId real
+}
+
+export async function obtenerClientePorId(idCliente) {
+    const resp = await fetch(`${API_URL}/clientes/${idCliente}`);
+    if (!resp.ok) throw new Error("Error al obtener el cliente");
+    return resp.json(); // ⬅ aquí viene el NIT
+}
+
+

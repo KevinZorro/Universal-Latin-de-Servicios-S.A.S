@@ -42,6 +42,12 @@ export async function obtenerOrdenesServicio() {
     return res.json();
 }
 
+export async function obtenerServicios() {
+    const res = await fetch(`${API_BASE}/servicios`);
+    return res.json();
+}
+
+
 export async function obtenerEmpleados() {
     const res = await fetch(`${API_BASE}/empleados`); // Ajusta el endpoint según tu backend
     return res.json();

@@ -9,6 +9,9 @@ export default function ClienteManager() {
     const [error, setError] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [modoEdicion, setModoEdicion] = useState(false);
+    const [idEditando, setIdEditando] = useState(null);
+
 
     const [formData, setFormData] = useState({
         nombre: '',
@@ -44,28 +47,54 @@ export default function ClienteManager() {
         }));
     };
 
-    const handleSubmit = async () => {
-        setLoading(true);
-        setError(null);
+    const handleEdit = (cliente) => {
+    setFormData({
+        nombre: cliente.nombre,
+        telefono: cliente.telefono,
+        direccion: cliente.direccion,
+        nit: cliente.nit,
+        email: cliente.email,
+        ciudad: cliente.ciudad
+    });
 
-        try {
+    setIdEditando(cliente.id);
+    setModoEdicion(true);
+    setShowForm(true);
+};
+
+
+    const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+        if (modoEdicion) {
+            await ClienteService.updateCliente(idEditando, formData);
+        } else {
             await ClienteService.createCliente(formData);
-            setFormData({
-                nombre: '',
-                telefono: '',
-                direccion: '',
-                nit: '',
-                email: '',
-                ciudad: ''
-            });
-            setShowForm(false);
-            await loadClientes();
-        } catch (err) {
-            setError('Error al crear el cliente');
-        } finally {
-            setLoading(false);
         }
-    };
+
+        setFormData({
+            nombre: '',
+            telefono: '',
+            direccion: '',
+            nit: '',
+            email: '',
+            ciudad: ''
+        });
+
+        setShowForm(false);
+        setModoEdicion(false);
+        setIdEditando(null);
+
+        await loadClientes();
+    } catch (err) {
+        setError(modoEdicion ? 'Error al actualizar el cliente' : 'Error al crear el cliente');
+    } finally {
+        setLoading(false);
+    }
+};
+
 
     const handleDelete = async (id) => {
         if (window.confirm('¿Estás seguro de eliminar este cliente?')) {
@@ -98,9 +127,22 @@ export default function ClienteManager() {
                             <h1 className="text-3xl font-bold text-gray-800">Gestión de Clientes</h1>
                         </div>
                         <button
-                            onClick={() => setShowForm(!showForm)}
-                            className="flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors shadow-md"
-                        >
+    onClick={() => {
+        setShowForm(true);
+        setModoEdicion(false);     // ✅ Vuelve a modo CREAR
+        setIdEditando(null);      // ✅ Limpia ID
+        setFormData({             // ✅ Limpia el formulario
+            nombre: '',
+            telefono: '',
+            direccion: '',
+            nit: '',
+            email: '',
+            ciudad: ''
+        });
+    }}
+    className="flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors shadow-md"
+>
+
                             <Plus className="w-5 h-5" />
                             Nuevo Cliente
                         </button>
@@ -116,7 +158,8 @@ export default function ClienteManager() {
                     {/* Form */}
                     {showForm && (
                         <div className="mb-8 bg-gray-50 p-6 rounded-xl border border-gray-200">
-                            <h2 className="text-xl font-semibold mb-4 text-gray-800">Agregar Nuevo Cliente</h2>
+                            <h2 className="text-xl font-semibold mb-4 text-gray-800">
+                                {modoEdicion ? 'Editar Cliente' : 'Agregar Nuevo Cliente'}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
@@ -198,7 +241,7 @@ export default function ClienteManager() {
                                         disabled={loading}
                                         className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50"
                                     >
-                                        {loading ? 'Guardando...' : 'Guardar'}
+                                        {loading ? 'Guardando...' : modoEdicion ? 'Actualizar' : 'Guardar'}
                                     </button>
                                 </div>
                             </div>
@@ -244,15 +287,23 @@ export default function ClienteManager() {
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{cliente.email}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{cliente.nit}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{cliente.ciudad}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                                <button
-                                                    onClick={() => handleDelete(cliente.id)}
-                                                    className="text-red-600 hover:text-red-800 transition-colors"
-                                                    title="Eliminar"
-                                                >
-                                                    <Trash2 className="w-5 h-5" />
-                                                </button>
-                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex gap-4">
+    <button
+        onClick={() => handleEdit(cliente)}
+        className="text-indigo-600 hover:text-indigo-800 transition-colors"
+        title="Editar"
+    >
+        <Edit className="w-5 h-5" />
+    </button>
+
+    <button
+        onClick={() => handleDelete(cliente.id)}
+        className="text-red-600 hover:text-red-800 transition-colors"
+        title="Eliminar"
+    >
+        <Trash2 className="w-5 h-5" />
+    </button>
+</td>
                                         </tr>
                                     ))}
                                 </tbody>
