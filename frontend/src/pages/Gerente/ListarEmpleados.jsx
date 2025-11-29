@@ -235,6 +235,8 @@ export default function ListarEmpleados() {
                                     <th style={tableHeaderStyle}>Email</th>
                                     <th style={tableHeaderStyle}>Teléfono</th>
                                     <th style={tableHeaderStyle}>Fecha Ingreso</th>
+                                    <th style={tableHeaderStyle}>Tipo Contrato</th>
+                                    <th style={tableHeaderStyle}>Fecha Retiro</th>
                                     <th style={tableHeaderStyle}>Rol</th>
                                     <th style={tableHeaderStyle}>Estado</th>
                                     <th style={tableHeaderStyle}>Acciones</th>
@@ -273,14 +275,28 @@ export default function ListarEmpleados() {
                                             {empleado.telefono || 'N/A'}
                                         </td>
                                         <td style={tableCellStyle}>
-                                            {empleado.fechaIngreso ? new Date(empleado.fechaIngreso).toLocaleDateString('es-CO') : 'N/A'}
-                                        </td>
-                                        <td style={tableCellStyle}>
-                                            {getRolBadge(empleado.rol)}
-                                        </td>
-                                        <td style={tableCellStyle}>
-                                            {getEstadoBadge(empleado.activo)}
-                                        </td>
+    {empleado.fechaIngreso
+        ? new Date(empleado.fechaIngreso).toLocaleDateString('es-CO')
+        : 'N/A'}
+</td>
+
+<td style={tableCellStyle}>
+    {empleado.tipoContrato || 'N/A'}
+</td>
+
+<td style={tableCellStyle}>
+    {empleado.fechaRetiro
+        ? new Date(empleado.fechaRetiro).toLocaleDateString('es-CO')
+        : '—'}
+</td>
+
+<td style={tableCellStyle}>
+    {getRolBadge(empleado.rol)}
+</td>
+
+<td style={tableCellStyle}>
+    {getEstadoBadge(empleado.activo)}
+</td>
                                         <td style={tableCellStyle}>
                                             <div style={{
                                                 display: 'flex',
@@ -358,16 +374,17 @@ export default function ListarEmpleados() {
                     onClose={handleCloseModal}
                 />
             )}
-            {showEditModal && selectedEmpleado && (
-                <EditarEmpleado
-                    empleado={selectedEmpleado}
-                    onClose={() => setShowEditModal(false)}
-                    onSave={() => {
-                        setShowEditModal(false);
-                        fetchEmpleados(); // Recargar lista después de editar
-                    }}
-                />
-            )}
+           {showEditModal && selectedEmpleado && (
+    <EditarEmpleado
+        empleado={selectedEmpleado}
+        onClose={() => setShowEditModal(false)}
+        onSuccess={() => {
+            setShowEditModal(false);
+            fetchEmpleados(); // ✅ REFRESH REAL DE LA TABLA
+        }}
+    />
+)}
+
 
         </div>
     );
@@ -477,35 +494,80 @@ function EmpleadoDetailModal({ empleado, onClose }) {
                         </div>
                     </div>
 
+                    {/* Documentos */}
+<div style={sectionStyle}>
+    <h3 style={sectionTitleStyle}>
+        📄 Documentos
+    </h3>
+    <div style={detailsGridStyle}>
+
+        <DetailItem
+            label="Hoja de Vida"
+            value={
+                empleado.hojaDeVidaURL ? (
+                    <a href={empleado.hojaDeVidaURL} target="_blank" rel="noopener noreferrer">
+                        Ver documento
+                    </a>
+                ) : 'No registrada'
+            }
+        />
+
+        <DetailItem
+            label="Desprendible de Pago"
+            value={
+                empleado.desprendiblePagoURL ? (
+                    <a href={empleado.desprendiblePagoURL} target="_blank" rel="noopener noreferrer">
+                        Ver documento
+                    </a>
+                ) : 'No registrado'
+            }
+        />
+
+    </div>
+</div>
+
                     {/* Información Laboral */}
-                    <div style={sectionStyle}>
-                        <h3 style={sectionTitleStyle}>
-                            <span style={{ marginRight: '8px' }}>💼</span>
-                            Información Laboral
-                        </h3>
-                        <div style={detailsGridStyle}>
-                            <DetailItem
-                                label="Fecha de Ingreso"
-                                value={empleado.fechaIngreso ? new Date(empleado.fechaIngreso).toLocaleDateString('es-CO', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                }) : 'N/A'}
-                            />
-                            <DetailItem label="Rol" value={empleado.rol} />
-                            <DetailItem
-                                label="Estado"
-                                value={empleado.activo ? 'Activo' : 'Inactivo'}
-                            />
-                            <DetailItem
-                                label="Días en la empresa"
-                                value={empleado.fechaIngreso ?
-                                    Math.floor((new Date() - new Date(empleado.fechaIngreso)) / (1000 * 60 * 60 * 24)) + ' días'
-                                    : 'N/A'
-                                }
-                            />
-                        </div>
-                    </div>
+                    <div style={detailsGridStyle}>
+    <DetailItem
+        label="Fecha de Ingreso"
+        value={empleado.fechaIngreso
+            ? new Date(empleado.fechaIngreso).toLocaleDateString('es-CO', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            })
+            : 'N/A'}
+    />
+
+    <DetailItem label="Tipo de Contrato" value={empleado.tipoContrato || 'N/A'} />
+
+    <DetailItem
+        label="Fecha de Retiro"
+        value={empleado.fechaRetiro
+            ? new Date(empleado.fechaRetiro).toLocaleDateString('es-CO')
+            : 'No aplica'}
+    />
+
+    <DetailItem label="Rol" value={empleado.rol} />
+
+    <DetailItem
+        label="Estado"
+        value={empleado.activo ? 'Activo' : 'Inactivo'}
+    />
+
+    <DetailItem
+        label="Días en la empresa"
+        value={
+            empleado.fechaIngreso
+                ? Math.floor(
+                    (new Date() - new Date(empleado.fechaIngreso)) /
+                    (1000 * 60 * 60 * 24)
+                ) + ' días'
+                : 'N/A'
+        }
+    />
+</div>
+
                 </div>
 
                 {/* Footer del Modal */}
@@ -515,12 +577,6 @@ function EmpleadoDetailModal({ empleado, onClose }) {
                         onClick={onClose}
                     >
                         Cerrar
-                    </button>
-                    <button
-                        style={primaryButtonStyle}
-                        onClick={() => alert('Función de editar en desarrollo')}
-                    >
-                        ✏️ Editar Empleado
                     </button>
                 </div>
             </div>
