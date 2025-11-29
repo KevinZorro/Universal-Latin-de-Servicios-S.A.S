@@ -8,6 +8,8 @@ export default function VerEvidencias() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [ordenSeleccionada, setOrdenSeleccionada] = useState(null);
+    const [filtroCliente, setFiltroCliente] = useState("");
+
 
     useEffect(() => {
         cargarOrdenes();
@@ -24,6 +26,11 @@ export default function VerEvidencias() {
             setLoading(false);
         }
     };
+
+    const ordenesFiltradas = ordenes.filter(os =>
+    os.clienteId.toString().includes(filtroCliente)
+);
+
 
     const verEvidencias = async (idOrdenServicio) => {
         try {
@@ -42,14 +49,24 @@ export default function VerEvidencias() {
         <div className="ver-evidencias-container">
 
             <h2>📋 Órdenes de Servicio</h2>
+            <div className="filtro-cliente">
+    <input
+        type="number"
+        placeholder="🔍 Buscar por ID del cliente..."
+        value={filtroCliente}
+        onChange={(e) => setFiltroCliente(e.target.value)}
+    />
+</div>
+
 
             {loading && <p>Cargando...</p>}
             {error && <div className="alert-error">{error}</div>}
 
             {/* ------- LISTA DE ÓRDENES DE SERVICIO -------- */}
             <div className="ordenes-grid">
-                {ordenes.map(os => (
+                {ordenesFiltradas.map(os => (
                     <div key={os.id} className="orden-card">
+                        <p><strong>Cliente ID:</strong> {os.clienteId}</p>
                         <p><strong>Orden:</strong> #{os.ordenId}</p>
                         <p><strong>Servicio:</strong> {os.servicioId}</p>
                         <p><strong>Estado:</strong> {os.estado}</p>

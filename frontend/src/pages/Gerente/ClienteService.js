@@ -74,6 +74,30 @@ class ClienteService {
     }
 
     /**
+ * Actualiza un cliente existente
+ */
+async updateCliente(id, clienteData) {
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(clienteData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error al actualizar cliente:', error);
+        throw error;
+    }
+}
+
+    /**
      * Elimina un cliente por ID
      */
     async deleteCliente(id) {

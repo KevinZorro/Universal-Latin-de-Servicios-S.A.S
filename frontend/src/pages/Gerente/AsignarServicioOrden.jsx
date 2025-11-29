@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import * as ordenServicioApi from "../Gerente/ordenServicioApi";
 import * as ordenApi from "../Gerente/ordenApi";
 import * as servicioApi from "../Gerente/servicioApi";
+import ClienteService from "../Gerente/ClienteService";
 import "./AsignarServicioOrden.css";
 
 export default function AsignarServicioOrden() {
     const [ordenes, setOrdenes] = useState([]);
     const [servicios, setServicios] = useState([]);
     const [asignaciones, setAsignaciones] = useState([]);
+    const [filtroEstado, setFiltroEstado] = useState(""); 
+    const [asignacionesDetalladas, setAsignacionesDetalladas] = useState([]);
 
     const [modalOpen, setModalOpen] = useState(false); // crear asignación
     const [modoEdicion, setModoEdicion] = useState(false);
@@ -19,21 +22,70 @@ export default function AsignarServicioOrden() {
         servicioId: "",
         estado: "PENDIENTE",
     });
+    const [ordenesConNit, setOrdenesConNit] = useState([]);
 
     useEffect(() => {
         cargarDatos();
     }, []);
 
-    async function cargarDatos() {
-        const [ord, srv, asig] = await Promise.all([
-            ordenApi.obtenerTodasOrdenes(),
-            servicioApi.obtenerTodosServicios(),
-            ordenServicioApi.obtenerOrdenesServicio(),
-        ]);
-        setOrdenes(ord);
-        setServicios(srv);
-        setAsignaciones(asig);
-    }
+   async function cargarDatos() {
+    const [ord, srv, asig] = await Promise.all([
+        ordenApi.obtenerTodasOrdenes(),
+        servicioApi.obtenerTodosServicios(),
+        ordenServicioApi.obtenerOrdenesServicio(),
+    ]);
+
+    setOrdenes(ord);
+    setServicios(srv);
+    setAsignaciones(asig);
+
+    // ✅ ORDENES CON NIT
+    const ordenesNit = await Promise.all(
+        ord.map(async (o) => {
+            try {
+                const cliente = await ClienteService.getClienteById(o.clienteId);
+                return {
+                    ...o,
+                    nitCliente: cliente.nit
+                };
+            } catch (error) {
+                return {
+                    ...o,
+                    nitCliente: "No disponible"
+                };
+            }
+        })
+    );
+
+    setOrdenesConNit(ordenesNit);
+
+    // ✅ ASIGNACIONES CON NOMBRE SERVICIO Y NIT CLIENTE
+    const resultado = await Promise.all(
+        asig.map(async (a) => {
+            try {
+                const servicio = await servicioApi.obtenerServicioPorId(a.servicioId);
+                const orden = ordenesNit.find(o => o.idOrden === a.ordenId);
+
+                return {
+                    ...a,
+                    nombreServicio: servicio.nombreServicio,
+                    nitCliente: orden?.nitCliente || "No disponible"
+                };
+            } catch (error) {
+                console.error("Error armando asignación:", error);
+                return {
+                    ...a,
+                    nombreServicio: "No disponible",
+                    nitCliente: "No disponible"
+                };
+            }
+        })
+    );
+
+    setAsignacionesDetalladas(resultado);
+}
+
+
 
     async function handleSubmit(e) {
     e.preventDefault();
@@ -134,11 +186,12 @@ export default function AsignarServicioOrden() {
                                     required
                                 >
                                     <option value="">Seleccione una orden</option>
-                                    {ordenes.map((o) => (
-                                        <option key={o.idOrden} value={o.idOrden}>
-                                            #{o.idOrden}
-                                        </option>
-                                    ))}
+                                    {ordenesConNit.map((o) => (
+    <option key={o.idOrden} value={o.idOrden}>
+        #{o.idOrden} — NIT: {o.nitCliente}
+    </option>
+))}
+
                                 </select>
                             </div>
 
@@ -184,24 +237,50 @@ export default function AsignarServicioOrden() {
             )}
 
             <h4>📋 Asignaciones existentes</h4>
+            <div className="mb-3 d-flex gap-3 align-items-center">
+    <label className="fw-bold">Filtrar por estado:</label>
+
+    <select
+        className="form-select w-auto"
+        value={filtroEstado}
+        onChange={(e) => setFiltroEstado(e.target.value)}
+    >
+        <option value="">Todos</option>
+        <option value="PENDIENTE">PENDIENTE</option>
+        <option value="EN_PROCESO">EN PROCESO</option>
+        <option value="FINALIZADO">FINALIZADO</option>
+        <option value="CANCELADO">CANCELADO</option>
+    </select>
+</div>
+
 
             <table className="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Orden</th>
+                        <th>ID servicio</th>
                         <th>Servicio</th>
+                        <th>NIT Cliente</th>
                         <th>Estado</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {asignaciones.map((a) => (
+                    {asignacionesDetalladas
+    .filter(a => {
+        if (!filtroEstado) return true;
+        return a.estado === filtroEstado;
+    })
+    .map((a) => (
+
                         <tr key={a.id}>
                             <td>{a.id}</td>
                             <td>{a.ordenId}</td>
                             <td>{a.servicioId}</td>
+                            <td>{a.nombreServicio}</td>
+                            <td>{a.nitCliente}</td>
                             <td>{a.estado}</td>
                             <td>
                                 <button
