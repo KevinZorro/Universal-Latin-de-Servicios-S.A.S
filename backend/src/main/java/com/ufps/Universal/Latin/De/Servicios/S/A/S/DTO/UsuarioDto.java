@@ -1,7 +1,11 @@
 package com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO;
 
+import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Rol;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import jakarta.validation.constraints.*;
 
 @Data
 public class UsuarioDto {
@@ -25,5 +29,6 @@ public class UsuarioDto {
     private String nombre;
 
     @NotNull
-    private String rol;    
+    private Rol rol;
+
 }
