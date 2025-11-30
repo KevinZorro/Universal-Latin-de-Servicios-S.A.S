@@ -1,5 +1,5 @@
 // src/api/ordenServicioApi.js
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:8080/api/ordenes-servicio";
+const API_BASE = process.env.REACT_APP_API_BASE + "/api/ordenes-servicio" || "http://localhost:8080/api/ordenes-servicio";
 
 export async function obtenerOrdenesServicio() {
     const res = await fetch(API_BASE);

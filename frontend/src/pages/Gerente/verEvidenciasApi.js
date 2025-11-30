@@ -1,6 +1,6 @@
 // verEvidenciasApi.js
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = process.env.REACT_APP_API_BASE + "/api" || "http://localhost:8080/api";
 
 export async function obtenerOrdenesServicio() {
     const resp = await fetch(`${API_URL}/ordenes-servicio`);

@@ -2,7 +2,7 @@
 // Servicio para interactuar con los endpoints de Servicio
 
 // Configuración base de la API
-const API_BASE_URL = 'http://localhost:8080/api/servicios';
+const API_BASE_URL = process.env.REACT_APP_API_BASE + "/api/servicios" ||  'http://localhost:8080/api/servicios';
 
 /**
  * Obtener el token de autenticación desde localStorage

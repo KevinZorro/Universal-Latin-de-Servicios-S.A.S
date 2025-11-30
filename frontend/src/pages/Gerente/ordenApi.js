@@ -1,7 +1,7 @@
 // ordenApi.js
 // Servicio para gestionar Órdenes y Orden-Servicio
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE + "/api" || 'http://localhost:8080/api';
 
 /**
  * Obtener el token de autenticación

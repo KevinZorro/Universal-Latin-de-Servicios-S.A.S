@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/api";
+const API_URL = process.env.REACT_APP_API_BASE + "/api"  || "http://localhost:8080/api";
 
 function getHeaders() {
     const token = localStorage.getItem('token');
