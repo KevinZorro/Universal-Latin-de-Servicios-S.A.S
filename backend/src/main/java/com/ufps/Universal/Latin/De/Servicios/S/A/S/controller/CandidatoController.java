@@ -8,12 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.CandidatoDto;
@@ -21,6 +24,7 @@ import com.ufps.Universal.Latin.De.Servicios.S.A.S.DTO.CandidatoRegistroDto;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.Candidato;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.model.EstadoProceso;
 import com.ufps.Universal.Latin.De.Servicios.S.A.S.service.CandidatoService;
+import org.springframework.http.MediaType;
 
 @RestController
 @RequestMapping("/api/candidatos")
@@ -50,22 +54,24 @@ public class CandidatoController {
         Optional<Candidato> candidato = candidatoService.findByCedula(id);
         return candidato.map(this::toDto)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, 
-                        "Candidato no encontrado"
-                ));
+                        HttpStatus.NOT_FOUND,
+                        "Candidato no encontrado"));
     }
 
     // ===============================
     // REGISTRAR CANDIDATO (SOLO JSON)
     // ===============================
-    @PostMapping("/registrar")
-    public ResponseEntity<?> registrarCandidato(@RequestBody CandidatoRegistroDto dto) {
+    @PostMapping(value = "/registrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> registrarCandidato(
+            @RequestPart("candidato") CandidatoRegistroDto dto,
+            @RequestPart("hojaDeVida") MultipartFile hojaDeVida) {
 
         try {
-            candidatoService.registrarCandidato(dto);
+            candidatoService.registrarCandidato(dto, hojaDeVida);
             return ResponseEntity.ok("{\"message\": \"Candidato registrado exitosamente\"}");
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("{\"error\": \"Error al registrar: " + e.getMessage() + "\"}");
         }
@@ -119,8 +125,7 @@ public class CandidatoController {
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "Estado inválido. Use: APROBADO, RECHAZADO, EN_REVISION"
-            );
+                    "Estado inválido. Use: APROBADO, RECHAZADO, EN_REVISION");
         }
     }
 

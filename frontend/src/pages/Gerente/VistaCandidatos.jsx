@@ -33,6 +33,7 @@ const VistaCandidatos = () => {
         try {
             const candidato = await candidatoApi.obtenerCandidatoPorCedula(cedula);
             setCandidatoSeleccionado(candidato);
+            console.log("Seleccionado0", candidato)
             setMostrarModal(true);
         } catch (err) {
             alert('Error al cargar los detalles del candidato: ' + err.message);
@@ -137,15 +138,15 @@ const VistaCandidatos = () => {
                             <div className="detalle-seccion">
                                 <h3>Hoja de Vida</h3>
                                 <a
-                                href={candidatoSeleccionado.hojaDeVidaURL}
-                                download={`HV_${candidatoSeleccionado.nombre}_${candidatoSeleccionado.apellido}.pdf`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="btn btn-download"
+                                    href={candidatoSeleccionado.hojaDeVidaURL}
+                                    download={`HV_${candidatoSeleccionado.nombre}_${candidatoSeleccionado.apellido}.pdf`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn btn-download"
                                 >📄 Descargar Hoja de Vida
                                 </a>
                             </div>
-)}
+                        )}
                     </div>
 
                     <div className="modal-footer">
