@@ -20,6 +20,7 @@ const VistaCandidatos = () => {
             setLoading(true);
             setError(null);
             const data = await candidatoApi.obtenerTodosCandidatos();
+            console.log(data)
             setCandidatos(data || []);
         } catch (err) {
             setError('Error al cargar los candidatos: ' + err.message);
@@ -50,9 +51,10 @@ const VistaCandidatos = () => {
             candidato.email.toLowerCase().includes(busqueda.toLowerCase());
 
         // Filtro por estado
-        const cumpleEstado = filtroEstado === 'TODOS' ||
-            (filtroEstado === 'EN_PROCESO' && candidato.estadoProceso) ||
-            (filtroEstado === 'FINALIZADO' && !candidato.estadoProceso);
+        const cumpleEstado =
+            filtroEstado === 'TODOS' ||
+            candidato.estadoProceso === filtroEstado;
+
 
         return cumpleBusqueda && cumpleEstado;
     });
@@ -186,8 +188,10 @@ const VistaCandidatos = () => {
                         onChange={(e) => setFiltroEstado(e.target.value)}
                     >
                         <option value="TODOS">Todos</option>
-                        <option value="EN_PROCESO">En proceso</option>
-                        <option value="FINALIZADO">Finalizados</option>
+                        <option value="EN_REVISION">En revision</option>
+                        <option value="CONTRATADO">Contratado</option>
+                        <option value="APROBADO">Aprobado</option>
+                        <option value="RECHAZADO">Rechazado</option>
                     </select>
                 </div>
             </div>

@@ -47,11 +47,11 @@ export const formatearExperiencia = (experiencia) => {
  * Obtener etiqueta de estado del proceso
  */
 export const obtenerEstadoProceso = (estadoProceso) => {
-    return estadoProceso ? {
-        label: 'En proceso',
-        color: '#17a2b8'
-    } : {
-        label: 'Finalizado',
-        color: '#6c757d'
+    const estados = {
+        'EN_REVISION': { label: 'En Revisión', color: '#FFA500' },
+        'CONTRATADO': { label: 'Entrevista', color: '#2196F3' },
+        'APROBADO': { label: 'Finalizado', color: '#4CAF50' },
+        'RECHAZADO': { label: 'Rechazado', color: '#F44336' }
     };
+    return estados[estadoProceso] || { label: estadoProceso, color: '#757575' };
 };
