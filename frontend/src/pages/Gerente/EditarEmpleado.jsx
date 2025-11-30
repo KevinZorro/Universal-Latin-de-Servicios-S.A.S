@@ -5,17 +5,20 @@ import './Dashboard.css';
 
 export default function EditarEmpleado({ empleado, onClose, onSuccess }) {
     const [formData, setFormData] = useState({
-        cedula: '',
-        nombre: '',
-        apellido: '',
-        telefono: '',
-        email: '',
-        fechaIngreso: '',
-        activo: true,
-        rol: 'EMPLEADO',
-        desprendiblePagoURL: '',
-        hojaDeVidaURL: '',
-    });
+    cedula: '',
+    nombre: '',
+    apellido: '',
+    telefono: '',
+    email: '',
+    fechaIngreso: '',
+    fechaRetiro: '',          
+    tipoContrato: '',       
+    activo: true,
+    rol: 'EMPLEADO',
+    desprendiblePagoURL: '',
+    hojaDeVidaURL: '',
+});
+
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -24,57 +27,86 @@ export default function EditarEmpleado({ empleado, onClose, onSuccess }) {
     useEffect(() => {
         if (empleado) {
             setFormData({
-                cedula: empleado.cedula || '',
-                nombre: empleado.nombre || '',
-                apellido: empleado.apellido || '',
-                telefono: empleado.telefono || '',
-                email: empleado.email || '',
-                fechaIngreso: empleado.fechaIngreso || '',
-                activo: empleado.activo ?? true,
-                rol: empleado.rol || 'EMPLEADO',
-                desprendiblePagoURL: empleado.desprendiblePagoURL || '',
-                hojaDeVidaURL: empleado.hojaDeVidaURL || '',
-            });
+    cedula: empleado.cedula || '',
+    nombre: empleado.nombre || '',
+    apellido: empleado.apellido || '',
+    telefono: empleado.telefono || '',
+    email: empleado.email || '',
+    fechaIngreso: empleado.fechaIngreso || '',
+    fechaRetiro: empleado.fechaRetiro || '',     
+    tipoContrato: empleado.tipoContrato || '',   
+    activo: empleado.activo ?? true,
+    rol: empleado.rol || 'EMPLEADO',
+    desprendiblePagoURL: empleado.desprendiblePagoURL || '',
+    hojaDeVidaURL: empleado.hojaDeVidaURL || '',
+});
+
         }
     }, [empleado]);
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
+    const { name, value, type, checked } = e.target;
+
+    // ✅ REGLA ESPECIAL PARA TIPO DE CONTRATO
+    if (name === "tipoContrato") {
+        if (value === "INDEFINIDO") {
+            setFormData(prev => ({
+                ...prev,
+                tipoContrato: value,
+                fechaRetiro: "" // ✅ LIMPIA AUTOMÁTICAMENTE
+            }));
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                tipoContrato: value
+            }));
+        }
+        return;
+    }
+
+    setFormData(prev => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value
+    }));
+};
+
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-        try {
-            console.log('Actualizando empleado:', formData);
+    try {
+        // ✅ COPIA SEGURA DEL OBJETO
+        const dataToSend = {
+            ...formData
+        };
 
-            // Actualizar usando la cédula como identificador
-            const updated = await empleadosService.update(empleado.cedula, formData);
-
-            console.log('Empleado actualizado:', updated);
-            alert('✅ Empleado actualizado exitosamente');
-
-            if (onSuccess) {
-                onSuccess(updated);
-            }
-
-            if (onClose) {
-                onClose();
-            }
-
-        } catch (err) {
-            console.error('Error al actualizar empleado:', err);
-            setError(err.message || 'Error inesperado al actualizar el empleado');
-        } finally {
-            setLoading(false);
+        // ✅ SI EL CONTRATO ES INDEFINIDO → BORRAR FECHA EN BACKEND
+        if (dataToSend.tipoContrato === "INDEFINIDO") {
+            dataToSend.fechaRetiro = null; // ✅ ESTO ES LO QUE REALMENTE LIMPIA EN BD
         }
-    };
+
+        console.log("📤 Enviando al backend:", dataToSend);
+
+        const updated = await empleadosService.update(
+            empleado.cedula,
+            dataToSend
+        );
+
+        alert('✅ Empleado actualizado correctamente');
+
+        if (onSuccess) onSuccess(updated);
+        if (onClose) onClose();
+
+    } catch (err) {
+        console.error('❌ Error al actualizar empleado:', err);
+        setError(err.message || 'Error inesperado al actualizar el empleado');
+    } finally {
+        setLoading(false);
+    }
+};
+
 
     return (
         <div style={modalOverlayStyle} onClick={onClose}>
@@ -254,6 +286,42 @@ export default function EditarEmpleado({ empleado, onClose, onSuccess }) {
                                 </select>
                             </div>
                         </div>
+                        <div style={formRowStyle}>
+    <div style={formFieldStyle}>
+        <label style={labelStyle}>
+            Tipo de Contrato <span style={{ color: 'red' }}>*</span>
+        </label>
+        <select
+    name="tipoContrato"
+    value={formData.tipoContrato}
+    onChange={handleChange}
+    className="form-select"
+    required
+    disabled={loading}
+>
+    <option value="">Seleccione...</option>
+    <option value="FIJO">Término Fijo</option>
+    <option value="INDEFINIDO">Término Indefinido</option>
+    <option value="POR_PROYECTO">Por Proyecto</option>
+    <option value="TEMPORAL">Temporal</option>
+</select>
+    </div>
+
+    <div style={formFieldStyle}>
+        <label style={labelStyle}>
+            Fecha de Retiro
+        </label>
+        <input
+    type="date"
+    name="fechaRetiro"
+    value={formData.fechaRetiro}
+    onChange={handleChange}
+    className="form-input"
+    disabled={loading || formData.tipoContrato === "INDEFINIDO"} // ✅ BLOQUEO
+/>
+    </div>
+</div>
+
 
                         <div style={formRowStyle}>
                             <div style={formFieldStyle}>

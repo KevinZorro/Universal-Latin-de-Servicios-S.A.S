@@ -8,25 +8,39 @@ const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8080';
 
 export default function AgregarEmpleado() {
   const [formData, setFormData] = useState({
-    tipoEmpleado: '',
-    nombres: '',
-    apellidos: '',
-    fechaNacimiento: '',
-    tipoDocumento: '',
-    numeroDocumento: '',
-    genero: '',
-    telefonoPrincipal: '',
-    telefonoSecundario: '',
-    email: '',
-    direccion: '',
-    ciudad: '',
-    departamento: '',
-    codigoPostal: '',
-    fechaIngreso: '',
-    turno: '',
-    area: '',
-    estado: 'Activo',
-  });
+  tipoEmpleado: '',
+  nombres: '',
+  apellidos: '',
+  fechaNacimiento: '',
+  tipoDocumento: '',
+  numeroDocumento: '',
+  genero: '',
+  telefonoPrincipal: '',
+  telefonoSecundario: '',
+  email: '',
+  direccion: '',
+  ciudad: '',
+  departamento: '',
+  codigoPostal: '',
+  fechaIngreso: '',
+  turno: '',
+  area: '',
+  estado: 'Activo',
+
+  // ✅ NUEVOS CAMPOS
+  tipoContrato: '',
+  fechaRetiro: '',
+});
+
+useEffect(() => {
+  if (formData.tipoContrato === "INDEFINIDO") {
+    setFormData(prev => ({
+      ...prev,
+      fechaRetiro: ''
+    }));
+  }
+}, [formData.tipoContrato]);
+
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -55,16 +69,25 @@ export default function AgregarEmpleado() {
 
       // TRANSFORMAR los datos al formato que espera el backend
       const empleadoData = {
-        cedula: formData.numeroDocumento,
-        nombre: formData.nombres,
-        apellido: formData.apellidos,
-        telefono: formData.telefonoPrincipal,
-        email: formData.email,
-        fechaIngreso: formData.fechaIngreso,
-        activo: formData.estado === 'Activo',
-        rol: 'EMPLEADO', // Todos los empleados creados tendrán rol EMPLEADO
-        passwordHash: formData.password
-      };
+  cedula: formData.numeroDocumento,
+  nombre: formData.nombres,
+  apellido: formData.apellidos,
+  telefono: formData.telefonoPrincipal,
+  email: formData.email,
+  fechaIngreso: formData.fechaIngreso,
+
+  // ✅ NUEVOS CAMPOS
+  tipoContrato: formData.tipoContrato,
+  fechaRetiro:
+    formData.tipoContrato === "INDEFINIDO"
+      ? null
+      : formData.fechaRetiro || null,
+
+  activo: formData.estado === 'Activo',
+  rol: 'EMPLEADO',
+  passwordHash: formData.password,
+};
+
 
       console.log('Datos del formulario:', formData);
       console.log('Enviando al backend:', empleadoData);
@@ -136,6 +159,8 @@ export default function AgregarEmpleado() {
           turno: '',
           area: '',
           estado: 'Activo',
+          tipoContrato: '',
+          fechaRetiro: '',
         });
         setSuccess(false);
       }, 2000);
@@ -497,6 +522,44 @@ export default function AgregarEmpleado() {
                 disabled={loading}
               />
             </div>
+            <div className="form-row">
+  <div className="form-field">
+    <label className="field-label">
+      Tipo de Contrato <span className="required">*</span>
+    </label>
+
+    <select
+      name="tipoContrato"
+      value={formData.tipoContrato}
+      onChange={handleChange}
+      className="form-select"
+      required
+      disabled={loading}
+    >
+      <option value="">Seleccione</option>
+      <option value="FIJO">Fijo</option>
+      <option value="TEMPORAL">Temporal</option>
+      <option value="POR_PROYECTO">Por Proyecto</option>
+      <option value="INDEFINIDO">Término Indefinido</option>
+    </select>
+  </div>
+
+  <div className="form-field">
+    <label className="field-label">
+      Fecha de Retiro
+    </label>
+
+    <input
+      type="date"
+      name="fechaRetiro"
+      value={formData.fechaRetiro}
+      onChange={handleChange}
+      className="form-input"
+      disabled={loading || formData.tipoContrato === "INDEFINIDO"}
+    />
+  </div>
+</div>
+
             <div className="form-field">
               <label className="field-label">
                 Turno de Trabajo <span className="required">*</span>
