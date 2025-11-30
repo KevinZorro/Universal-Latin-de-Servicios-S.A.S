@@ -49,9 +49,18 @@ export const formatearExperiencia = (experiencia) => {
 export const obtenerEstadoProceso = (estadoProceso) => {
     const estados = {
         'EN_REVISION': { label: 'En Revisión', color: '#FFA500' },
-        'CONTRATADO': { label: 'Entrevista', color: '#2196F3' },
-        'APROBADO': { label: 'Finalizado', color: '#4CAF50' },
+        'CONTRATADO': { label: 'Contratado', color: '#2196F3' },
+        'APROBADO': { label: 'Aprobado', color: '#4CAF50' },
         'RECHAZADO': { label: 'Rechazado', color: '#F44336' }
     };
     return estados[estadoProceso] || { label: estadoProceso, color: '#757575' };
+};
+
+export const obtenerTodosLosEstados = () => {
+    return [
+        { value: 'EN_REVISION', label: 'En Revisión', color: '#FFA500' },
+        { value: 'CONTRATADO', label: 'Contratado', color: '#2196F3' },
+        { value: 'APROBADO', label: 'Aprobado', color: '#4CAF50' },
+        { value: 'RECHAZADO', label: 'Rechazado', color: '#F44336' }
+    ];
 };
