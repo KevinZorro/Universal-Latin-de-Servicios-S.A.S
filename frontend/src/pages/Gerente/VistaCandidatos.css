@@ -1,14 +1,16 @@
 /* VistaCandidatos.css */
-
-
 .candidatos-container {
     padding: 2rem;
     margin: 0 auto;
     background: #f8f9fa;
-    overflow-y: auto;
     box-sizing: border-box;
     padding-bottom: 2rem;
+
+    /* 👇 NECESARIO PARA QUE EL SCROLL SE ACTIVE */
+    height: calc(100vh - 100px);
+    overflow-y: auto;
 }
+
 
 /* Header */
 .catalog-header {
@@ -271,29 +273,25 @@
     transform: scale(1.05);
 }
 
-/* Modal */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
     display: flex;
-    align-items: center;
     justify-content: center;
-    z-index: 1000;
-    padding: 1rem;
+    align-items: center;
+    z-index: 900;
 }
 
+/* Contenido */
 .modal-content {
-    background: white;
-    border-radius: 16px;
-    width: 100%;
-    max-width: 700px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 800px;
+    z-index: 999;
 }
 
 .modal-header {
@@ -423,33 +421,155 @@
     background: #5a6268;
 }
 
-/* Responsive */
+/* -------------------------------------- */
+/* CONTENEDOR PRINCIPAL DEL DETALLE */
+/* -------------------------------------- */
+
+.detalle-candidato-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.detalle-candidato {
+    max-width: 750px;
+    padding: 20px;
+}
+
+/* -------------------------------------- */
+/* TÍTULOS Y SECCIONES */
+/* -------------------------------------- */
+
+.detalle-titulo {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.detalle-seccion {
+    margin-bottom: 20px;
+}
+
+.detalle-subtitulo {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.detalle-valor {
+    font-size: 16px;
+}
+
+/* -------------------------------------- */
+/* INFORMACIÓN DEL CANDIDATO */
+/* -------------------------------------- */
+
+.candidato-info p {
+    margin-bottom: 6px;
+}
+
+/* -------------------------------------- */
+/* ESTADO ACTUAL */
+/* -------------------------------------- */
+
+.estado-actual {
+    font-weight: bold;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+/* -------------------------------------- */
+/* NUEVO DISEÑO: CHIPS DE ESTADOS */
+/* -------------------------------------- */
+
+/* Contenedor general */
+.estado-chip-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+/* Chip */
+.estado-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 9999px;
+    border: 2px solid var(--color);
+    background: white;
+    color: var(--color);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    font-size: 0.9rem;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    pointer-events: auto;
+    position: relative;
+    z-index: 1000;
+}
+
+/* Icono del chip */
+.estado-chip-icon {
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Hover */
+.estado-chip:not(.activo):hover {
+    background: var(--color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* Chip activo */
+.estado-chip.activo {
+    background: var(--color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: default;
+}
+
+/* Chip deshabilitado */
+.estado-chip:disabled {
+    opacity: 0.85;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* -------------------------------------- */
+/* ACCIONES DEL MODAL */
+/* -------------------------------------- */
+
+.detalle-acciones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-cerrar {
+    padding: 10px 20px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* -------------------------------------- */
+/* RESPONSIVE */
+/* -------------------------------------- */
+
 @media (max-width: 768px) {
-    .candidatos-container {
-        padding: 1rem;
+    .detalle-candidato {
+        padding: 10px;
     }
 
-    .filtros-container {
-        grid-template-columns: 1fr;
-    }
-
-    .estadisticas {
-        grid-template-columns: 1fr;
-    }
-
-    .candidatos-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .info-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .modal-content {
-        max-height: 95vh;
-    }
-
-    .modal-body {
-        padding: 1rem;
+    .detalle-acciones {
+        flex-direction: column;
+        gap: 10px;
     }
 }

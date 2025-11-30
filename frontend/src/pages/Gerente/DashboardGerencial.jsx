@@ -3,7 +3,8 @@ import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Toolti
 import { Download, Filter, Calendar, User, Briefcase, FileText, FileSpreadsheet } from 'lucide-react';
 
 const DashboardGerencial = () => {
-    const [data, setData] = useState(null);
+    const [dataOriginal, setDataOriginal] = useState(null);
+    const [dataFiltrada, setDataFiltrada] = useState(null);
     const [loading, setLoading] = useState(true);
     const [filtros, setFiltros] = useState({
         fechaInicio: '',
@@ -19,126 +20,196 @@ const DashboardGerencial = () => {
     }, []);
 
     const cargarDatos = async () => {
-        let hayFiltros = false;
-
         try {
             setLoading(true);
-            const queryParams = new URLSearchParams();
-
-            // Convertir fechas al formato LocalDateTime que espera el backend
-            if (filtros.fechaInicio) {
-                queryParams.append('fechaInicio', `${filtros.fechaInicio}T00:00:00`);
-                hayFiltros = true;
-            }
-            if (filtros.fechaFin) {
-                queryParams.append('fechaFin', `${filtros.fechaFin}T23:59:59`);
-                hayFiltros = true;
-            }
-            if (filtros.cliente) {
-                queryParams.append('cliente', filtros.cliente);
-                hayFiltros = true;
-            }
-            if (filtros.servicio) {
-                queryParams.append('servicio', filtros.servicio);
-                hayFiltros = true;
-            }
-
-            const url = `http://localhost:8080/api/dashboard/filtros${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
-            console.log('Llamando a:', url);
+            const url = `http://localhost:8080/api/dashboard/filtros`;
+            console.log('🔍 Cargando todos los datos...');
 
             const response = await fetch(url);
 
             if (!response.ok) {
                 const errorText = await response.text();
-                console.error('Error del servidor:', errorText);
+                console.error('❌ Error del servidor:', errorText);
                 throw new Error(`Error ${response.status}: ${errorText}`);
             }
 
             const resultado = await response.json();
+            console.log('✅ Datos cargados:', resultado);
 
-            // Validar que tenga la estructura esperada
             if (!resultado.detalles || !Array.isArray(resultado.detalles)) {
-                console.error('Respuesta sin estructura válida:', resultado);
+                console.error('⚠️ Respuesta sin estructura válida:', resultado);
                 throw new Error('La respuesta del servidor no tiene el formato esperado');
             }
 
-            setData(resultado);
+            setDataOriginal(resultado);
+            setDataFiltrada(resultado);
         } catch (error) {
-            console.error('Error al cargar datos:', error);
+            console.error('💥 Error al cargar datos:', error);
             alert(`Error al cargar los datos del dashboard:\n${error.message}\n\nRevisa la consola para más detalles.`);
-
-            // Si falla con filtros, intentar cargar sin filtros
-            if (hayFiltros) {
-                console.log('Intentando cargar sin filtros...');
-                setFiltros({ fechaInicio: '', fechaFin: '', cliente: '', servicio: '' });
-            }
         } finally {
             setLoading(false);
         }
     };
 
+    const aplicarFiltrosFrontend = () => {
+        if (!dataOriginal) return;
+
+        console.log('🔄 Aplicando filtros en frontend:', filtros);
+
+        // Filtrar los detalles
+        let detallesFiltrados = [...dataOriginal.detalles];
+
+        // Filtro por cliente
+        if (filtros.cliente) {
+            detallesFiltrados = detallesFiltrados.filter(d =>
+                d.cliente.toLowerCase().includes(filtros.cliente.toLowerCase())
+            );
+            console.log(`📌 Después de filtrar por cliente "${filtros.cliente}":`, detallesFiltrados.length);
+        }
+
+        // Filtro por servicio
+        if (filtros.servicio) {
+            detallesFiltrados = detallesFiltrados.filter(d =>
+                d.servicio.toLowerCase().includes(filtros.servicio.toLowerCase())
+            );
+            console.log(`📌 Después de filtrar por servicio "${filtros.servicio}":`, detallesFiltrados.length);
+        }
+
+        // Filtro por fecha inicio
+        if (filtros.fechaInicio) {
+            const fechaInicio = new Date(filtros.fechaInicio);
+            detallesFiltrados = detallesFiltrados.filter(d => {
+                const fechaRegistro = new Date(d.fechaRegistro);
+                return fechaRegistro >= fechaInicio;
+            });
+            console.log(`📌 Después de filtrar por fecha inicio:`, detallesFiltrados.length);
+        }
+
+        // Filtro por fecha fin
+        if (filtros.fechaFin) {
+            const fechaFin = new Date(filtros.fechaFin);
+            fechaFin.setHours(23, 59, 59, 999); // Incluir todo el día
+            detallesFiltrados = detallesFiltrados.filter(d => {
+                const fechaRegistro = new Date(d.fechaRegistro);
+                return fechaRegistro <= fechaFin;
+            });
+            console.log(`📌 Después de filtrar por fecha fin:`, detallesFiltrados.length);
+        }
+
+        // Recalcular estadísticas basadas en los detalles filtrados
+        const evidenciasPorEstado = {};
+        const evidenciasPorServicio = {};
+        const evidenciasPorEmpleado = {};
+        let totalHoras = 0;
+
+        detallesFiltrados.forEach(detalle => {
+            // Por estado
+            evidenciasPorEstado[detalle.estado] = (evidenciasPorEstado[detalle.estado] || 0) + 1;
+
+            // Por servicio
+            evidenciasPorServicio[detalle.servicio] = (evidenciasPorServicio[detalle.servicio] || 0) + 1;
+
+            // Por empleado
+            evidenciasPorEmpleado[detalle.empleado] = (evidenciasPorEmpleado[detalle.empleado] || 0) + 1;
+
+            // Calcular horas
+            if (detalle.horaInicio && detalle.horaFin) {
+                const inicio = new Date(detalle.horaInicio);
+                const fin = new Date(detalle.horaFin);
+                const horas = (fin - inicio) / (1000 * 60 * 60); // Convertir ms a horas
+                totalHoras += horas;
+            }
+        });
+
+        const nuevosDatos = {
+            totalEvidencias: detallesFiltrados.length,
+            totalHoras: Math.round(totalHoras * 100) / 100, // Redondear a 2 decimales
+            evidenciasPorEstado,
+            evidenciasPorServicio,
+            evidenciasPorEmpleado,
+            detalles: detallesFiltrados
+        };
+
+        console.log('✅ Datos filtrados:', nuevosDatos);
+        setDataFiltrada(nuevosDatos);
+    };
+
     const handleFiltroChange = (campo, valor) => {
-        setFiltros(prev => ({ ...prev, [campo]: valor }));
+        setFiltros(prev => {
+            const nuevosFiltros = { ...prev, [campo]: valor };
+            console.log('🔄 Filtros actualizados:', nuevosFiltros);
+            return nuevosFiltros;
+        });
     };
 
     const aplicarFiltros = () => {
-        cargarDatos();
+        console.log('🚀 Aplicando filtros...');
+        aplicarFiltrosFrontend();
     };
 
     const limpiarFiltros = () => {
+        console.log('🧹 Limpiando filtros...');
         setFiltros({
             fechaInicio: '',
             fechaFin: '',
             cliente: '',
             servicio: ''
         });
-        setTimeout(() => cargarDatos(), 100);
+        setDataFiltrada(dataOriginal);
     };
 
     const exportarPDF = () => {
-        if (!data) return;
+        if (!dataFiltrada) return;
 
         const contenido = `
-      REPORTE GERENCIAL - DASHBOARD
-      ================================
-      
-      Fecha de generación: ${new Date().toLocaleString('es-CO')}
-      
-      RESUMEN GENERAL
-      ---------------
-      Total de Evidencias: ${data.totalEvidencias}
-      Total de Horas: ${data.totalHoras}
-      
-      EVIDENCIAS POR ESTADO
-      ---------------------
-      ${Object.entries(data.evidenciasPorEstado || {}).map(([estado, count]) =>
+REPORTE GERENCIAL - DASHBOARD
+================================
+
+Fecha de generación: ${new Date().toLocaleString('es-CO')}
+
+FILTROS APLICADOS
+-----------------
+${filtros.fechaInicio ? `Fecha Inicio: ${filtros.fechaInicio}` : ''}
+${filtros.fechaFin ? `Fecha Fin: ${filtros.fechaFin}` : ''}
+${filtros.cliente ? `Cliente: ${filtros.cliente}` : ''}
+${filtros.servicio ? `Servicio: ${filtros.servicio}` : ''}
+
+RESUMEN GENERAL
+---------------
+Total de Evidencias: ${dataFiltrada.totalEvidencias}
+Total de Horas: ${dataFiltrada.totalHoras}
+Servicios Activos: ${Object.keys(dataFiltrada.evidenciasPorServicio || {}).length}
+
+EVIDENCIAS POR ESTADO
+---------------------
+${Object.entries(dataFiltrada.evidenciasPorEstado || {}).map(([estado, count]) =>
             `${estado}: ${count}`
-        ).join('\n      ')}
-      
-      EVIDENCIAS POR SERVICIO
-      -----------------------
-      ${Object.entries(data.evidenciasPorServicio || {}).map(([servicio, count]) =>
+        ).join('\n')}
+
+EVIDENCIAS POR SERVICIO
+-----------------------
+${Object.entries(dataFiltrada.evidenciasPorServicio || {}).map(([servicio, count]) =>
             `${servicio}: ${count}`
-        ).join('\n      ')}
-      
-      EVIDENCIAS POR EMPLEADO
-      -----------------------
-      ${Object.entries(data.evidenciasPorEmpleado || {}).map(([empleado, count]) =>
+        ).join('\n')}
+
+EVIDENCIAS POR EMPLEADO
+-----------------------
+${Object.entries(dataFiltrada.evidenciasPorEmpleado || {}).map(([empleado, count]) =>
             `${empleado}: ${count}`
-        ).join('\n      ')}
-      
-      DETALLE DE EVIDENCIAS
-      ---------------------
-      ${data.detalles.map((det, idx) => `
-      ${idx + 1}. Cliente: ${det.cliente}
-         Servicio: ${det.servicio}
-         Empleado: ${det.empleado}
-         Estado: ${det.estado}
-         Fecha: ${new Date(det.fechaRegistro).toLocaleDateString('es-CO')}
-         Horario: ${new Date(det.horaInicio).toLocaleTimeString('es-CO')} - ${new Date(det.horaFin).toLocaleTimeString('es-CO')}
-         Descripción: ${det.descripcion}
-      `).join('\n')}
-    `;
+        ).join('\n')}
+
+DETALLE DE EVIDENCIAS
+---------------------
+${dataFiltrada.detalles.map((det, idx) => `
+${idx + 1}. Cliente: ${det.cliente}
+   Servicio: ${det.servicio}
+   Empleado: ${det.empleado}
+   Estado: ${det.estado}
+   Fecha: ${new Date(det.fechaRegistro).toLocaleDateString('es-CO')}
+   Horario: ${new Date(det.horaInicio).toLocaleTimeString('es-CO')} - ${new Date(det.horaFin).toLocaleTimeString('es-CO')}
+   Descripción: ${det.descripcion}
+`).join('\n')}
+`;
 
         const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
@@ -148,15 +219,15 @@ const DashboardGerencial = () => {
         link.click();
         URL.revokeObjectURL(url);
 
-        alert('Reporte PDF exportado exitosamente (formato texto)');
+        alert('✅ Reporte PDF exportado exitosamente (formato texto)');
     };
 
     const exportarExcel = () => {
-        if (!data) return;
+        if (!dataFiltrada) return;
 
         let csv = 'ID,Cliente,Servicio,Empleado,Estado,Fecha Registro,Hora Inicio,Hora Fin,Descripción\n';
 
-        data.detalles.forEach(det => {
+        dataFiltrada.detalles.forEach(det => {
             csv += `${det.idEvidencia},"${det.cliente}","${det.servicio}","${det.empleado}","${det.estado}",`;
             csv += `"${new Date(det.fechaRegistro).toLocaleString('es-CO')}",`;
             csv += `"${new Date(det.horaInicio).toLocaleTimeString('es-CO')}",`;
@@ -172,7 +243,7 @@ const DashboardGerencial = () => {
         link.click();
         URL.revokeObjectURL(url);
 
-        alert('Reporte Excel exportado exitosamente');
+        alert('✅ Reporte Excel exportado exitosamente');
     };
 
     if (loading) {
@@ -186,14 +257,30 @@ const DashboardGerencial = () => {
         );
     }
 
-    if (!data) return null;
+    if (!dataFiltrada) {
+        return (
+            <div className="flex items-center justify-center h-screen bg-gray-50">
+                <div className="text-center">
+                    <p className="text-red-600 font-medium">No se pudieron cargar los datos</p>
+                    <button
+                        onClick={cargarDatos}
+                        className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                    >
+                        Reintentar
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
-    const dataEstados = Object.entries(data.evidenciasPorEstado || {}).map(([name, value]) => ({ name, value }));
-    const dataServicios = Object.entries(data.evidenciasPorServicio || {}).map(([name, value]) => ({ name, value }));
-    const dataEmpleados = Object.entries(data.evidenciasPorEmpleado || {}).map(([name, value]) => ({ name, value }));
+    const dataEstados = Object.entries(dataFiltrada.evidenciasPorEstado || {}).map(([name, value]) => ({ name, value }));
+    const dataServicios = Object.entries(dataFiltrada.evidenciasPorServicio || {}).map(([name, value]) => ({ name, value }));
+    const dataEmpleados = Object.entries(dataFiltrada.evidenciasPorEmpleado || {}).map(([name, value]) => ({ name, value }));
 
-    const clientesUnicos = [...new Set(data.detalles.map(d => d.cliente))];
-    const serviciosUnicos = [...new Set(data.detalles.map(d => d.servicio))];
+    const clientesUnicos = [...new Set(dataOriginal.detalles.map(d => d.cliente))].sort();
+    const serviciosUnicos = [...new Set(dataOriginal.detalles.map(d => d.servicio))].sort();
+
+    const hayFiltrosActivos = filtros.fechaInicio || filtros.fechaFin || filtros.cliente || filtros.servicio;
 
     return (
         <div className="min-h-screen bg-gray-50 p-6 overflow-y-auto">
@@ -204,6 +291,16 @@ const DashboardGerencial = () => {
                         <div>
                             <h1 className="text-3xl font-bold text-gray-800">Dashboard Gerencial</h1>
                             <p className="text-gray-600 mt-1">Análisis y reportes de evidencias de servicio</p>
+                            {hayFiltrosActivos && (
+                                <div className="mt-2 flex items-center gap-2">
+                                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                        🔍 Filtros activos
+                                    </span>
+                                    <span className="text-sm text-gray-600">
+                                        Mostrando {dataFiltrada.totalEvidencias} de {dataOriginal.totalEvidencias} evidencias
+                                    </span>
+                                </div>
+                            )}
                         </div>
                         <div className="flex gap-3">
                             <button
@@ -229,6 +326,7 @@ const DashboardGerencial = () => {
                     <div className="flex items-center gap-2 mb-4">
                         <Filter className="text-blue-600" size={24} />
                         <h2 className="text-xl font-bold text-gray-800">Filtros de Búsqueda</h2>
+                        <span className="ml-2 text-sm text-gray-500">(Filtrado en tiempo real)</span>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
@@ -313,17 +411,26 @@ const DashboardGerencial = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                     <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
                         <h3 className="text-lg font-semibold mb-2">Total Evidencias</h3>
-                        <p className="text-4xl font-bold">{data.totalEvidencias}</p>
+                        <p className="text-4xl font-bold">{dataFiltrada.totalEvidencias}</p>
+                        <p className="text-sm opacity-90 mt-2">
+                            {hayFiltrosActivos ? `de ${dataOriginal.totalEvidencias} totales` : '(Todas)'}
+                        </p>
                     </div>
 
                     <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white">
                         <h3 className="text-lg font-semibold mb-2">Total Horas</h3>
-                        <p className="text-4xl font-bold">{data.totalHoras}</p>
+                        <p className="text-4xl font-bold">{dataFiltrada.totalHoras}</p>
+                        <p className="text-sm opacity-90 mt-2">
+                            {hayFiltrosActivos ? '(Filtrado)' : '(Todas)'}
+                        </p>
                     </div>
 
                     <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
                         <h3 className="text-lg font-semibold mb-2">Servicios Activos</h3>
-                        <p className="text-4xl font-bold">{Object.keys(data.evidenciasPorServicio || {}).length}</p>
+                        <p className="text-4xl font-bold">{Object.keys(dataFiltrada.evidenciasPorServicio || {}).length}</p>
+                        <p className="text-sm opacity-90 mt-2">
+                            {hayFiltrosActivos ? '(Filtrado)' : '(Todos)'}
+                        </p>
                     </div>
                 </div>
 
@@ -331,92 +438,124 @@ const DashboardGerencial = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div className="bg-white rounded-lg shadow-md p-6">
                         <h3 className="text-xl font-bold text-gray-800 mb-4">Evidencias por Servicio</h3>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <BarChart data={dataServicios}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Bar dataKey="value" fill="#3b82f6" name="Cantidad" />
-                            </BarChart>
-                        </ResponsiveContainer>
+                        {dataServicios.length > 0 ? (
+                            <ResponsiveContainer width="100%" height={300}>
+                                <BarChart data={dataServicios}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    <Bar dataKey="value" fill="#3b82f6" name="Cantidad" />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        ) : (
+                            <div className="flex items-center justify-center h-[300px] text-gray-400">
+                                No hay datos disponibles
+                            </div>
+                        )}
                     </div>
 
                     <div className="bg-white rounded-lg shadow-md p-6">
                         <h3 className="text-xl font-bold text-gray-800 mb-4">Evidencias por Estado</h3>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <PieChart>
-                                <Pie
-                                    data={dataEstados}
-                                    cx="50%"
-                                    cy="50%"
-                                    labelLine={false}
-                                    label={(entry) => `${entry.name}: ${entry.value}`}
-                                    outerRadius={100}
-                                    fill="#8884d8"
-                                    dataKey="value"
-                                >
-                                    {dataEstados.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                    ))}
-                                </Pie>
-                                <Tooltip />
-                            </PieChart>
-                        </ResponsiveContainer>
+                        {dataEstados.length > 0 ? (
+                            <ResponsiveContainer width="100%" height={300}>
+                                <PieChart>
+                                    <Pie
+                                        data={dataEstados}
+                                        cx="50%"
+                                        cy="50%"
+                                        labelLine={false}
+                                        label={(entry) => `${entry.name}: ${entry.value}`}
+                                        outerRadius={100}
+                                        fill="#8884d8"
+                                        dataKey="value"
+                                    >
+                                        {dataEstados.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        ) : (
+                            <div className="flex items-center justify-center h-[300px] text-gray-400">
+                                No hay datos disponibles
+                            </div>
+                        )}
                     </div>
                 </div>
 
                 {/* Tabla de Empleados */}
                 <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                     <h3 className="text-xl font-bold text-gray-800 mb-4">Desempeño por Empleado</h3>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={dataEmpleados} layout="vertical">
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis type="number" />
-                            <YAxis dataKey="name" type="category" width={150} />
-                            <Tooltip />
-                            <Legend />
-                            <Bar dataKey="value" fill="#10b981" name="Evidencias" />
-                        </BarChart>
-                    </ResponsiveContainer>
+                    {dataEmpleados.length > 0 ? (
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={dataEmpleados} layout="vertical">
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis type="number" />
+                                <YAxis dataKey="name" type="category" width={150} />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="value" fill="#10b981" name="Evidencias" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <div className="flex items-center justify-center h-[300px] text-gray-400">
+                            No hay datos disponibles
+                        </div>
+                    )}
                 </div>
 
                 {/* Tabla de Detalles */}
                 <div className="bg-white rounded-lg shadow-md p-6">
-                    <h3 className="text-xl font-bold text-gray-800 mb-4">Detalle de Evidencias</h3>
-                    <div className="overflow-x-auto max-h-96 overflow-y-auto">
-                        <table className="w-full text-left">
-                            <thead className="bg-gray-100 sticky top-0">
-                                <tr>
-                                    <th className="px-4 py-3 text-sm font-semibold text-gray-700">ID</th>
-                                    <th className="px-4 py-3 text-sm font-semibold text-gray-700">Cliente</th>
-                                    <th className="px-4 py-3 text-sm font-semibold text-gray-700">Servicio</th>
-                                    <th className="px-4 py-3 text-sm font-semibold text-gray-700">Empleado</th>
-                                    <th className="px-4 py-3 text-sm font-semibold text-gray-700">Estado</th>
-                                    <th className="px-4 py-3 text-sm font-semibold text-gray-700">Fecha</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                                {data.detalles.map((detalle) => (
-                                    <tr key={detalle.idEvidencia} className="hover:bg-gray-50">
-                                        <td className="px-4 py-3 text-sm text-gray-900">{detalle.idEvidencia}</td>
-                                        <td className="px-4 py-3 text-sm text-gray-900">{detalle.cliente}</td>
-                                        <td className="px-4 py-3 text-sm text-gray-900">{detalle.servicio}</td>
-                                        <td className="px-4 py-3 text-sm text-gray-900">{detalle.empleado}</td>
-                                        <td className="px-4 py-3">
-                                            <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-                                                {detalle.estado}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-3 text-sm text-gray-900">
-                                            {new Date(detalle.fechaRegistro).toLocaleDateString('es-CO')}
-                                        </td>
+                    <h3 className="text-xl font-bold text-gray-800 mb-4">
+                        Detalle de Evidencias ({dataFiltrada.detalles.length})
+                    </h3>
+                    {dataFiltrada.detalles.length > 0 ? (
+                        <div className="overflow-x-auto max-h-96 overflow-y-auto">
+                            <table className="w-full text-left">
+                                <thead className="bg-gray-100 sticky top-0">
+                                    <tr>
+                                        <th className="px-4 py-3 text-sm font-semibold text-gray-700">ID</th>
+                                        <th className="px-4 py-3 text-sm font-semibold text-gray-700">Cliente</th>
+                                        <th className="px-4 py-3 text-sm font-semibold text-gray-700">Servicio</th>
+                                        <th className="px-4 py-3 text-sm font-semibold text-gray-700">Empleado</th>
+                                        <th className="px-4 py-3 text-sm font-semibold text-gray-700">Estado</th>
+                                        <th className="px-4 py-3 text-sm font-semibold text-gray-700">Fecha</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody className="divide-y divide-gray-200">
+                                    {dataFiltrada.detalles.map((detalle) => (
+                                        <tr key={detalle.idEvidencia} className="hover:bg-gray-50">
+                                            <td className="px-4 py-3 text-sm text-gray-900">{detalle.idEvidencia}</td>
+                                            <td className="px-4 py-3 text-sm text-gray-900">{detalle.cliente}</td>
+                                            <td className="px-4 py-3 text-sm text-gray-900">{detalle.servicio}</td>
+                                            <td className="px-4 py-3 text-sm text-gray-900">{detalle.empleado}</td>
+                                            <td className="px-4 py-3">
+                                                <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                                                    {detalle.estado}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-3 text-sm text-gray-900">
+                                                {new Date(detalle.fechaRegistro).toLocaleDateString('es-CO')}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
+                        <div className="text-center py-12 text-gray-400">
+                            <p className="text-lg">No se encontraron evidencias con los filtros aplicados</p>
+                            <button
+                                onClick={limpiarFiltros}
+                                className="mt-4 text-blue-600 hover:text-blue-700 font-medium"
+                            >
+                                Limpiar filtros
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

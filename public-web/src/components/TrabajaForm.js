@@ -6,7 +6,7 @@ function TrabajaForm({ onClose }) {
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '', // <-- AÑADIDO
-    cedula: '', 
+    cedula: '',
     email: '',
     telefono: '',
     posicion: '',
@@ -46,13 +46,13 @@ function TrabajaForm({ onClose }) {
       setLoading(false);
       return;
     }
-    
+
     // --- LÍMITE DE TAMAÑO ACTUALIZADO ---
     const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
     if (formData.hojaDeVida.size > maxSizeInBytes) {
-        setError('El archivo es muy pesado (Máx 10MB).'); // Mensaje actualizado
-        setLoading(false);
-        return;
+      setError('El archivo es muy pesado (Máx 10MB).'); // Mensaje actualizado
+      setLoading(false);
+      return;
     }
 
     // 2. Crear el DTO de texto (debe coincidir con CandidatoRegistroDto.java)
@@ -69,22 +69,22 @@ function TrabajaForm({ onClose }) {
 
     // 3. Crear el FormData
     const data = new FormData();
-    
+
     // 'hojaDeVida' debe coincidir con @RequestPart("hojaDeVida")
-    data.append('hojaDeVida', formData.hojaDeVida); 
-    
+    data.append('hojaDeVida', formData.hojaDeVida);
+
     // 'candidato' debe coincidir con @RequestPart("candidato")
     data.append('candidato', new Blob([JSON.stringify(candidatoDto)], {
       type: "application/json"
     }));
 
     // 4. Enviar la petición al backend
+    // 4. Enviar la petición al backend
     try {
       // URL del endpoint que creamos en el CandidatoController
       const response = await fetch('http://localhost:8080/api/candidatos/registrar', {
         method: 'POST',
         body: data,
-        // No añadir 'Content-Type', el navegador lo hace automáticamente
       });
 
       setLoading(false);
@@ -93,13 +93,13 @@ function TrabajaForm({ onClose }) {
         setSuccess('¡Solicitud enviada! Gracias por tu interés.');
         // Limpiar formulario (con 'apellido' añadido)
         setFormData({
-          nombre: '', apellido: '', cedula: '', email: '', telefono: '', 
+          nombre: '', apellido: '', cedula: '', email: '', telefono: '',
           posicion: '', experiencia: '', mensaje: '', hojaDeVida: null
         });
         e.target.reset(); // Resetea el input de archivo
-        
+
         // Cierra el modal después de 2 segundos
-        setTimeout(onClose, 2000); 
+        setTimeout(onClose, 2000);
       } else {
         const errData = await response.json();
         setError(errData.error || 'Ocurrió un error al enviar la solicitud.');
@@ -120,7 +120,7 @@ function TrabajaForm({ onClose }) {
         <p className="trabaja-descripcion">Únete a nuestro equipo de profesionales</p>
 
         <form onSubmit={handleSubmit} className="trabaja-form">
-          
+
           {/* --- CAMPO NOMBRE ACTUALIZADO --- */}
           <div className="form-group">
             <label htmlFor="nombre">Nombre *</label>
