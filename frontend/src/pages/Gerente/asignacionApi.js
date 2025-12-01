@@ -1,5 +1,5 @@
 // src/Gerente/asignacionApi.js
-const API_BASE = "http://localhost:8080/api";
+const API_BASE = process.env.REACT_APP_API_BASE + "/api" || "http://localhost:8080/api";
 
 export async function obtenerAsignaciones() {
     const res = await fetch(`${API_BASE}/asignaciones`);

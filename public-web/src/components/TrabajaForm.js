@@ -82,7 +82,7 @@ function TrabajaForm({ onClose }) {
     // 4. Enviar la petición al backend
     try {
       // URL del endpoint que creamos en el CandidatoController
-      const response = await fetch('http://localhost:8080/api/candidatos/registrar', {
+      const response = await fetch(process.env.REACT_APP_API_BASE + "/api/candidatos/registrar" || 'http://localhost:8080/api/candidatos/registrar', {
         method: 'POST',
         body: data,
       });

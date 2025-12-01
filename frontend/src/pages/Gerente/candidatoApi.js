@@ -1,6 +1,6 @@
 // candidatoApi.js - API para gestionar visualización de Candidatos
 
-const API_BASE_URL = 'http://localhost:8080/api/candidatos';
+const API_BASE_URL = process.env.REACT_APP_API_BASE + "/api/candidatos" || 'http://localhost:8080/api/candidatos';
 
 /**
  * Obtener todos los candidatos
