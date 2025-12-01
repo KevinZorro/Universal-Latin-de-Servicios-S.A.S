@@ -3,7 +3,7 @@ import './ServiciosPage.css';
 import FormularioServicio from './components/FormularioServicio';
 
 // URL base de tu backend
-const API_URL = 'http://localhost:8080/api/servicios';
+const API_URL = process.env.REACT_APP_API_BASE + "/api/servicios";
 
 // 1. LISTA DE NOMBRES DE ARCHIVOS DE IMAGEN LOCALES (sin la extensión .jpeg)
 // ¡VERIFICA QUE ESTOS NOMBRES EXISTAN EN TU CARPETA /public/imagenes!

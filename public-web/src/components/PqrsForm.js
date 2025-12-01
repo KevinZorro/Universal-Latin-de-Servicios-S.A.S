@@ -40,7 +40,7 @@ function PqrsForm({ onClose }) {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/api/pqrs', {
+      const response = await fetch(process.env.REACT_APP_API_BASE + "/api/pqrs" ||'http://localhost:8080/api/pqrs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

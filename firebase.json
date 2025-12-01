@@ -1,0 +1,24 @@
+{
+  "hosting": [
+    {
+      "target": "admin-site",        
+      "public": "frontend/build",      
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
+      "target": "public-web-site",   
+      "public": "public-web/build",    
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}

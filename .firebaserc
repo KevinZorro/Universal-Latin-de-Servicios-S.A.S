@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "universal-latin"
+  },
+  "targets": {
+    "universal-latin": {
+      "hosting": {
+        "admin-site": [
+          "universal-latin"
+        ],
+        "public-web-site": [
+          "universal-latin-public"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
